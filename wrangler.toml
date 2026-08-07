@@ -9,7 +9,7 @@ preview_id = "030c7124858c4daea4b3f5a39268de7b"
 
 [vars]
 SITE_ORIGIN = "https://cabpechard-wq.github.io"
-SITE_BASE = "https://cabpechard-wq.github.io/flipcards-host"
+SITE_BASE = "/editions-particulieres"
 RESEND_FROM = "Flipcards <onboarding@resend.dev>"
 # Secrets (wrangler secret put):
 #   STRIPE_SECRET_KEY

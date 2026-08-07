@@ -1,8 +1,8 @@
 {
   "product_name": "Éditions Particulières — Droit public et administratif",
-  "checkout_url": "",
-  "demo_url": "",
-  "flipcards_url": "",
+  "checkout_url": "https://cabpechard-wq.github.io/editions-particulieres/checkout/",
+  "demo_url": "https://cabpechard-wq.github.io/editions-particulieres/demo/",
+  "flipcards_url": "https://cabpechard-wq.github.io/editions-particulieres/flipcards/",
   "pricing": {
     "monthly_eur": 6.9,
     "yearly_eur": 30.9,
@@ -12,13 +12,17 @@
     "store_slug": "",
     "monthly_variant_id": "",
     "yearly_variant_id": "",
-    "monthly_checkout_url": "",
-    "yearly_checkout_url": ""
+    "monthly_checkout_url": "https://buy.stripe.com/6oUaEWgWQgc21PO8QPawo01",
+    "yearly_checkout_url": "https://buy.stripe.com/14AdR88qk3pgeCA0kjawo00"
   },
   "stripe": {
-    "monthly_payment_link": "",
-    "yearly_payment_link": ""
+    "monthly_product_id": "prod_V0o42tjQbBaxS3",
+    "yearly_product_id": "prod_V0o4AwoyRBMQ1M",
+    "monthly_payment_link": "https://buy.stripe.com/6oUaEWgWQgc21PO8QPawo01",
+    "yearly_payment_link": "https://buy.stripe.com/14AdR88qk3pgeCA0kjawo00",
+    "test_payment_link": "https://buy.stripe.com/00w7sK0XS2lc8ecgjhawo02"
   },
+  "merci_url": "https://cabpechard-wq.github.io/editions-particulieres/merci/?session_id={CHECKOUT_SESSION_ID}",
   "hosting": {
     "provider": "github-pages",
     "site_name": "editions-particulieres",
@@ -33,9 +37,11 @@
     "abonnes_db_id": ""
   },
   "legal": {
-    "cgv_url": "",
-    "mentions_url": "",
-    "cgv_version": "2026-08-05"
+    "cgv_url": "https://cabpechard-wq.github.io/editions-particulieres/cgv/",
+    "mentions_url": "https://cabpechard-wq.github.io/editions-particulieres/mentions-legales/",
+    "cgv_version": "2026-08-05",
+    "stripe_field_key": "cgv_accept",
+    "stripe_field_label": "J'accepte les CGV et mentions légales"
   },
   "auth": {
     "api_url": "https://flipcards-auth.cab-pechard.workers.dev",

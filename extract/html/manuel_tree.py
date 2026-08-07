@@ -155,8 +155,6 @@ def build_nav_tree_html(
 def build_breadcrumb_html(chapter: dict[str, Any], by_digits: dict[str, dict[str, Any]]) -> str:
     prefix = asset_prefix(len(chapter["segments"]))
     bits = [
-        "<span>Éditions Particulières</span>",
-        '<span class="sep">›</span>',
         f'<a href="{prefix}index.html">Droit public et administratif</a>',
         '<span class="sep">›</span>',
         f'<a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>',

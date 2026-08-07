@@ -1293,6 +1293,13 @@ input:focus {
   max-width: none;
 }
 
+/* Colonne de lecture (menu latéral inchangé) */
+.manuel-shell .manuel-content > .site-title,
+.manuel-shell .manuel-content > .manuel-prose,
+.manuel-shell .manuel-content > .manuel-chapternav {
+  max-width: 40.5rem;
+}
+
 .manuel-prose {
   max-width: none;
   width: 100%;
@@ -1301,73 +1308,116 @@ input:focus {
   -webkit-touch-callout: none;
 }
 
-/* Typographie manuel — calée sur extract/word/theme.py + Editions_Particulieres.dotx */
+/* Typographie manuel — hiérarchie Cormorant (titres) / DM Sans (corps) */
 .manuel-content .site-title {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 2.6vw, 2.33rem); /* 28 pt */
+  font-size: clamp(1.65rem, 2.15vw, 2.05rem);
   font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 1rem;
-  padding-bottom: 0.45rem;
-  border-bottom: 2px solid var(--accent);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.35rem;
+  padding-bottom: 0.55rem;
+  color: var(--accent);
+  border-bottom: 2px solid rgba(196, 163, 90, .45);
 }
 
 .manuel-content .legal-prose {
   font-family: var(--font-ui);
-  font-size: 1.05rem; /* ~12 pt, un peu au-dessus du corps Word 11 pt */
-  line-height: 1.65;
+  font-size: 1.02rem;
+  line-height: 1.68;
+  color: var(--ink);
 }
 
-.manuel-content .legal-prose h2 {
+/* § principaux (Notion heading_1) */
+.manuel-content .legal-prose > h2 {
   font-family: var(--font-display);
-  font-size: 1.67rem; /* 20 pt — Notion heading_1 */
+  font-size: 1.48rem;
   font-weight: 600;
   letter-spacing: -0.015em;
-  margin: 1.35rem 0 0.5rem;
-  color: var(--ink);
+  line-height: 1.22;
+  margin: 2.15rem 0 0.7rem;
+  padding-top: 1.15rem;
+  color: var(--accent);
+  border-top: 1px solid rgba(196, 163, 90, .28);
 }
 
+.manuel-content .legal-prose > h2:first-child {
+  margin-top: 0.35rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Sous-parties (Notion heading_2) */
 .manuel-content .legal-prose h3 {
-  font-family: var(--font-ui);
-  font-size: 1.33rem; /* 16 pt — Notion heading_2 */
-  font-weight: 700;
-  margin: 1.1rem 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  line-height: 1.28;
+  margin: 1.45rem 0 0.45rem;
   color: var(--ink);
 }
 
+/* Rubriques (Notion heading_3) */
 .manuel-content .legal-prose h4 {
   font-family: var(--font-ui);
-  font-size: 1.08rem; /* 13 pt */
-  font-weight: 700;
-  margin: 0.95rem 0 0.35rem;
-  padding-left: 0.25rem;
+  font-size: 1.04rem;
+  font-weight: 650;
+  line-height: 1.35;
+  margin: 1.1rem 0 0.35rem;
+  padding-left: 0.55rem;
+  color: var(--ink);
+  border-left: 3px solid rgba(196, 163, 90, .42);
+}
+
+/* Sous-rubriques / focus (Notion heading_4) */
+.manuel-content .legal-prose h5 {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin: 1rem 0 0.35rem;
+  color: var(--muted);
+}
+
+/* Titres dans encadrés : plus compacts, sans séparateur de § */
+.manuel-content .legal-prose aside.encadre h2,
+.manuel-content .legal-prose .encadre h2,
+.manuel-content .legal-prose aside.encadre h3,
+.manuel-content .legal-prose .encadre h3 {
+  font-size: 1.08rem;
+  margin-top: 0.65rem;
+  padding-top: 0;
+  border-top: 0;
   color: var(--ink);
 }
 
-.manuel-content .legal-prose h5 {
-  font-family: var(--font-ui);
-  font-size: 0.98rem; /* 11.5 pt */
-  font-weight: 700;
-  margin: 0.85rem 0 0.3rem;
-  padding-left: 0.5rem;
-  color: var(--ink);
+.manuel-content .legal-prose aside.encadre h5,
+.manuel-content .legal-prose .encadre h5 {
+  font-size: 0.82rem;
+  margin-top: 0.5rem;
 }
 
 .manuel-content .legal-prose p,
 .manuel-content .legal-prose li {
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1.02rem;
+  line-height: 1.68;
   text-align: justify;
 }
 
 .manuel-content .legal-prose p {
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.7rem;
 }
 
 .manuel-content .legal-prose ul,
 .manuel-content .legal-prose ol {
-  margin: 0 0 0.85rem;
-  padding-left: 1.35rem;
+  margin: 0 0 0.9rem;
+  padding-left: 1.4rem;
+}
+
+.manuel-content .legal-prose li + li {
+  margin-top: 0.25rem;
 }
 
 /* Citations — cadre fin 4 côtés, sans fond (priorité sur .legal-prose blockquote) */
@@ -1765,17 +1815,17 @@ input:focus {
   margin-bottom: 1.25rem;
 }
 
-/* Fiche arrêt — largeur page A4 (21 cm), corps utile 16 cm (marges 2,5 cm) */
+/* Fiche arrêt — colonne élargie (2× A4 : 42 cm page, 32 cm corps utile) */
 .site-main.arrets-fiche-page {
-  width: min(21cm, calc(100% - 2rem));
-  max-width: 21cm;
+  width: min(42cm, calc(100% - 2rem));
+  max-width: 42cm;
   margin-inline: auto;
   box-sizing: border-box;
   padding-inline: clamp(1rem, 2.5cm, 2.5cm);
 }
 
 .arrets-fiche-layout {
-  max-width: 16cm;
+  max-width: 32cm;
   margin-inline: auto;
 }
 

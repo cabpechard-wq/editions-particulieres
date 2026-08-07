@@ -103,8 +103,6 @@ def build_manuel_site(
                 aside_tpl.replace("{{TITLE}}", ch["title_esc"])
                 .replace(
                     "{{CRUMB_TRAIL}}",
-                    "<span>Éditions Particulières</span>\n"
-                    '    <span class="sep">›</span>\n'
                     f'    <a href="{prefix}index.html">Droit public et administratif</a>\n'
                     '    <span class="sep">›</span>\n'
                     f'    <a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>\n'

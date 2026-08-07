@@ -919,10 +919,8 @@ body {{
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
-  padding: .9rem 1rem;
-  overflow: auto;
-  overscroll-behavior: contain;
+  padding: .9rem 0 .9rem 1rem;
+  overflow: hidden;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -936,6 +934,43 @@ body {{
   -webkit-touch-callout: none;
   cursor: default;
   transition: opacity .15s ease, visibility .15s ease, transform .15s ease;
+}}
+.fiche-hover-scroll {{
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: .65rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(196, 163, 90, .42) transparent;
+  background:
+    linear-gradient(var(--bg-elevated) 28%, rgba(22, 32, 40, 0)) center top,
+    linear-gradient(rgba(22, 32, 40, 0), var(--bg-elevated) 72%) center bottom;
+  background-size: 100% 1.35rem, 100% 1.35rem;
+  background-repeat: no-repeat;
+  background-attachment: local, local;
+}}
+.fiche-hover-scroll::-webkit-scrollbar {{
+  width: 4px;
+}}
+.fiche-hover-scroll::-webkit-scrollbar-track {{
+  background: transparent;
+  margin: .15rem 0;
+}}
+.fiche-hover-scroll::-webkit-scrollbar-thumb {{
+  background: rgba(196, 163, 90, .32);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}}
+.fiche-hover-scroll::-webkit-scrollbar-thumb:hover {{
+  background: rgba(196, 163, 90, .58);
+  background-clip: padding-box;
+}}
+.fiche-hover-scroll::-webkit-scrollbar-thumb:active {{
+  background: var(--accent);
+  background-clip: padding-box;
 }}
 .fiche-hover::before {{
   content: "";
@@ -960,8 +995,18 @@ body {{
   pointer-events: auto;
   transform: translateY(-50%) translateX(0);
 }}
-.fiche-hover h4 {{
-  margin: 0 0 .12rem;
+.fiche-line {{
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: .8rem;
+  font-weight: 500;
+  line-height: 1.42;
+  color: var(--ink);
+  text-align: justify;
+  -webkit-user-select: none;
+  user-select: none;
+}}
+.fiche-label {{
   font-family: var(--font-display);
   font-size: .68rem;
   font-weight: 700;
@@ -969,20 +1014,21 @@ body {{
   text-transform: uppercase;
   color: var(--secondary);
 }}
-.fiche-hover p {{
-  margin: 0;
-  font-family: var(--font-ui);
-  font-size: .8rem;
-  font-weight: 500;
-  line-height: 1.42;
-  color: var(--ink);
-  -webkit-user-select: none;
-  user-select: none;
+.fiche-text {{
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
 }}
-.fiche-hover p.is-empty {{ color: var(--muted); font-style: italic; }}
-.fiche-block + .fiche-block {{
-  padding-top: .4rem;
-  border-top: 1px solid var(--border);
+.fiche-line.is-empty .fiche-text {{
+  color: var(--muted);
+  font-style: italic;
+}}
+.fiche-line + .fiche-line {{
+  margin-top: .5rem;
+  padding-top: .45rem;
+  border-top: 1px solid rgba(196, 163, 90, .14);
 }}
 .flip-scene.is-flipped {{ cursor: help; }}
 .stage.is-fiche-peek {{ cursor: default; }}
@@ -1016,7 +1062,8 @@ body {{
   }}
 }}
 @media (max-width: 720px) {{
-  .fiche-hover {{ padding: .75rem .85rem; }}
+  .fiche-hover {{ padding: .75rem 0 .75rem .85rem; }}
+  .fiche-hover-scroll {{ padding-right: .5rem; }}
 }}
 .controls {{
   width: 100%;
@@ -1183,21 +1230,11 @@ body {{
             </div>
           </button>
           <div class="fiche-hover" id="fiche-hover" aria-hidden="true">
-            <div class="fiche-block">
-              <h4>Faits</h4>
-              <p id="fiche-faits"></p>
-            </div>
-            <div class="fiche-block">
-              <h4>Enjeu</h4>
-              <p id="fiche-enjeu"></p>
-            </div>
-            <div class="fiche-block">
-              <h4>Solution</h4>
-              <p id="fiche-solution"></p>
-            </div>
-            <div class="fiche-block">
-              <h4>Perspectives</h4>
-              <p id="fiche-perspective"></p>
+            <div class="fiche-hover-scroll">
+            <p class="fiche-line" id="fiche-faits"><span class="fiche-label">Faits.</span> <span class="fiche-text"></span></p>
+            <p class="fiche-line" id="fiche-enjeu"><span class="fiche-label">Enjeu juridique.</span> <span class="fiche-text"></span></p>
+            <p class="fiche-line" id="fiche-solution"><span class="fiche-label">Solution.</span> <span class="fiche-text"></span></p>
+            <p class="fiche-line" id="fiche-perspective"><span class="fiche-label">Perspective.</span> <span class="fiche-text"></span></p>
             </div>
           </div>
         </div>
@@ -1317,10 +1354,12 @@ function setDetail(el, value) {{
   el.classList.toggle("is-empty", !text);
 }}
 
-function setFicheLine(el, value) {{
+function setFicheLine(row, value) {{
+  const textEl = row && row.querySelector ? row.querySelector(".fiche-text") : null;
+  if (!textEl) return false;
   const text = (value || "").trim();
-  el.textContent = text || "—";
-  el.classList.toggle("is-empty", !text);
+  textEl.textContent = text || "—";
+  row.classList.toggle("is-empty", !text);
   return !!text;
 }}
 

@@ -18,6 +18,9 @@ if (-not (Test-Path $manuelSrc)) {
     exit 0
 }
 
+python (Join-Path $PSScriptRoot "fix_legacy_crumbs.py") $manuelSrc
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 if (-not (Test-Path $distSite)) {
     Write-Error "Build site manquant : lancez scripts\build_site.ps1 d'abord."
 }

@@ -1,6 +1,16 @@
 /* shared auth helpers — inject AUTH_API via __AUTH_API__ */
+const AUTH_API_DEFAULT = "https://flipcards-auth.cab-pechard.workers.dev";
+
+function resolveAuthBase(raw) {
+  const base = String(raw || "").trim().replace(/\/$/, "");
+  if (!base || base === "__AUTH_API__" || /EXAMPLE/i.test(base)) {
+    return AUTH_API_DEFAULT;
+  }
+  return base;
+}
+
 window.FLIPCARDS_AUTH = {
-  baseUrl: "__AUTH_API__",
+  baseUrl: resolveAuthBase("__AUTH_API__"),
   tokenKey: "flipcards_token",
   getToken() {
     return sessionStorage.getItem(this.tokenKey) || localStorage.getItem(this.tokenKey) || "";
@@ -20,7 +30,7 @@ window.FLIPCARDS_AUTH = {
     const headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
     const token = this.getToken();
     if (token && !headers.Authorization) headers.Authorization = "Bearer " + token;
-    const base = String(this.baseUrl || "").replace(/\/$/, "");
+    const base = resolveAuthBase(this.baseUrl);
     const res = await fetch(base + path, {
       method: opts.method || "GET",
       headers,

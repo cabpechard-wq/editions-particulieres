@@ -401,6 +401,9 @@ async function getUser(env, email) {
 }
 
 async function putUser(env, email, data) {
+  if (!env.USERS) {
+    throw new Error("USERS KV non configuré — ajoutez [[kv_namespaces]] dans wrangler.toml puis wrangler deploy");
+  }
   await env.USERS.put(userKey(email), JSON.stringify(data));
 }
 

@@ -24,10 +24,10 @@
   },
   "hosting": {
     "provider": "github-pages",
-    "site_name": "flipcards-host",
+    "site_name": "editions-particulieres",
     "demo_path": "/demo/",
-    "members_path": "/flipcards/",
-    "base_url": "https://cabpechard-wq.github.io/flipcards-host"
+    "members_path": "/flipcards/",/
+    "base_url": "https://cabpechard-wq.github.io/editions-particulieres"
   },
   "notion": {
     "parent_page_id": "3b2a29ad-9f78-8135-b69d-f09bc44f6973",

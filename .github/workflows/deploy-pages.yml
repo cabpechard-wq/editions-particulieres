@@ -10,9 +10,15 @@ on:
       - 'extract/**'
       - 'export_html.py'
       - 'export_dictionnaire.py'
+      - 'export_arrets.py'
       - 'requirements.txt'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
+    inputs:
+      refresh_notion:
+        description: "Re-exporter manuel/dictionnaire depuis Notion (lent, rate limits)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -60,23 +66,66 @@ jobs:
       - name: Build static site
         working-directory: site
         run: python build_assets.py
+
+      # Contourne les rate limits Notion : on réutilise le contenu déjà publié
+      # sauf si workflow_dispatch → refresh_notion=true.
+      - name: Seed manuel/dictionnaire from live Pages
+        id: seed
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.refresh_notion != true }}
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          BASE="https://cabpechard-wq.github.io/editions-particulieres"
+          mkdir -p site/dist/site
+          for path in manuel dictionnaire; do
+            echo "Mirroring /$path/ …"
+            wget -q -r -np -nH --cut-dirs=1 --level=inf \
+              --reject-regex '[?]' \
+              -P site/dist/site \
+              "$BASE/$path/"
+          done
+          test -f site/dist/site/manuel/index.html
+          test -f site/dist/site/dictionnaire/index.html
+          echo "Seed OK ($(du -sh site/dist/site/manuel site/dist/site/dictionnaire | tr '\n' ' '))"
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
       - name: Export manuel HTML into site
+        if: ${{ inputs.refresh_notion == true || steps.seed.outcome != 'success' }}
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_MANUEL_DATABASE_URL: ${{ secrets.NOTION_MANUEL_DATABASE_URL }}
         run: python export_html.py --out site/dist/site
+
       - name: Export dictionnaire HTML into site
+        if: ${{ inputs.refresh_notion == true || steps.seed.outcome != 'success' }}
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: python export_dictionnaire.py --out site/dist/site
+        run: |
+          # Laisse le quota Notion respirer après le manuel (si exporté juste avant)
+          if [ "${{ inputs.refresh_notion }}" = "true" ] || [ "${{ steps.seed.outcome }}" != "success" ]; then
+            if [ -f site/dist/site/manuel/index.html ]; then
+              echo "Pause 60s avant glossaire (anti rate-limit)…"
+              sleep 60
+            fi
+          fi
+          python export_dictionnaire.py --out site/dist/site
+
       - name: Refresh auth.js (URL API injectée)
         working-directory: site
         run: python build_membre_gate.py
-      - name: Verify manuel and dictionnaire in artifact
+
+      - name: Verify site artifact
         run: |
-          test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent — export_html.py a échoué ou n'a rien produit" && exit 1)
-          test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent — export_dictionnaire.py a échoué ou n'a rien produit" && exit 1)
-          echo "Manuel et dictionnaire présents dans l'artefact."
+          test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent" && exit 1)
+          test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent" && exit 1)
+          if grep -q '__AUTH_API__' site/dist/site/auth.js; then
+            echo "::warning::auth.js contient encore __AUTH_API__ (repli Worker actif)"
+          fi
+          grep -q 'workers.dev' site/dist/site/auth.js || (echo "::error::auth.js sans URL Worker" && exit 1)
+          grep -q 'buy.stripe.com' site/dist/site/checkout/index.html \
+            || (echo "::error::checkout sans Payment Links Stripe" && exit 1)
+          echo "Artefact OK."
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/dist/site

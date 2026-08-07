@@ -1,0 +1,22 @@
+{
+  "output_root": "G:/Mon Drive/Editions Particulieres",
+  "paths": {
+    "export": "{output_root}/export",
+    "export_manuel": "{output_root}/export/manuel",
+    "export_fiches": "{output_root}/export/fiches",
+    "export_arrets": "{output_root}/export/arrets",
+    "export_arrets_a5": "{output_root}/export/arrets_a5",
+    "export_formule": "{output_root}/export/formule",
+    "export_methodo": "{output_root}/export/methodo",
+    "export_index": "{output_root}/export/index",
+    "export_site": "{output_root}/export/site",
+    "manifest": "{output_root}/export/manifest.json",
+    "matrices_jurisprudence": "{output_root}/matrices/jurisprudence",
+    "matrices_flipcards": "{output_root}/matrices/flipcards",
+    "flipcards_output": "{output_root}/flipcards/output",
+    "site_build": "{output_root}/site-build",
+    "templates_word": "{repo_root}/extract/templates",
+    "templates_site": "{repo_root}/site/commerce/templates"
+  },
+  "notes": "Copier vers config/paths.json. Les extractions écrivent sur Google Drive (sync Drive Desktop). Le code source reste dans le dépôt Git."
+}

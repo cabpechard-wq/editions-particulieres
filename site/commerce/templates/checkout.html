@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscriptions — Droit public et administratif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<main class="site-main">
+  <p class="site-crumb">
+    <a href="../">Droit public et administratif</a>
+    <span class="sep">›</span>
+    <strong>Inscriptions</strong>
+  </p>
+  <p class="site-hero-kicker text-secondary">Offres de lancement</p>
+  <h1 class="site-title">Inscriptions</h1>
+  <p class="site-lead">Accès à l’amphithéâtre et aux travaux dirigés.<br>Résiliable à tout moment.</p>
+
+  <div class="site-grid">
+    <div class="site-card">
+      <h2>Mensuel</h2>
+      <div class="site-price">6,90 €<span> / mois</span></div>
+      <p>Accès complet et mises à jour.</p>
+      <a class="btn" id="btn-monthly" href="#configure" aria-disabled="true">Choisir mensuel</a>
+    </div>
+    <div class="site-card orange">
+      <h2>Semestriel</h2>
+      <div class="site-price">30,90 €<span> / semestre</span></div>
+      <p class="text-secondary" style="font-weight:650">25&nbsp;% de réduction supplémentaires.</p>
+      <a class="btn" id="btn-yearly" href="#configure" aria-disabled="true">Choisir semestriel</a>
+    </div>
+  </div>
+
+  <label class="checkout-consent" for="cgv-consent">
+    <input type="checkbox" id="cgv-consent" name="cgv_consent" required>
+    <span>
+      Je demande l’exécution immédiate du contenu numérique et j’accepte les
+      <a href="../cgv/" target="_blank" rel="noopener">conditions générales de vente</a>
+      et les
+      <a href="../mentions-legales/" target="_blank" rel="noopener">mentions légales</a>,
+      en renonçant expressément à mon droit de rétractation une fois l’accès délivré.
+    </span>
+  </label>
+  <p class="site-note" id="cgv-hint">Cochez la case pour activer le paiement.</p>
+  <p class="site-foot"><a class="btn secondary" href="../demo/">Essayer la démo (8 cartes)</a></p>
+</main>
+<script>
+window.FLIPCARDS_CHECKOUT = {
+  monthly: "",
+  yearly: ""
+};
+(function () {
+  const inIframe = (() => {
+    try { return window.self !== window.top; } catch (_) { return true; }
+  })();
+
+  const consent = document.getElementById("cgv-consent");
+  const buttons = [
+    document.getElementById("btn-monthly"),
+    document.getElementById("btn-yearly"),
+  ].filter(Boolean);
+
+  function setEnabled(ok) {
+    buttons.forEach((btn) => {
+      btn.classList.toggle("is-disabled", !ok);
+      btn.setAttribute("aria-disabled", ok ? "false" : "true");
+      if (!ok) {
+        btn.setAttribute("tabindex", "-1");
+      } else {
+        btn.removeAttribute("tabindex");
+      }
+    });
+  }
+
+  function wire(btn, url) {
+    if (!btn) return;
+    if (url) {
+      btn.dataset.checkoutUrl = url;
+      btn.href = url;
+      btn.target = "_blank";
+      btn.rel = "noopener noreferrer";
+      btn.addEventListener("click", (e) => {
+        if (!consent.checked) {
+          e.preventDefault();
+          consent.focus();
+          return;
+        }
+        if (inIframe) {
+          e.preventDefault();
+          window.open(url, "_blank", "noopener,noreferrer");
+        }
+      });
+    } else {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        alert("Checkout à configurer : Payment Links Stripe.");
+      });
+    }
+  }
+
+  const cfg = window.FLIPCARDS_CHECKOUT;
+  wire(document.getElementById("btn-monthly"), cfg.monthly);
+  wire(document.getElementById("btn-yearly"), cfg.yearly);
+
+  consent.addEventListener("change", () => setEnabled(consent.checked));
+  setEnabled(false);
+
+  if (inIframe) {
+    const note = document.createElement("p");
+    note.className = "site-note";
+    const fallback = cfg.monthly || cfg.yearly || "#";
+    note.innerHTML =
+      'Si le paiement ne s’ouvre pas : <a href="' +
+      fallback +
+      '" target="_blank" rel="noopener">ouvrir le checkout en plein écran</a>.';
+    document.querySelector("main").appendChild(note);
+  }
+})();
+</script>
+<script src="../auth.js?v=4"></script>
+<script src="../site-nav.js?v=7"></script>
+</body>
+</html>

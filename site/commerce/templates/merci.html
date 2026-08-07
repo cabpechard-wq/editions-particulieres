@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>Paiement reçu — Grands arrêts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<main class="site-main narrow">
+  <p class="site-crumb">
+    <a href="../">Grands arrêts</a>
+    <span class="sep">›</span>
+    <strong>Paiement</strong>
+  </p>
+  <h1 class="site-title">Paiement reçu</h1>
+  <p class="site-lead" id="lead">Vérification du paiement Stripe…</p>
+  <div class="err" id="err"></div>
+
+  <div id="need-session" class="site-panel hidden">
+    <p class="site-lead" style="margin:0 0 1rem">Cette page ne débloque l’accès <strong>que</strong> après un vrai paiement Stripe (lien avec <code>session_id</code>).</p>
+    <p class="site-note">Si tu viens de payer, le Payment Link doit rediriger vers<br>
+      <code>…/merci/?session_id={CHECKOUT_SESSION_ID}</code></p>
+    <p style="margin-top:1rem">
+      <a class="btn secondary" href="../checkout/">Retour aux abonnements</a>
+      <a class="btn secondary" href="../membre/" style="margin-left:.35rem">Connexion</a>
+    </p>
+  </div>
+
+  <form id="setpw" class="site-panel hidden">
+    <p class="ok">Paiement confirmé pour <strong id="email"></strong>.</p>
+    <p class="site-lead" style="margin:.75rem 0 0">Choisis ton mot de passe (4 caractères minimum) pour te reconnecter plus tard.</p>
+    <label class="field" for="pw">Mot de passe</label>
+    <input id="pw" type="password" minlength="4" required autocomplete="new-password">
+    <label class="field" for="pw2">Confirmer</label>
+    <input id="pw2" type="password" minlength="4" required autocomplete="new-password">
+    <button class="btn block" type="submit" style="margin-top:1rem">Enregistrer et ouvrir les flipcards</button>
+  </form>
+
+  <div id="ready" class="site-panel hidden">
+    <p class="ok">Compte déjà prêt pour <strong id="email2"></strong>.</p>
+    <button type="button" class="btn block" id="open" style="margin-top:1rem">Ouvrir les flipcards</button>
+    <p class="site-note"><a href="../membre/">Ou se connecter</a></p>
+  </div>
+</main>
+<script src="../auth.js?v=4"></script>
+<script src="../site-nav.js?v=7"></script>
+<script>
+(async function () {
+  const params = new URLSearchParams(location.search);
+  const sessionId = params.get("session_id") || params.get("checkout_session_id") || "";
+  const lead = document.getElementById("lead");
+  const err = document.getElementById("err");
+
+  if (!sessionId) {
+    lead.textContent = "Lien incomplet";
+    document.getElementById("need-session").classList.remove("hidden");
+    return;
+  }
+
+  let claim;
+  try {
+    claim = await FLIPCARDS_AUTH.api("/api/claim", {
+      method: "POST",
+      body: { session_id: sessionId },
+    });
+  } catch (e) {
+    lead.textContent = "Paiement non vérifié";
+    err.textContent = e.message || "Erreur";
+    document.getElementById("need-session").classList.remove("hidden");
+    return;
+  }
+
+  lead.textContent = "Presque prêt";
+  sessionStorage.setItem("flipcards_claim", claim.claim_token);
+
+  if (claim.needs_password) {
+    document.getElementById("email").textContent = claim.email;
+    document.getElementById("setpw").classList.remove("hidden");
+  } else {
+    document.getElementById("email2").textContent = claim.email;
+    document.getElementById("ready").classList.remove("hidden");
+  }
+
+  document.getElementById("setpw").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    err.textContent = "";
+    const pw = document.getElementById("pw").value;
+    const pw2 = document.getElementById("pw2").value;
+    if (pw.length < 4) { err.textContent = "4 caractères minimum."; return; }
+    if (pw !== pw2) { err.textContent = "Les mots de passe ne correspondent pas."; return; }
+    try {
+      const data = await FLIPCARDS_AUTH.api("/api/set-password", {
+        method: "POST",
+        body: { claim_token: claim.claim_token, password: pw },
+      });
+      FLIPCARDS_AUTH.setToken(data.token, true);
+      location.replace("../");
+    } catch (ex) {
+      err.textContent = ex.message || "Erreur";
+    }
+  });
+
+  document.getElementById("open").addEventListener("click", () => {
+    location.href = "../membre/?email=" + encodeURIComponent(claim.email);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+"""Export Notion → Word (.docx)."""

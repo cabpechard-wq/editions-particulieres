@@ -1,0 +1,7 @@
+# Secrets & artefacts de build
+.members_password
+notion_state.json
+abonnes.json
+config.json
+dist/
+*.log

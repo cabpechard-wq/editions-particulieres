@@ -1,0 +1,61 @@
+﻿Stripe — redirection apres paiement + e-mails
+=============================================
+
+1) Redirection apres paiement (obligatoire)
+------------------------------------------
+Dashboard Stripe → Product catalog → Payment links
+Pour CHAQUE lien (mensuel + annuel + test) :
+
+  buy.stripe.com/6oUaEWgWQgc21PO8QPawo01  (mensuel)
+  buy.stripe.com/14AdR88qk3pgeCA0kjawo00  (annuel)
+  buy.stripe.com/00w7sK0XS2lc8ecgjhawo02  (test)
+
+Edition du Payment link → After payment :
+  - Redirect to a URL (pas la page confirmation Stripe)
+  - URL EXACTE (session_id obligatoire pour sécuriser /merci/) :
+    https://cabpechard-wq.github.io/editions-particulieres/merci/?session_id={CHECKOUT_SESSION_ID}
+
+Sans session_id, /merci/ refuse l’accès (plus d’unlock gratuit).
+
+Auth API : commerce/worker/ (Cloudflare) — voir commerce/worker/README.md
+
+2) E-mails / factures Stripe
+----------------------------
+Dashboard → Settings → Customer emails  (ou Billing → Customer emails)
+
+Activer au minimum :
+  - Successful payments (recu de paiement)
+  - Refunds (si besoin)
+  - For subscriptions / invoices :
+      Settings → Billing → Subscriptions and emails
+      - Send invoices / upcoming renewal emails
+      - Successful payments / failed payments
+
+Aussi verifier :
+  - Settings → Business settings → Public business info (nom, support email)
+  - Branding (logo) pour que les mails ne partent pas "vides"
+  - Mode Test vs Live : les e-mails Live ne partent qu'en mode Live
+
+Si tu es en France / UE :
+  - Tax settings (TVA) si applicable
+  - Les factures PDF sont dans Billing → Invoices (et envoyees si option active)
+
+3) Parcours abonne apres correctif
+----------------------------------
+Paiement Stripe → redirect /merci/ → login /membre/ (email + mdp)
+Le mdp d'acces Flipcards n'est PAS envoye par Stripe ni par /merci/
+(creation manuelle via record_subscriber.py pour l'instant).
+
+Les e-mails Stripe (recu / facture) sont independants de la redirect /merci/.
+Si tu ne recois plus de mails Stripe :
+  1. Verifie que tu es en mode Live (pas Test) si le paiement etait Live
+  2. Settings → Customer emails : Successful payments ON
+  3. Settings → Billing → Subscriptions and emails : invoices / receipts ON
+  4. Public business info : e-mail support renseigne
+  5. Spam / Promotions Gmail
+La redirect "After payment" ne desactive pas les e-mails Stripe.
+
+4) Plus tard (domaine OVH)
+--------------------------
+Meme URL de succes, juste changer le domaine
+(ex. https://app.tondomaine.fr/merci/).

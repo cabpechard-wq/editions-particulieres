@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propositions de design — Accueil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#1a1c1e; --muted:#5c6370; --line:#e4e6ea; --bg:#f7f6f3; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Manrope, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+  main { max-width: 48rem; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+  h1 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 .5rem; }
+  .lead { color: var(--muted); line-height: 1.55; margin: 0 0 2rem; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  a.card {
+    display: block; padding: 1.25rem 1.35rem; text-decoration: none; color: inherit;
+    background: #fff; border: 1px solid var(--line); border-radius: 4px;
+    transition: border-color .15s, transform .15s;
+  }
+  a.card:hover { border-color: #1f4f7a; transform: translateY(-1px); }
+  .num { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #1f4f7a; }
+  .name { font-family: "Instrument Serif", Georgia, serif; font-size: 1.45rem; margin: .25rem 0 .35rem; }
+  .desc { margin: 0; font-size: .9rem; color: var(--muted); line-height: 1.45; }
+  .note { margin-top: 2rem; font-size: .82rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Trois propositions pour l’accueil</h1>
+  <p class="lead">Mêmes contenus et architecture (Ressources · Exercices · Espace membre). Trois directions visuelles très différentes, toutes tenables pour un outil universitaire.</p>
+  <ol>
+    <li>
+      <a class="card" href="./01-amphitheatre.html">
+        <p class="num">Proposition 1</p>
+        <p class="name">Amphithéâtre</p>
+        <p class="desc">Fond encre, or discret, typographie monumentale — ambiance de cours du soir, solennité sans lourdeur.</p>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="./02-cahier.html">
+        <p class="num">Proposition 2</p>
+        <p class="name">Cahier</p>
+        <p class="desc">Papier bleuté, lignes de cahier, vert forêt — intimité de révision sur le bureau, clarté et calme.</p>
+      </a>
+    </li>
+    <li>
+      <a class="card" href="./03-portique.html">
+        <p class="num">Proposition 3</p>
+        <p class="name">Portique</p>
+        <p class="desc">Pierre claire, bordeaux académique, composition asymétrique — institution ouverte, rythme architectural.</p>
+      </a>
+    </li>
+  </ol>
+  <p class="note">Maquettes hors production — ouvrir localement. Le site actuel n’est pas modifié.</p>
+</main>
+</body>
+</html>

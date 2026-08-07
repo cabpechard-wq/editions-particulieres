@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nouveau mot de passe — Grands arrêts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+<main class="site-main narrow">
+  <p class="site-crumb">
+    <a href="../../">Grands arrêts</a>
+    <span class="sep">›</span>
+    <strong>Nouveau mot de passe</strong>
+  </p>
+  <h1 class="site-title">Nouveau mot de passe</h1>
+  <p class="site-lead">4 caractères minimum.</p>
+  <div class="site-panel">
+    <form id="f">
+      <label class="field" for="pw">Mot de passe</label>
+      <input id="pw" type="password" minlength="4" required autocomplete="new-password">
+      <label class="field" for="pw2">Confirmer</label>
+      <input id="pw2" type="password" minlength="4" required autocomplete="new-password">
+      <button class="btn block" type="submit" style="margin-top:1rem">Enregistrer</button>
+      <div class="err" id="err"></div>
+    </form>
+  </div>
+</main>
+<script src="../../auth.js?v=4"></script>
+<script src="../../site-nav.js?v=7"></script>
+<script>
+const token = new URLSearchParams(location.search).get("token") || "";
+if (!token) {
+  document.getElementById("err").textContent = "Lien invalide (token manquant).";
+}
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = document.getElementById("err");
+  err.textContent = "";
+  const pw = document.getElementById("pw").value;
+  const pw2 = document.getElementById("pw2").value;
+  if (pw.length < 4) { err.textContent = "4 caractères minimum."; return; }
+  if (pw !== pw2) { err.textContent = "Les mots de passe ne correspondent pas."; return; }
+  try {
+    const data = await FLIPCARDS_AUTH.api("/api/reset", {
+      method: "POST",
+      body: { token, password: pw },
+    });
+    FLIPCARDS_AUTH.setToken(data.token, true);
+    location.replace("../../");
+  } catch (ex) {
+    err.textContent = ex.message || "Erreur";
+  }
+});
+</script>
+</body>
+</html>

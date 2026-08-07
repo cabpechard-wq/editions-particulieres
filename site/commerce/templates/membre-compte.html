@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Compte — Grands arrêts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../site.css">
+</head>
+<body>
+<main class="site-main narrow">
+  <p class="site-crumb">
+    <a href="../../">Grands arrêts</a>
+    <span class="sep">›</span>
+    <a href="../">Connexion</a>
+    <span class="sep">›</span>
+    <strong>Compte</strong>
+  </p>
+  <h1 class="site-title">Modifier le mot de passe</h1>
+  <p class="site-lead" id="who">Connexion requise…</p>
+  <div class="site-panel">
+    <form id="f" class="hidden">
+      <label class="field" for="old">Ancien mot de passe</label>
+      <input id="old" type="password" required autocomplete="current-password">
+      <label class="field" for="pw">Nouveau (min. 4)</label>
+      <input id="pw" type="password" minlength="4" required autocomplete="new-password">
+      <label class="field" for="pw2">Confirmer</label>
+      <input id="pw2" type="password" minlength="4" required autocomplete="new-password">
+      <button class="btn block" type="submit" style="margin-top:1rem">Enregistrer</button>
+    </form>
+    <div id="msg" class="site-note"></div>
+    <div class="form-links">
+      <a href="../">Connexion</a> · <a href="../../flipcards/app.html">Flipcards</a>
+    </div>
+  </div>
+</main>
+<script src="../../auth.js?v=4"></script>
+<script src="../../site-nav.js?v=7"></script>
+<script>
+(async function () {
+  const who = document.getElementById("who");
+  const me = await FLIPCARDS_AUTH.requireSession();
+  if (!me) {
+    who.innerHTML = 'Connecte-toi d’abord : <a href="../">espace abonné</a>.';
+    return;
+  }
+  who.textContent = "Compte : " + me.email;
+  document.getElementById("f").classList.remove("hidden");
+
+  document.getElementById("f").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("msg");
+    msg.textContent = "";
+    const pw = document.getElementById("pw").value;
+    const pw2 = document.getElementById("pw2").value;
+    if (pw.length < 4) { msg.className = "site-note err"; msg.textContent = "4 caractères minimum."; return; }
+    if (pw !== pw2) { msg.className = "site-note err"; msg.textContent = "Confirmation différente."; return; }
+    try {
+      const data = await FLIPCARDS_AUTH.api("/api/change-password", {
+        method: "POST",
+        body: {
+          old_password: document.getElementById("old").value,
+          new_password: pw,
+        },
+      });
+      FLIPCARDS_AUTH.setToken(data.token, true);
+      msg.className = "site-note ok";
+      msg.textContent = "Mot de passe mis à jour.";
+    } catch (ex) {
+      msg.className = "site-note err";
+      msg.textContent = ex.message || "Erreur";
+    }
+  });
+})();
+</script>
+</body>
+</html>

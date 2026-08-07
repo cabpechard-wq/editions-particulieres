@@ -1,0 +1,18 @@
+{
+  "databases": {
+    "manuel": "https://app.notion.com/p/395a29ad9f7880db98b6cfaef4ff154c",
+    "fiches": "https://app.notion.com/p/3b0a29ad9f78806babfcea2e44be709a",
+    "formule": "https://app.notion.com/p/39ea29ad9f78802c83e7dc691d065b83",
+    "methodo": "https://app.notion.com/p/39ba29ad9f7880dab45edd71447ff8f2",
+    "index": "https://app.notion.com/p/39aa29ad9f78804ca01de7cd41826df1",
+    "jurisprudence": "https://app.notion.com/p/39ba29ad9f7880229765cbea38ae793a"
+  },
+  "registers": [
+    "manuel",
+    "fiches",
+    "arrets",
+    "formule",
+    "methodo",
+    "index"
+  ]
+}

@@ -1,0 +1,50 @@
+# Environnement
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Config locale (copies des .example)
+config/paths.json
+config/notion.json
+config/commerce.json
+site/commerce/config.json
+site/worker/wrangler.toml
+
+# Sorties locales (les vraies sorties sont sur Google Drive)
+data/*
+!data/.gitkeep
+
+# Build site
+site/commerce/dist/
+site/commerce/host-repo/*
+!site/commerce/host-repo/.gitkeep
+!site/commerce/host-repo/.github/
+
+# Matrices / caches (sur Drive)
+flipcards/matrices/*
+!flipcards/matrices/.gitkeep
+extract/arrets/matrices/
+extract/templates/*.dotx
+
+# Node
+node_modules/
+.wrangler/
+dist/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Secrets commerce
+site/commerce/.members_password
+site/commerce/abonnes.json
+site/commerce/notion_state.json
+site/commerce/config.json
+site/commerce/*CLE*.txt

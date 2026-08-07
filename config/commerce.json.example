@@ -1,0 +1,22 @@
+{
+  "product_name": "Éditions Particulières — Droit public et administratif",
+  "hosting": {
+    "provider": "github-pages",
+    "site_name": "editions-particulieres",
+    "base_url": "https://cabpechard-wq.github.io/editions-particulieres"
+  },
+  "paths": {
+    "output_root": "G:/Mon Drive/Editions Particulieres",
+    "flipcards_matrice": "G:/Mon Drive/Editions Particulieres/matrices/flipcards/flipcards_matrice.csv",
+    "export_manuel_manifest": "G:/Mon Drive/Editions Particulieres/export/site/manifest.json",
+    "glossaire_html": "G:/Mon Drive/Editions Particulieres/export/index/glossaire.html",
+    "site_dist": "{repo_root}/site/commerce/dist/site",
+    "site_host_repo": "{repo_root}/site/commerce/host-repo"
+  },
+  "manuel": {
+    "notion_database_url": "https://app.notion.com/p/395a29ad9f7880db98b6cfaef4ff154c"
+  },
+  "auth": {
+    "api_url": "https://flipcards-auth.cab-pechard.workers.dev"
+  }
+}

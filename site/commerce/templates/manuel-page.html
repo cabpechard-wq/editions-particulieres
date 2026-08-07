@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — Manuel — Droit public et administratif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ASSET_PREFIX}}site.css">
+</head>
+<body>
+<main class="site-main legal-page manuel-layout">
+  <p class="site-crumb">
+    {{CRUMB_TRAIL}}
+  </p>
+  <div class="manuel-shell">
+    <nav class="manuel-nav manuel-nav-side" aria-label="Navigation du manuel">
+      <p class="manuel-nav-heading">Manuel</p>
+{{NAV_TREE}}
+    </nav>
+    <div class="manuel-content">
+      <h1 class="site-title">{{TITLE}}</h1>
+      <article class="legal-prose manuel-prose">
+{{BODY}}
+      </article>
+      <nav class="manuel-chapternav" aria-label="Chapitres voisin">
+{{PREV_LINK}}
+    <a class="manuel-chapternav-toc" href="{{TOC_HREF}}">Sommaire</a>
+{{NEXT_LINK}}
+      </nav>
+    </div>
+  </div>
+</main>
+<script src="{{ASSET_PREFIX}}auth.js?v=4"></script>
+<script src="{{ASSET_PREFIX}}site-nav.js?v=7"></script>
+</body>
+</html>

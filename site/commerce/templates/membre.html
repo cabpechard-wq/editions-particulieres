@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Espace pédagogique — Droit public et administratif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+</head>
+<body>
+<main class="site-main narrow">
+  <p class="site-crumb">
+    <a href="../">Droit public et administratif</a>
+    <span class="sep">›</span>
+    <strong>Espace pédagogique</strong>
+  </p>
+  <p class="site-hero-kicker">Connexion</p>
+  <h1 class="site-title">Espace pédagogique</h1>
+  <div class="site-panel">
+    <form id="f" autocomplete="on">
+      <label class="field" for="email">E-mail <span class="field-hint">(e-mail fourni lors du paiement)</span></label>
+      <input id="email" type="email" required autocomplete="username">
+      <label class="field" for="pw">Mot de passe</label>
+      <input id="pw" type="password" required minlength="4" autocomplete="current-password">
+      <label class="field" style="display:flex;align-items:center;gap:.45rem;font-weight:500;color:var(--muted)">
+        <input type="checkbox" id="remember" checked style="width:auto"> Rester connecté sur cet appareil
+      </label>
+      <button class="btn block" type="submit" style="margin-top:1rem">Se connecter</button>
+      <div class="err" id="err"></div>
+    </form>
+    <div class="form-links">
+      <a href="./forgot/">Mot de passe oublié</a><br>
+      <a href="./compte/">Modifier le mot de passe</a><br>
+      <a class="btn-capsule" href="../checkout/">S’inscrire</a>
+    </div>
+  </div>
+</main>
+<script src="../auth.js?v=4"></script>
+<script src="../site-nav.js?v=7"></script>
+<script>
+(async function () {
+  const q = new URLSearchParams(location.search);
+  if (q.get("email")) document.getElementById("email").value = q.get("email");
+
+  const me = await FLIPCARDS_AUTH.requireSession();
+  if (me) {
+    location.replace("../");
+    return;
+  }
+
+  document.getElementById("f").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = document.getElementById("err");
+    err.textContent = "";
+    try {
+      const data = await FLIPCARDS_AUTH.api("/api/login", {
+        method: "POST",
+        body: {
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("pw").value,
+        },
+      });
+      FLIPCARDS_AUTH.setToken(data.token, document.getElementById("remember").checked);
+      location.replace("../");
+    } catch (ex) {
+      err.textContent = ex.message || "Erreur";
+    }
+  });
+})();
+</script>
+</body>
+</html>

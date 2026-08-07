@@ -8,8 +8,10 @@
   --accent-hover: #d4b56e;
   --accent-soft: rgba(196, 163, 90, .14);
   --manuel-quote-border: rgba(196, 163, 90, .85);
+  --manuel-h3: #d4b56e;
+  --manuel-h4: #d4955c;
+  --manuel-h5: #b8a070;
   --manuel-encadre-border: #6eb3e8;
-  --secondary: #c56a2d;
   --secondary-soft: rgba(197, 106, 45, .18);
   --border: rgba(232, 235, 230, .12);
   --card: #162028;
@@ -1293,11 +1295,13 @@ input:focus {
   max-width: none;
 }
 
-/* Colonne de lecture (menu latéral inchangé) */
+/* Colonne de lecture centrée (menu latéral inchangé) */
 .manuel-shell .manuel-content > .site-title,
 .manuel-shell .manuel-content > .manuel-prose,
 .manuel-shell .manuel-content > .manuel-chapternav {
-  max-width: 40.5rem;
+  max-width: 44.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .manuel-prose {
@@ -1354,31 +1358,53 @@ input:focus {
   font-weight: 600;
   line-height: 1.28;
   margin: 1.45rem 0 0.45rem;
-  color: var(--ink);
+  color: var(--manuel-h3);
 }
 
 /* Rubriques (Notion heading_3) */
 .manuel-content .legal-prose h4 {
-  font-family: var(--font-ui);
-  font-size: 1.04rem;
-  font-weight: 650;
-  line-height: 1.35;
-  margin: 1.1rem 0 0.35rem;
-  padding-left: 0.55rem;
-  color: var(--ink);
-  border-left: 3px solid rgba(196, 163, 90, .42);
+  font-family: var(--font-display);
+  font-size: 1.14rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 1.25rem 0 0.45rem;
+  padding-left: 0.65rem;
+  color: var(--manuel-h4);
+  border-left: 3px solid rgba(212, 149, 92, .58);
 }
 
 /* Sous-rubriques / focus (Notion heading_4) */
 .manuel-content .legal-prose h5 {
-  font-family: var(--font-ui);
-  font-size: 0.9rem;
-  font-weight: 650;
-  line-height: 1.4;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  margin: 1rem 0 0.35rem;
-  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  margin: 1.05rem 0 0.35rem;
+  padding-left: 0.5rem;
+  color: var(--manuel-h5);
+  border-left: 2px solid rgba(184, 160, 112, .45);
+}
+
+/* Liens dans les titres : même couleur / police, pas de soulignement corps */
+.manuel-content .legal-prose :is(h2, h3, h4, h5) a {
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+}
+
+.manuel-content .legal-prose :is(h2, h3, h4, h5) a:hover {
+  color: inherit;
+  opacity: 0.88;
+}
+
+.manuel-content .legal-prose :is(h2, h3, h4, h5) a.dict-link {
+  color: inherit;
 }
 
 /* Titres dans encadrés : plus compacts, sans séparateur de § */
@@ -1386,17 +1412,34 @@ input:focus {
 .manuel-content .legal-prose .encadre h2,
 .manuel-content .legal-prose aside.encadre h3,
 .manuel-content .legal-prose .encadre h3 {
+  font-family: var(--font-display);
   font-size: 1.08rem;
+  font-weight: 600;
   margin-top: 0.65rem;
   padding-top: 0;
+  padding-left: 0;
   border-top: 0;
-  color: var(--ink);
+  border-left: 0;
+  color: var(--manuel-encadre-border);
+}
+
+.manuel-content .legal-prose aside.encadre h4,
+.manuel-content .legal-prose .encadre h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--manuel-h4);
+  border-left-color: rgba(212, 149, 92, .45);
 }
 
 .manuel-content .legal-prose aside.encadre h5,
 .manuel-content .legal-prose .encadre h5 {
-  font-size: 0.82rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-transform: none;
   margin-top: 0.5rem;
+  color: var(--manuel-h5);
 }
 
 .manuel-content .legal-prose p,
@@ -1420,11 +1463,12 @@ input:focus {
   margin-top: 0.25rem;
 }
 
-/* Citations — cadre fin 4 côtés, sans fond (priorité sur .legal-prose blockquote) */
+/* Citations — bordure gauche uniquement, sans fond */
 .legal-prose.manuel-prose blockquote {
   margin: 0.85rem 0;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--manuel-quote-border) !important;
+  padding: 0.35rem 0 0.35rem 0.85rem;
+  border: none !important;
+  border-left: 2px solid var(--manuel-quote-border) !important;
   background: transparent !important;
   background-color: transparent !important;
   border-radius: 0;
@@ -1815,17 +1859,19 @@ input:focus {
   margin-bottom: 1.25rem;
 }
 
-/* Fiche arrêt — colonne élargie (2× A4 : 42 cm page, 32 cm corps utile) */
+/* Fiche arrêt — colonne intermédiaire (~36 cm page, 28 cm corps utile) */
 .site-main.arrets-fiche-page {
-  width: min(42cm, calc(100% - 2rem));
-  max-width: 42cm;
+  --arrets-read-width: 28cm;
+  width: min(36cm, calc(100% - 2rem));
+  max-width: 36cm;
   margin-inline: auto;
   box-sizing: border-box;
   padding-inline: clamp(1rem, 2.5cm, 2.5cm);
 }
 
+.site-main.arrets-fiche-page > .site-crumb,
 .arrets-fiche-layout {
-  max-width: 32cm;
+  max-width: var(--arrets-read-width);
   margin-inline: auto;
 }
 

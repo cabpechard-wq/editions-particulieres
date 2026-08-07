@@ -18,6 +18,7 @@
     '<nav class="site-nav-links" aria-label="Navigation">' +
       '<a data-nav="home" href="' + abs("index.html") + '">Accueil</a>' +
       '<a data-nav="ressources" href="' + abs("ressources/") + '">Amphi\'</a>' +
+      '<a data-nav="bibliotheque" href="' + abs("bibliotheque/") + '">BU</a>' +
       '<a data-nav="exercices" href="' + abs("exercices/") + '">Salles de TD</a>' +
       '<a data-nav="checkout" href="' + abs("checkout/") + '">Inscriptions</a>' +
       '<span class="site-nav-guest">' +
@@ -48,6 +49,12 @@
       } else if (key === "ressources") {
         // Amphithéâtre uniquement (pas Manuel / Dictionnaire)
         if (cur === p) {
+          a.classList.add("is-active");
+        }
+      } else if (key === "bibliotheque") {
+        const onManuel = cur.indexOf("/manuel") !== -1;
+        const onDict = cur.indexOf("/dictionnaire") !== -1;
+        if (cur === p || onManuel || onDict) {
           a.classList.add("is-active");
         }
       } else if (key === "exercices") {
@@ -87,6 +94,30 @@
     }
     return me;
   }
+
+  function applyHomeAuth(isMember) {
+    const btn = document.querySelector("[data-home-auth-btn]");
+    if (!btn) return;
+    if (isMember) {
+      btn.textContent = "Déconnexion";
+      btn.href = "#";
+      btn.setAttribute("aria-label", "Se déconnecter");
+      btn.dataset.authMode = "logout";
+    } else {
+      btn.textContent = "Se connecter";
+      btn.href = abs("membre/");
+      btn.setAttribute("aria-label", "Se connecter — Espace pédagogique");
+      btn.dataset.authMode = "login";
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-home-auth-btn]");
+    if (!btn || btn.dataset.authMode !== "logout") return;
+    e.preventDefault();
+    if (window.FLIPCARDS_AUTH) FLIPCARDS_AUTH.clearToken();
+    location.href = abs("index.html");
+  });
 
   function applyManuelPreview(isMember) {
     const prose = document.querySelector("article.manuel-prose");
@@ -192,6 +223,7 @@
   }
   refreshAuth().then((me) => {
     const ok = Boolean(me && me.email);
+    applyHomeAuth(ok);
     applyManuelPreview(ok);
     applyFlipcardsEntry(ok);
   });

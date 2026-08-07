@@ -11,6 +11,7 @@ on:
       - 'export_html.py'
       - 'export_dictionnaire.py'
       - 'export_arrets.py'
+      - 'scripts/fix_legacy_crumbs.py'
       - 'requirements.txt'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
@@ -114,6 +115,13 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python export_arrets.py --out site/dist/site
+
+      - name: Retirer fil d'Ariane legacy (Éditions Particulières)
+        run: |
+          python scripts/fix_legacy_crumbs.py \
+            site/dist/site/manuel \
+            site/dist/site/dictionnaire \
+            site/dist/site/arrets
 
       - name: Refresh auth.js (URL API injectée)
         working-directory: site

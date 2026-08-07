@@ -3,6 +3,12 @@ name: Deploy Pages
 on:
   push:
     branches: [main]
+    paths:
+      - 'site/**'
+      - 'flipcards/**'
+      - 'packages/**'
+      - 'requirements.txt'
+      - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -15,19 +21,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python deps
+        run: pip install -r requirements.txt
+      - name: Prepare site config
+        run: |
+          if [ ! -f site/config.json ]; then
+            cp site/config.json.example site/config.json
+          fi
+      - name: Export flipcards matrice
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python -m flipcards.export_matrice
+      - name: Build static site
+        working-directory: site
+        run: python build_assets.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist/site
+
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout site publié (flipcards-host)
-        uses: actions/checkout@v4
-        with:
-          repository: cabpechard-wq/flipcards-host
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4

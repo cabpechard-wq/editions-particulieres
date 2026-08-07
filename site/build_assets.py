@@ -54,14 +54,14 @@ ALT_FALLBACK = _OUTPUT / "GADA 2026 FC.html"
 # Démo publique (8 cartes) : Blanco, Prince Napoléon, Benjamin conservés ;
 # les 5 autres privilégient des arrêts plus récents (répartition ★ maintenue).
 DEMO_TITLES = [
-    "TC, 1873, Blanco",  # ★★★★
-    "CE, 1875, Prince Napoléon",  # ★★★★
-    "CE, 1933, Benjamin",  # ★★★★
-    "CE, 2016, Czabaj",  # ★★★★
-    "CE, 2016, Sté Fairvesta International",  # ★★★
-    "CE, 2014, Dieudonné M'Bala M'Bala",  # ★★★
-    "CE, SSR, 2007, GISTI",  # ★★
-    "CE, 2018, Gharzouli",  # ★
+    "TC, 1873, Blanco",
+    "CE, 1875, Prince Napoléon",
+    "CE, 1933, Benjamin",
+    "CE, 2016, Czabaj",
+    "CE, 2022, SNC Grasse-vacances",
+    "CE, 2022, Asso. Les Amis de la Terre Fr.",
+    "CE, 2021, Collectif des maires anti-pesticides",
+    "CE, 2020, Fédé. CFDT des finances",
 ]
 
 

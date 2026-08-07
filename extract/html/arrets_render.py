@@ -143,7 +143,6 @@ def render_fiche_body(page: dict[str, Any]) -> str:
         label, _ = found
         text = prop_text(props, label)
         if text:
-            parts.append(f'<h2 class="arrets-rubrique">{html.escape(label)}</h2>')
             parts.append(f"<blockquote><p>{html.escape(text)}</p></blockquote>")
 
     meta = meta_line(props)

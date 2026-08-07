@@ -1746,6 +1746,20 @@ input:focus {
   margin-bottom: 1.25rem;
 }
 
+/* Fiche arrêt — largeur page A4 (21 cm), corps utile 16 cm (marges 2,5 cm) */
+.site-main.arrets-fiche-page {
+  width: min(21cm, calc(100% - 2rem));
+  max-width: 21cm;
+  margin-inline: auto;
+  box-sizing: border-box;
+  padding-inline: clamp(1rem, 2.5cm, 2.5cm);
+}
+
+.arrets-fiche-layout {
+  max-width: 16cm;
+  margin-inline: auto;
+}
+
 .arrets-prose .arrets-objet {
   margin: 0 0 1rem;
   font-size: 1.05rem;
@@ -1757,14 +1771,6 @@ input:focus {
   font-style: italic;
   color: var(--muted);
   line-height: 1.5;
-}
-
-.arrets-prose .arrets-rubrique {
-  margin: 1.75rem 0 .75rem;
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--accent);
 }
 
 .arrets-prose .fiche-decision {

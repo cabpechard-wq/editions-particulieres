@@ -131,7 +131,7 @@ def property_plain(prop: dict[str, Any]) -> str:
 
     if t == "title":
         return "".join(x.get("plain_text", "") for x in (val or []))
-    if t == "rich_text":
+    if t == "rich_text" or t == "text":
         return "".join(x.get("plain_text", "") for x in (val or []))
     if t == "select":
         return (val or {}).get("name") or ""

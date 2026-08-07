@@ -52,8 +52,14 @@ META_PROPS = (
     "Portée",
     "Considérant de principe",
 )
-# Rubriques de fiche d'arrêt (corps de page Notion — pas des propriétés)
+# Rubriques de fiche d'arrêt (propriétés Notion ; repli JSON local si vide)
 FICHE_KEYS = ("Faits", "Enjeu juridique", "Solution", "Perspective")
+FICHE_PROP_ALIASES: dict[str, tuple[str, ...]] = {
+    "Faits": ("Faits",),
+    "Enjeu juridique": ("Enjeu juridique", "Enjeu"),
+    "Solution": ("Solution",),
+    "Perspective": ("Perspective", "Perspectives"),
+}
 EXPORT_PROPS = CORE_PROPS + META_PROPS
 EXPORT_FIELDNAMES = ("id", "title", "url", *EXPORT_PROPS, *FICHE_KEYS)
 
@@ -165,6 +171,20 @@ def ensure_token(token: str | None = None) -> str:
     return tok
 
 
+def _prop_by_names(props: dict, *names: str) -> str:
+    """Lit une propriété Notion en testant plusieurs libellés (insensible à la casse)."""
+    lower = {k.casefold(): k for k in props}
+    for name in names:
+        key = lower.get(name.casefold())
+        if key:
+            return property_plain(props[key]).strip()
+    return ""
+
+
+def _fiche_value(props: dict, canonical: str) -> str:
+    return _prop_by_names(props, *FICHE_PROP_ALIASES.get(canonical, (canonical,)))
+
+
 def _row_from_page(page: dict) -> dict[str, str]:
     props = page.get("properties") or {}
     row: dict[str, str] = {
@@ -175,14 +195,14 @@ def _row_from_page(page: dict) -> dict[str, str]:
     for name in EXPORT_PROPS:
         row[name] = property_plain(props[name]) if name in props else ""
     for name in FICHE_KEYS:
-        row[name] = ""
+        row[name] = _fiche_value(props, name)
     if not (row.get("Nom") or "").strip():
         row["Nom"] = row.get("title") or ""
     return row
 
 
 def _load_existing_fiche_bodies(stem: str) -> dict[str, dict[str, str]]:
-    """Conserve Faits / Enjeu / Solution / Perspective déjà exportés (JSON local)."""
+    """Repli : conserve les rubriques déjà exportées (ancien corps de page → JSON local)."""
     path = OUT_DIR / f"{stem}.json"
     if not path.exists():
         return {}
@@ -302,7 +322,7 @@ def write_outputs(
                 "kind": "flipcards",
                 "count": len(rows),
                 "properties": list(EXPORT_PROPS),
-                "fiche_paragraphs": list(FICHE_KEYS),
+                "fiche_properties": list(FICHE_KEYS),
                 "classifiers": list(CLASSIFIER_PROPS),
                 "classifier_colors": colors,
                 "pages": rows,

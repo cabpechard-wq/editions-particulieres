@@ -19,7 +19,7 @@
   --danger: #f87171;
   --radius: 2px;
   /* Colonne de lecture (manuel, fiches arrêts) — ~44,5 rem ≈ 18,8 cm à 16 px/rem */
-  --read-column: 44.5rem;
+  --read-column: 46rem;
   --font-ui: "DM Sans", system-ui, sans-serif;
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --nav-h: 3.5rem;
@@ -1297,12 +1297,12 @@ input:focus {
   max-width: none;
 }
 
-/* Colonne de lecture centrée (menu latéral inchangé) */
+/* Colonne de lecture alignée au menu (menu latéral inchangé) */
 .manuel-shell .manuel-content > .site-title,
 .manuel-shell .manuel-content > .manuel-prose,
 .manuel-shell .manuel-content > .manuel-chapternav {
   max-width: var(--read-column);
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 }
 

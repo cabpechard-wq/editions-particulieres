@@ -18,6 +18,8 @@
   --ok: #6ee7b7;
   --danger: #f87171;
   --radius: 2px;
+  /* Colonne de lecture (manuel, fiches arrêts) — ~44,5 rem ≈ 18,8 cm à 16 px/rem */
+  --read-column: 44.5rem;
   --font-ui: "DM Sans", system-ui, sans-serif;
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --nav-h: 3.5rem;
@@ -1299,7 +1301,7 @@ input:focus {
 .manuel-shell .manuel-content > .site-title,
 .manuel-shell .manuel-content > .manuel-prose,
 .manuel-shell .manuel-content > .manuel-chapternav {
-  max-width: 44.5rem;
+  max-width: var(--read-column);
   margin-left: auto;
   margin-right: auto;
 }
@@ -1859,14 +1861,14 @@ input:focus {
   margin-bottom: 1.25rem;
 }
 
-/* Fiche arrêt — colonne intermédiaire (~36 cm page, 28 cm corps utile) */
+/* Fiche arrêt — même colonne de lecture que le manuel */
 .site-main.arrets-fiche-page {
-  --arrets-read-width: 28cm;
-  width: min(36cm, calc(100% - 2rem));
-  max-width: 36cm;
+  --arrets-read-width: var(--read-column);
+  width: min(68rem, calc(100% - 2rem));
+  max-width: 100%;
   margin-inline: auto;
   box-sizing: border-box;
-  padding-inline: clamp(1rem, 2.5cm, 2.5cm);
+  padding-inline: clamp(1rem, 2.2vw, 2rem);
 }
 
 .site-main.arrets-fiche-page > .site-crumb,

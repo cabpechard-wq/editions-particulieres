@@ -1,0 +1,71 @@
+{
+  "product_name": "Flipcards — Grands arrêts du droit public et administratif",
+  "checkout_url": "https://cabpechard-wq.github.io/flipcards-host/checkout/",
+  "demo_url": "https://cabpechard-wq.github.io/flipcards-host/demo/",
+  "flipcards_url": "https://cabpechard-wq.github.io/flipcards-host/flipcards/",
+  "members_password": "nkncaJaAHlfP",
+  "pricing": {
+    "monthly_eur": 6.9,
+    "yearly_eur": 30.9,
+    "semester_eur": 30.9,
+    "notes": "Offre de lancement : mensuel 6,90 € ; semestriel 30,90 € (lien yearly_checkout_url)."
+  },
+  "lemonsqueezy": {
+    "store_slug": "",
+    "monthly_variant_id": "",
+    "yearly_variant_id": "",
+    "monthly_checkout_url": "https://buy.stripe.com/6oUaEWgWQgc21PO8QPawo01",
+    "yearly_checkout_url": "https://buy.stripe.com/14AdR88qk3pgeCA0kjawo00"
+  },
+  "sotion": {
+    "site_url": "https://cabpechard-wq.github.io/flipcards-host/membre/",
+    "notes": "Auth via Cloudflare Worker + KV + Resend. Front: /membre/ login, forgot, reset, compte.",
+    "provider": "cloudflare-worker"
+  },
+  "hosting": {
+    "provider": "github-pages",
+    "site_name": "flipcards-host",
+    "demo_path": "/demo/",
+    "members_path": "/flipcards/",
+    "base_url": "https://cabpechard-wq.github.io/flipcards-host"
+  },
+  "notion": {
+    "parent_page_id": "3b2a29ad-9f78-8135-b69d-f09bc44f6973",
+    "vitrine_page_id": "3b2a29ad-9f78-81f0-9846-c5423c5eda67",
+    "membre_page_id": "3b2a29ad-9f78-8175-b4fb-f919fea043e5",
+    "abonnes_db_id": "bc7d31aa-f7d5-4f25-a658-976b9310eb9f",
+    "vitrine_url": "https://www.notion.so/3b2a29ad9f7881f09846c5423c5eda67",
+    "membre_url": "https://www.notion.so/3b2a29ad9f788175b4fbf919fea043e5",
+    "abonnes_data_source_id": "0bcc9f21-e104-4220-97c6-06e4afd14908",
+    "site_domain": "droit-public.notion.site",
+    "public_site_url": "https://droit-public.notion.site",
+    "vitrine_public_url": "https://droit-public.notion.site"
+  },
+  "stripe": {
+    "monthly_product_id": "prod_V0o42tjQbBaxS3",
+    "yearly_product_id": "prod_V0o4AwoyRBMQ1M",
+    "monthly_price_id": "",
+    "yearly_price_id": "",
+    "monthly_payment_link": "https://buy.stripe.com/6oUaEWgWQgc21PO8QPawo01",
+    "yearly_payment_link": "https://buy.stripe.com/14AdR88qk3pgeCA0kjawo00",
+    "test_payment_link": "https://buy.stripe.com/00w7sK0XS2lc8ecgjhawo02"
+  },
+  "merci_url": "https://cabpechard-wq.github.io/flipcards-host/merci/?session_id={CHECKOUT_SESSION_ID}",
+  "legal": {
+    "cgv_url": "https://cabpechard-wq.github.io/flipcards-host/cgv/",
+    "mentions_url": "https://cabpechard-wq.github.io/flipcards-host/mentions-legales/",
+    "cgv_version": "2026-08-05",
+    "stripe_field_key": "cgv_accept",
+    "stripe_field_label": "J'accepte les CGV et mentions légales"
+  },
+  "auth": {
+    "api_url": "https://flipcards-auth.cab-pechard.workers.dev",
+    "min_password_length": 4,
+    "notes": "Remplacer api_url après wrangler deploy. Secrets: STRIPE_SECRET_KEY, RESEND_API_KEY, AUTH_SECRET."
+  },
+  "manuel": {
+    "notion_database_url": "https://app.notion.com/p/395a29ad9f7880db98b6cfaef4ff154c",
+    "pipeline_dir": "C:/Users/anton/Desktop/notion_to_word",
+    "notes": "python commerce/export_manuel.py — Notion -> docx (notion_to_word) -> HTML (pandoc) -> commerce/dist/site/manuel/. A relancer APRES build_assets.py (qui recree dist/site)."
+  }
+}

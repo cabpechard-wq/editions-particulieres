@@ -124,7 +124,7 @@ def build_request(
         return None, str(e)
 
     site_tpl: Path | None = None
-    if fmt == "html" and "manuel" in regs and not combine:
+    if fmt == "html" and ("manuel" in regs or "index" in regs) and not combine:
         raw_tpl = (site_templates or "").strip()
         site_tpl = Path(raw_tpl) if raw_tpl else default_site_templates()
 

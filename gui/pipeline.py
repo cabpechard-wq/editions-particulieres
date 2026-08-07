@@ -21,8 +21,9 @@ def run_pipeline(req: PipelineRequest) -> tuple[int, list[Path]]:
         return 1, []
 
     if fmt != "docx":
-        req.log(f"Format {fmt} : non disponible.\n")
-        return 1, []
+        from extract.html.export_pipeline import run_html_pipeline
+
+        return run_html_pipeline(req)
 
     from extract.word.export_pipeline import run_word_pipeline
 

@@ -69,7 +69,7 @@ class NotionExportApp(tk.Tk):
         ttk.Label(root, text="Éditions Particulières", style="Title.TLabel").pack(anchor=tk.W)
         ttk.Label(
             root,
-            text="Word : export .docx · PDF : post-traitement Word (pywin32) · HTML : en attente",
+            text="Word : export .docx · PDF : post-traitement Word · HTML : manuel, glossaire ou pages .html",
             style="Sub.TLabel",
         ).pack(anchor=tk.W, pady=(0, 10))
 
@@ -551,8 +551,15 @@ class NotionExportApp(tk.Tk):
             if not pages_mode
             else "manuel" in self._registres_for_pages_mode()
         )
+        has_index = (
+            self.var_index.get()
+            if not pages_mode
+            else "index" in self._registres_for_pages_mode()
+        )
         site_tpl_state = (
-            tk.NORMAL if html_mode and has_manuel and not self.combine.get() else tk.DISABLED
+            tk.NORMAL
+            if html_mode and (has_manuel or has_index) and not self.combine.get()
+            else tk.DISABLED
         )
         self._set_widget_tree_state(self.site_tpl_row, site_tpl_state)
 
@@ -566,12 +573,17 @@ class NotionExportApp(tk.Tk):
 
         if html_mode:
             if has_manuel and not self.combine.get():
+                hint = "HTML : export manuel (sommaire + chapitres DP-XXX) vers export/site/manuel/."
+                if has_index:
+                    hint += " Glossaire → export/site/dictionnaire/."
+                self.fmt_hint.configure(text=hint)
+            elif has_index and not self.combine.get():
                 self.fmt_hint.configure(
-                    text="HTML : disponible prochainement · export site manuel (sommaire + chapitres)."
+                    text="HTML : export dictionnaire (index A–Z) vers export/site/dictionnaire/."
                 )
             else:
                 self.fmt_hint.configure(
-                    text="HTML : disponible prochainement · fichiers .html par slug."
+                    text="HTML : un fichier .html par page (dossier du registre)."
                 )
         elif self.also_pdf.get():
             self.fmt_hint.configure(
@@ -606,7 +618,7 @@ class NotionExportApp(tk.Tk):
     def _browse_site_templates(self) -> None:
         path = filedialog.askdirectory(
             initialdir=self.site_templates.get() or str(Path.home()),
-            title="Dossier des gabarits site (manuel-page.html)",
+            title="Dossier des gabarits site (manuel-page.html, dictionnaire.html)",
         )
         if path:
             self.site_templates.set(path)
@@ -812,7 +824,11 @@ class NotionExportApp(tk.Tk):
         self._cancel.clear()
         self._set_running(True)
         self.status.configure(text="En cours…")
-        self._append_log(f"Master : {master_styles_path()}\n")
+        self._append_log(f"Format : {req.format}\n")
+        if req.format == "html":
+            self._append_log(f"Gabarits site : {req.site_templates or '—'}\n")
+        else:
+            self._append_log(f"Master : {master_styles_path()}\n")
         self._append_log(f"Sortie : {req.out}\n\n")
 
         def worker() -> None:

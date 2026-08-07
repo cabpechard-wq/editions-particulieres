@@ -7,6 +7,9 @@ on:
       - 'site/**'
       - 'flipcards/**'
       - 'packages/**'
+      - 'extract/**'
+      - 'export_html.py'
+      - 'export_dictionnaire.py'
       - 'requirements.txt'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
@@ -30,10 +33,13 @@ jobs:
           python-version: '3.12'
       - name: Install Python deps
         run: pip install -r requirements.txt
-      - name: Prepare site config
+      - name: Prepare config
         run: |
           if [ ! -f site/config.json ]; then
             cp site/config.json.example site/config.json
+          fi
+          if [ ! -f config/notion.json ]; then
+            cp config/notion.json.example config/notion.json
           fi
       - name: Export flipcards matrice
         env:
@@ -42,6 +48,20 @@ jobs:
       - name: Build static site
         working-directory: site
         run: python build_assets.py
+      - name: Export manuel HTML into site
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_MANUEL_DATABASE_URL: ${{ secrets.NOTION_MANUEL_DATABASE_URL }}
+        run: python export_html.py --out site/dist/site
+      - name: Export dictionnaire HTML into site
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python export_dictionnaire.py --out site/dist/site
+      - name: Verify manuel and dictionnaire in artifact
+        run: |
+          test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent — export_html.py a échoué ou n'a rien produit" && exit 1)
+          test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent — export_dictionnaire.py a échoué ou n'a rien produit" && exit 1)
+          echo "Manuel et dictionnaire présents dans l'artefact."
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site/dist/site

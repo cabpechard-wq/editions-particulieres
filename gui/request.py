@@ -34,6 +34,8 @@ class PipelineRequest:
         if not regs and not any(a.strip() for a in self.autres):
             return "Sélectionnez au moins un registre ou une base « Autre(s) »."
         fmt = (self.format or "docx").lower().strip()
+        if fmt == "html" and self.combine:
+            return "HTML : l'export combiné n'est pas pris en charge."
         if fmt == "html" and "arrets" in regs:
             return "HTML : le registre Jurisprudence n'est pas pris en charge."
         if self.arrets_a5 and (len(regs) != 1 or regs[0] != "arrets" or self.autres):

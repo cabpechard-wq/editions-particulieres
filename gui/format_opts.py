@@ -1,9 +1,9 @@
-"""Options de format de sortie — seul Word est actif pour l'instant."""
+"""Options de format de sortie (Word, HTML)."""
 
 from __future__ import annotations
 
 SUPPORTED_FORMATS = ("docx", "html")
-IMPLEMENTED_FORMATS = ("docx",)
+IMPLEMENTED_FORMATS = ("docx", "html")
 
 EXTENSIONS = {
     "docx": ".docx",

@@ -121,10 +121,16 @@ class NotionFetcher:
 
     def get_block_tree(self, block_id: str) -> list[dict[str, Any]]:
         block_id = to_uuid(block_id)
-        children = self._list_children(block_id)
+        try:
+            children = self._list_children(block_id)
+        except APIResponseError:
+            return []
         for block in children:
             if block.get("has_children"):
-                block["_children"] = self.get_block_tree(block["id"])
+                try:
+                    block["_children"] = self.get_block_tree(block["id"])
+                except APIResponseError:
+                    block["_children"] = []
             else:
                 block["_children"] = []
         return children

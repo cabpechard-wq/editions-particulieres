@@ -66,14 +66,20 @@ def rich_text_to_html(
             continue
         ann = rt.get("annotations") or {}
         url = _hyperlink_url(rt)
-        if url and resolve_title and rt.get("type") == "mention":
-            try:
-                pid = to_uuid(url)
-                resolved = (resolve_title(pid) or "").strip()
-                if resolved:
-                    text = resolved
-            except ValueError:
-                pass
+        if url and rt.get("type") == "mention":
+            plain = (rt.get("plain_text") or "").strip()
+            if plain:
+                text = plain
+            elif resolve_title:
+                mention = rt.get("mention") or {}
+                pid = (mention.get("page") or {}).get("id")
+                if pid:
+                    try:
+                        resolved = (resolve_title(pid) or "").strip()
+                        if resolved:
+                            text = resolved
+                    except Exception:
+                        pass
         escaped = html.escape(text, quote=False)
         if ann.get("code"):
             inner = f"<code>{escaped}</code>"

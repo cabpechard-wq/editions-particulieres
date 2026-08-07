@@ -20,10 +20,13 @@ try {
 Write-Host "Site généré : site\dist\site"
 
 & (Join-Path $PSScriptRoot "merge_manuel_site.ps1")
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+if ($LASTEXITCODE -ge 8) { exit $LASTEXITCODE }
 
 & (Join-Path $PSScriptRoot "merge_dictionnaire_site.ps1")
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+if ($LASTEXITCODE -ge 8) { exit $LASTEXITCODE }
+
+& (Join-Path $PSScriptRoot "merge_arrets_site.ps1")
+if ($LASTEXITCODE -ge 8) { exit $LASTEXITCODE }
 
 Push-Location $site
 try {

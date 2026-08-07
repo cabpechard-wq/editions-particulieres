@@ -200,6 +200,7 @@
     const cur = location.pathname || "";
     if (cur.indexOf("/manuel") !== -1) return true;
     if (cur.indexOf("/dictionnaire") !== -1) return true;
+    if (cur.indexOf("/arrets") !== -1) return true;
     if (cur.indexOf("/demo/") !== -1 || cur.endsWith("/demo")) return true;
     if (cur.indexOf("/flipcards/") !== -1 || cur.endsWith("/flipcards")) return true;
     return false;

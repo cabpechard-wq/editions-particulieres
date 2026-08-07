@@ -69,7 +69,7 @@ class NotionExportApp(tk.Tk):
         ttk.Label(root, text="Éditions Particulières", style="Title.TLabel").pack(anchor=tk.W)
         ttk.Label(
             root,
-            text="Word : export .docx · PDF : post-traitement Word · HTML : manuel, glossaire ou pages .html",
+            text="Word : export .docx · PDF : post-traitement Word · HTML : manuel, glossaire, arrêts ou pages .html",
             style="Sub.TLabel",
         ).pack(anchor=tk.W, pady=(0, 10))
 
@@ -538,10 +538,9 @@ class NotionExportApp(tk.Tk):
         self._set_widget_tree_state(self.fiches_box, pages_state)
 
         if html_mode:
-            self.var_arrets.set(False)
             for cb in self._reg_checks:
                 if cb.cget("text") == "Jurisprudence":
-                    cb.configure(state=tk.DISABLED)
+                    cb.configure(state=regs_state)
         elif not pages_mode:
             for cb in self._reg_checks:
                 cb.configure(state=tk.NORMAL)
@@ -556,9 +555,14 @@ class NotionExportApp(tk.Tk):
             if not pages_mode
             else "index" in self._registres_for_pages_mode()
         )
+        has_arrets = (
+            self.var_arrets.get()
+            if not pages_mode
+            else "arrets" in self._registres_for_pages_mode()
+        )
         site_tpl_state = (
             tk.NORMAL
-            if html_mode and (has_manuel or has_index) and not self.combine.get()
+            if html_mode and (has_manuel or has_index or has_arrets) and not self.combine.get()
             else tk.DISABLED
         )
         self._set_widget_tree_state(self.site_tpl_row, site_tpl_state)
@@ -576,10 +580,17 @@ class NotionExportApp(tk.Tk):
                 hint = "HTML : export manuel (sommaire + chapitres DP-XXX) vers export/site/manuel/."
                 if has_index:
                     hint += " Glossaire → export/site/dictionnaire/."
+                if has_arrets:
+                    hint += " Arrêts → export/site/arrets/."
                 self.fmt_hint.configure(text=hint)
             elif has_index and not self.combine.get():
+                hint = "HTML : export dictionnaire (index A–Z) vers export/site/dictionnaire/."
+                if has_arrets:
+                    hint += " Arrêts → export/site/arrets/."
+                self.fmt_hint.configure(text=hint)
+            elif has_arrets and not self.combine.get():
                 self.fmt_hint.configure(
-                    text="HTML : export dictionnaire (index A–Z) vers export/site/dictionnaire/."
+                    text="HTML : export fiches d'arrêts vers export/site/arrets/."
                 )
             else:
                 self.fmt_hint.configure(
@@ -595,17 +606,17 @@ class NotionExportApp(tk.Tk):
         # Jurisprudence : MAJ CSV si arrets inclus ; A4/A5 seulement si arrets seul
         if pages_mode:
             regs = self._registres_for_pages_mode()
-            has_juri = "arrets" in regs and not html_mode
+            has_juri = "arrets" in regs
             only_juri = regs == ["arrets"]
         else:
             regs = self._selected_registres()
-            has_juri = "arrets" in regs and not html_mode
+            has_juri = "arrets" in regs
             only_juri = regs == ["arrets"] and not self._has_autres()
 
         self.cb_arrets_refresh.configure(
             state=tk.NORMAL if has_juri else tk.DISABLED
         )
-        a5_state = tk.NORMAL if only_juri else tk.DISABLED
+        a5_state = tk.NORMAL if (only_juri and not html_mode) else tk.DISABLED
         self.rb_arrets_a4.configure(state=a5_state)
         self.rb_arrets_a5.configure(state=a5_state)
         if not only_juri:
@@ -618,7 +629,7 @@ class NotionExportApp(tk.Tk):
     def _browse_site_templates(self) -> None:
         path = filedialog.askdirectory(
             initialdir=self.site_templates.get() or str(Path.home()),
-            title="Dossier des gabarits site (manuel-page.html, dictionnaire.html)",
+            title="Dossier des gabarits site (manuel-page.html, dictionnaire.html, arrets-*.html)",
         )
         if path:
             self.site_templates.set(path)

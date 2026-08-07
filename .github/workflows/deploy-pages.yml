@@ -110,6 +110,11 @@ jobs:
           fi
           python export_dictionnaire.py --out site/dist/site
 
+      - name: Export arrêts HTML into site
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python export_arrets.py --out site/dist/site
+
       - name: Refresh auth.js (URL API injectée)
         working-directory: site
         run: python build_membre_gate.py
@@ -118,6 +123,7 @@ jobs:
         run: |
           test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent" && exit 1)
           test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent" && exit 1)
+          test -f site/dist/site/arrets/index.html || (echo "::error::Arrêts absent" && exit 1)
           if grep -q '__AUTH_API__' site/dist/site/auth.js; then
             echo "::warning::auth.js contient encore __AUTH_API__ (repli Worker actif)"
           fi

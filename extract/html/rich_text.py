@@ -91,6 +91,8 @@ def rich_text_to_html(
                 inner = f"<em>{inner}</em>"
             if ann.get("strikethrough"):
                 inner = f"<del>{inner}</del>"
+            if ann.get("underline"):
+                inner = f"<u>{inner}</u>"
             style = _color_style(ann)
             if style and inner == escaped:
                 inner = f"<span{style}>{inner}</span>"

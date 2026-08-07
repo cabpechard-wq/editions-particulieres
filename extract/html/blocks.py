@@ -65,7 +65,8 @@ class BlockRenderer:
                 data.get("rich_text") or [], resolve_title=self.resolve_title
             )
             body = self.render_blocks(children)
-            return f'<aside class="encadre"><p>{rich}</p>{body}</aside>'
+            lead = f"<p>{rich}</p>" if rich else ""
+            return f'<aside class="encadre">{lead}{body}</aside>'
 
         if btype in HEADING_TAGS:
             tag = HEADING_TAGS[btype]

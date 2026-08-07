@@ -1440,12 +1440,31 @@ input:focus {
 
 .manuel-content .legal-prose u {
   text-decoration: underline;
+  text-decoration-color: currentColor;
   text-underline-offset: 0.12em;
   text-decoration-thickness: 1px;
 }
 
-.manuel-content .legal-prose a {
-  color: var(--accent);
+/* Glossaire : discret, formatage d'origine (gras / souligné si présent dans Notion) */
+.manuel-content .legal-prose a.dict-link {
+  color: var(--ink);
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+/* Autres liens : couleur Notion ou héritée ; soulignement = couleur du texte du lien */
+.manuel-content .legal-prose a:not(.dict-link) {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.manuel-content .legal-prose a:not(.dict-link) > span[style*="color"],
+.manuel-content .legal-prose a:not(.dict-link):not(:has(span)):not(:has(u)) {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 0.12em;
+  text-decoration-thickness: 1px;
 }
 
 /* Aperçu Manuel (non-membre) — filtre global via site-nav.js */

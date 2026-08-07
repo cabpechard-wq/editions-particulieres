@@ -16,6 +16,12 @@ from extract.word.export_pipeline import _collect_units
 from .converter import PageConverter
 from .arrets_site import build_arrets_site
 from .dictionnaire_site import build_dictionnaire_site, entries_from_units, manuel_roots_for
+from .manuel_links import (
+    build_glossary_slug_map,
+    dict_prefix_for_aside,
+    dict_prefix_for_chapter,
+    rewrite_glossary_links,
+)
 from .manuel_site import build_manuel_site
 from .manuel_tree import classify_chapter
 from extract.word.pages import page_reference
@@ -71,6 +77,9 @@ def _check_manuel_templates(templates: Path) -> str | None:
 
 def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[Path]]:
     converter = PageConverter(fetcher)
+    glossary_map = build_glossary_slug_map(fetcher)
+    if glossary_map:
+        req.log(f"Glossaire : {len(set(glossary_map.values()))} entrée(s) pour les liens Manuel\n")
     chapters: list[dict] = []
     aside: list[dict] = []
     skipped: list[str] = []
@@ -86,8 +95,18 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
             skipped.append(skip)
             continue
         if chapter:
+            chapter["body"] = rewrite_glossary_links(
+                chapter["body"],
+                glossary_map,
+                dict_prefix=dict_prefix_for_chapter(chapter),
+            )
             chapters.append(chapter)
         if aside_item:
+            aside_item["body"] = rewrite_glossary_links(
+                aside_item["body"],
+                glossary_map,
+                dict_prefix=dict_prefix_for_aside(),
+            )
             aside.append(aside_item)
 
     if not chapters and not aside:

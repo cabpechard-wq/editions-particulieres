@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — Fiches d'arrêts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ASSET_PREFIX}}site.css">
+</head>
+<body>
+<main class="site-main legal-page manuel-layout">
+  <p class="site-crumb">
+    <span>Éditions Particulières</span>
+    <span class="sep">›</span>
+    <a href="{{ASSET_PREFIX}}">Droit public et administratif</a>
+    <span class="sep">›</span>
+    <a href="{{ASSET_PREFIX}}ressources/">Amphithéâtre</a>
+    <span class="sep">›</span>
+    <a href="../">Fiches d'arrêts</a>
+    <span class="sep">›</span>
+    <strong>Fiche</strong>
+  </p>
+  <div class="manuel-content arrets-fiche-layout">
+    <h1 class="site-title">{{TITLE}}</h1>
+    <article class="legal-prose manuel-prose arrets-prose">
+{{BODY}}
+    </article>
+    <p class="arrets-back"><a href="../">← Toutes les fiches</a></p>
+  </div>
+</main>
+<script src="{{ASSET_PREFIX}}auth.js?v=4"></script>
+<script src="{{ASSET_PREFIX}}site-nav.js?v=13"></script>
+</body>
+</html>

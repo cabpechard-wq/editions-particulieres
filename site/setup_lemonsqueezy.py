@@ -1,10 +1,10 @@
-"""Crée les produits abonnement Lemon Squeezy (mensuel + annuel) via API.
+﻿"""Crée les produits abonnement Lemon Squeezy (mensuel + annuel) via API.
 
 Prérequis : LEMON_SQUEEZY_API_KEY et LEMON_SQUEEZY_STORE_ID dans .env
   https://app.lemonsqueezy.com/settings/api
 
 Usage :
-  .\\.venv\\Scripts\\python.exe commerce\\setup_lemonsqueezy.py
+  .\\.venv\\Scripts\\python.exe site\\setup_lemonsqueezy.py
 """
 
 from __future__ import annotations
@@ -18,8 +18,8 @@ import httpx
 from dotenv import load_dotenv
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-CFG = COMMERCE / "config.json"
+SITE_ROOT = Path(__file__).resolve().parent
+CFG = SITE_ROOT / "config.json"
 API = "https://api.lemonsqueezy.com/v1"
 
 
@@ -151,7 +151,7 @@ def pick_store(client: httpx.Client, api_key: str, store_id: str | None) -> tupl
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
-    load_dotenv(COMMERCE / ".env")
+    load_dotenv(SITE_ROOT / ".env")
     api_key = (os.getenv("LEMON_SQUEEZY_API_KEY") or "").strip()
     if not api_key:
         print(
@@ -163,7 +163,7 @@ def main() -> int:
             file=sys.stderr,
         )
         # Écrit le brief produit pour config manuelle
-        brief = COMMERCE / "lemonsqueezy_products.json"
+        brief = SITE_ROOT / "lemonsqueezy_products.json"
         payload = {
             "products": [
                 {

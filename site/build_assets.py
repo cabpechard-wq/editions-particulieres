@@ -1,4 +1,4 @@
-"""Génère démo publique (N cartes) + pack membres (HTML complet + gate mot de passe)."""
+﻿"""Génère démo publique (N cartes) + pack membres (HTML complet + gate mot de passe)."""
 
 from __future__ import annotations
 
@@ -9,17 +9,17 @@ import shutil
 import sys
 from pathlib import Path
 
-_COMMERCE_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(_COMMERCE_DIR))
+_SITE_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(_SITE_DIR))
 
-from _repo import COMMERCE, REPO_ROOT  # noqa: E402
+from _repo import SITE_ROOT, REPO_ROOT  # noqa: E402
 
 sys.path.insert(0, str(REPO_ROOT))
 
 from flipcards.cli import load_matrice  # noqa: E402
 from flipcards.generator import DEFAULT_PAGE_TITLE, FlipcardGenerator, sanitize_filename  # noqa: E402
 
-DIST = COMMERCE / "dist"
+DIST = SITE_ROOT / "dist"
 DEMO_DIR = DIST / "demo"
 MEMBERS_DIR = DIST / "members"
 
@@ -311,20 +311,20 @@ def json_dumps(s: str) -> str:
 def update_config(password: str) -> None:
     import json
 
-    cfg_path = COMMERCE / "config.json"
+    cfg_path = SITE_ROOT / "config.json"
     cfg = json.loads(cfg_path.read_text(encoding="utf-8-sig")) if cfg_path.exists() else {}
     cfg["members_password"] = password
     cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def main() -> int:
-    pw_path = COMMERCE / ".members_password"
+    pw_path = SITE_ROOT / ".members_password"
     password = ensure_password(pw_path)
     demo = build_demo(8)
 
     import json
 
-    cfg_path = COMMERCE / "config.json"
+    cfg_path = SITE_ROOT / "config.json"
     cfg = json.loads(cfg_path.read_text(encoding="utf-8-sig")) if cfg_path.exists() else {}
     auth_api = ((cfg.get("auth") or {}).get("api_url") or "").strip()
 
@@ -351,7 +351,7 @@ def main() -> int:
         or stripe.get("yearly_payment_link")
         or ""
     )
-    checkout_tpl = (COMMERCE / "templates" / "checkout.html").read_text(encoding="utf-8")
+    checkout_tpl = (SITE_ROOT / "templates" / "checkout.html").read_text(encoding="utf-8")
     checkout_tpl = (
         checkout_tpl.replace('monthly: ""', f"monthly: {json.dumps(monthly)}")
         .replace('yearly: ""', f"yearly: {json.dumps(yearly)}")
@@ -363,7 +363,7 @@ def main() -> int:
     base = (cfg.get("hosting") or {}).get("base_url") or ""
 
     # Page post-paiement (success URL Stripe)
-    merci_tpl = (COMMERCE / "templates" / "merci.html").read_text(encoding="utf-8")
+    merci_tpl = (SITE_ROOT / "templates" / "merci.html").read_text(encoding="utf-8")
     merci_dst = site / "merci"
     merci_dst.mkdir(parents=True, exist_ok=True)
     (merci_dst / "index.html").write_text(merci_tpl, encoding="utf-8")
@@ -377,14 +377,14 @@ def main() -> int:
     if base:
         cfg["checkout_url"] = f"{base.rstrip('/')}/checkout/"
     cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    home_tpl = (COMMERCE / "templates" / "home.html").read_text(encoding="utf-8")
+    home_tpl = (SITE_ROOT / "templates" / "home.html").read_text(encoding="utf-8")
     (site / "index.html").write_text(home_tpl, encoding="utf-8")
     for asset in ("site.css", "site-nav.js"):
-        shutil.copy2(COMMERCE / "templates" / asset, site / asset)
+        shutil.copy2(SITE_ROOT / "templates" / asset, site / asset)
 
     # Hubs intermédiaires Accueil → Bibliothèque / Amphithéâtre / TD
     for hub in ("bibliotheque", "ressources", "exercices"):
-        hub_tpl = (COMMERCE / "templates" / f"{hub}.html").read_text(encoding="utf-8")
+        hub_tpl = (SITE_ROOT / "templates" / f"{hub}.html").read_text(encoding="utf-8")
         hub_dir = site / hub
         hub_dir.mkdir(parents=True, exist_ok=True)
         (hub_dir / "index.html").write_text(hub_tpl, encoding="utf-8")
@@ -392,7 +392,7 @@ def main() -> int:
     # Pages légales obligatoires
     from build_legal import build_legal_page
 
-    legal_tpl = (COMMERCE / "templates" / "legal-page.html").read_text(encoding="utf-8")
+    legal_tpl = (SITE_ROOT / "templates" / "legal-page.html").read_text(encoding="utf-8")
     legal_pages = (
         ("mentions-legales", "mentions-legales.md", "Mentions légales", "Mentions légales"),
         ("cgv", "cgv.md", "Conditions générales de vente (CGV)", "CGV"),
@@ -401,7 +401,7 @@ def main() -> int:
         dst = site / slug
         dst.mkdir(parents=True, exist_ok=True)
         page = build_legal_page(
-            COMMERCE / "legal" / md_name,
+            SITE_ROOT / "legal" / md_name,
             legal_tpl,
             title=title,
             crumb=crumb,
@@ -423,10 +423,10 @@ def main() -> int:
     print(f"Membres gate : {members}")
     print(f"Site Netlify : {site}")
     print(f"Mot de passe membres : {password}")
-    print("(stocké dans commerce/.members_password — ne pas committer)")
+    print("(stocké dans SITE_ROOT/.members_password — ne pas committer)")
 
     # /membre/ + auth.js après rmtree(site)
-    sys.path.insert(0, str(COMMERCE))
+    sys.path.insert(0, str(SITE_ROOT))
     from build_membre_gate import main as build_membre_main
 
     build_membre_main()

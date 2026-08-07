@@ -1,9 +1,9 @@
-"""Force After payment → redirect /merci/ sur tous les Payment Links connus.
+﻿"""Force After payment → redirect /merci/ sur tous les Payment Links connus.
 
-Prérequis : STRIPE_SECRET_KEY dans .env (racine ou commerce/)
+Prérequis : STRIPE_SECRET_KEY dans .env (racine ou SITE_ROOT/)
 
 Usage :
-  .\\.venv\\Scripts\\python.exe commerce\\update_stripe_redirects.py
+  .\\.venv\\Scripts\\python.exe site\\update_stripe_redirects.py
 """
 
 from __future__ import annotations
@@ -18,8 +18,8 @@ import httpx
 from dotenv import load_dotenv
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-CFG = COMMERCE / "config.json"
+SITE_ROOT = Path(__file__).resolve().parent
+CFG = SITE_ROOT / "config.json"
 API = "https://api.stripe.com/v1"
 
 
@@ -53,7 +53,7 @@ def payment_link_id_from_url(url: str, links_by_url: dict[str, str]) -> str | No
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
-    load_dotenv(COMMERCE / ".env")
+    load_dotenv(SITE_ROOT / ".env")
     key = (os.getenv("STRIPE_SECRET_KEY") or "").strip()
     if not key:
         print("STRIPE_SECRET_KEY manquant dans .env", file=sys.stderr)

@@ -17,7 +17,7 @@ Edition du Payment link → After payment :
 
 Sans session_id, /merci/ refuse l’accès (plus d’unlock gratuit).
 
-Auth API : commerce/worker/ (Cloudflare) — voir commerce/worker/README.md
+Auth API : site/worker/ (Cloudflare) — voir site/worker/README.md
 
 2) E-mails / factures Stripe
 ----------------------------

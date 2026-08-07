@@ -1,6 +1,6 @@
-"""Configure Sotion (instructions + état local). Sotion n'a pas d'API publique stable.
+﻿"""Configure Sotion (instructions + état local). Sotion n'a pas d'API publique stable.
 
-Remplit commerce/config.json une fois les URLs connues, et met à jour Notion.
+Remplit SITE_ROOT/config.json une fois les URLs connues, et met à jour Notion.
 """
 
 from __future__ import annotations
@@ -9,9 +9,9 @@ import json
 import sys
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
-CFG = COMMERCE / "config.json"
-OUT = COMMERCE / "sotion_setup.txt"
+SITE_ROOT = Path(__file__).resolve().parent
+CFG = SITE_ROOT / "config.json"
+OUT = SITE_ROOT / "sotion_setup.txt"
 
 
 def main() -> int:
@@ -34,8 +34,8 @@ def main() -> int:
         "5) Gate UNIQUEMENT l'espace membre (vitrine reste publique).",
         "6) Custom domain optionnel plus tard.",
         "7) Copie l'URL Sotion du site et enregistre-la :",
-        "   Édite commerce/config.json → sotion.site_url",
-        "   puis : python commerce/update_notion_links.py",
+        "   Édite SITE_ROOT/config.json → sotion.site_url",
+        "   puis : python site/update_notion_links.py",
         "",
         "Test accès :",
         "- Sans abo → page membre bloquée / login Sotion",

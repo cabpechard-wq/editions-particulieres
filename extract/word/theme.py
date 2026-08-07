@@ -1,4 +1,4 @@
-"""Charte graphique — dérivée de commerce/templates/site.css (thème Amphithéâtre).
+"""Charte graphique — dérivée de site/templates/site.css (thème Amphithéâtre).
 
 Impression Word : fond blanc, texte sombre ; or et typographies du site conservés.
 """

@@ -1,8 +1,8 @@
-"""Convertit notion_to_word/output/glossaire.html → site /dictionnaire/.
+﻿"""Convertit notion_to_word/output/glossaire.html → site /dictionnaire/.
 
 Usage :
-  python commerce/export_dictionnaire.py
-  python commerce/export_dictionnaire.py --src chemin/glossaire.html
+  python site/export_dictionnaire.py
+  python site/export_dictionnaire.py --src chemin/glossaire.html
 """
 
 from __future__ import annotations
@@ -14,11 +14,11 @@ import shutil
 import unicodedata
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
+SITE_ROOT = Path(__file__).resolve().parent
 DEFAULT_SRC = Path(r"C:\Users\anton\Desktop\notion_to_word\output\glossaire.html")
-TEMPLATES = COMMERCE / "templates"
-SITE = COMMERCE / "dist" / "site"
-HOST = COMMERCE / "host-repo"
+TEMPLATES = SITE_ROOT / "templates"
+SITE = SITE_ROOT / "dist" / "site"
+HOST = SITE_ROOT / "host-repo"
 OUT_NAME = "dictionnaire"
 
 META_RE = re.compile(

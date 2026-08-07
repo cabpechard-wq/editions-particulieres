@@ -1,4 +1,4 @@
-"""Convertit commerce/legal/*.md en pages HTML du site."""
+﻿"""Convertit SITE_ROOT/legal/*.md en pages HTML du site."""
 from __future__ import annotations
 
 import html

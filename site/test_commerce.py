@@ -1,4 +1,4 @@
-"""Smoke tests locaux du parcours commerce (gate HTML + config + Notion state)."""
+﻿"""Smoke tests locaux du parcours SITE_ROOT (gate HTML + config + Notion state)."""
 
 from __future__ import annotations
 
@@ -8,11 +8,11 @@ import re
 import sys
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
-SITE = COMMERCE / "dist" / "site"
-CFG = COMMERCE / "config.json"
-STATE = COMMERCE / "notion_state.json"
-PW_FILE = COMMERCE / ".members_password"
+SITE_ROOT = Path(__file__).resolve().parent
+SITE = SITE_ROOT / "dist" / "site"
+CFG = SITE_ROOT / "config.json"
+STATE = SITE_ROOT / "notion_state.json"
+PW_FILE = SITE_ROOT / ".members_password"
 
 
 def fail(msg: str) -> None:
@@ -90,7 +90,7 @@ def main() -> int:
 
     pending = []
     ls = cfg.get("lemonsqueezy") or {}
-    products_brief = COMMERCE / "lemonsqueezy_products.json"
+    products_brief = SITE_ROOT / "lemonsqueezy_products.json"
     checkout_page = SITE / "checkout" / "index.html"
     if not (ls.get("monthly_checkout_url") or "").startswith("http"):
         if products_brief.exists() and checkout_page.exists():
@@ -124,7 +124,7 @@ def main() -> int:
     print("---")
     print(
         "Révocation soft : retirer le membre Sotion / changer "
-        f"commerce/.members_password puis rebuild (build_assets.py) "
+        f"SITE_ROOT/.members_password puis rebuild (build_assets.py) "
         f"coupe l'accès HTML même si le fichier a été bookmarké sans session."
     )
     return errors

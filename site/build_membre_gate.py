@@ -6,10 +6,10 @@ import json
 import shutil
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
-SITE = COMMERCE / "dist" / "site"
+SITE_ROOT = Path(__file__).resolve().parent
+SITE = SITE_ROOT / "dist" / "site"
 MEMBRE = SITE / "membre"
-TEMPLATES = COMMERCE / "templates"
+TEMPLATES = SITE_ROOT / "templates"
 
 
 def auth_api_url(cfg: dict) -> str:
@@ -31,7 +31,7 @@ def write(path: Path, text: str) -> None:
 
 
 def main() -> int:
-    cfg = json.loads((COMMERCE / "config.json").read_text(encoding="utf-8-sig"))
+    cfg = json.loads((SITE_ROOT / "config.json").read_text(encoding="utf-8-sig"))
     api = auth_api_url(cfg)
 
     SITE.mkdir(parents=True, exist_ok=True)
@@ -68,7 +68,7 @@ def main() -> int:
     cfg.setdefault("auth", {})
     cfg["auth"]["api_url"] = api
     cfg["auth"]["min_password_length"] = 4
-    (COMMERCE / "config.json").write_text(
+    (SITE_ROOT / "config.json").write_text(
         json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 

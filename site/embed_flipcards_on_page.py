@@ -1,11 +1,11 @@
-"""Intègre l’HTML flipcards (embed) sur la page Notion Grands arrêts.
+﻿"""Intègre l’HTML flipcards (embed) sur la page Notion Grands arrêts.
 
 Prérequis : partager la page avec l’intégration « Projet GdN »
   Share → Invite → Projet GdN → Can edit
 
 Usage :
-  .\\.venv\\Scripts\\python.exe commerce\\embed_flipcards_on_page.py
-  .\\.venv\\Scripts\\python.exe commerce\\embed_flipcards_on_page.py --full
+  .\\.venv\\Scripts\\python.exe site\\embed_flipcards_on_page.py
+  .\\.venv\\Scripts\\python.exe site\\embed_flipcards_on_page.py --full
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ from dotenv import load_dotenv
 from notion_client.errors import APIResponseError
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-sys.path.insert(0, str(COMMERCE))
+SITE_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(SITE_ROOT))
 
 from setup_notion import (  # noqa: E402
     bookmark,
@@ -42,7 +42,7 @@ def embed(url: str) -> dict:
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
-    cfg = json.loads((COMMERCE / "config.json").read_text(encoding="utf-8-sig"))
+    cfg = json.loads((SITE_ROOT / "config.json").read_text(encoding="utf-8-sig"))
     p = argparse.ArgumentParser()
     p.add_argument(
         "--page",

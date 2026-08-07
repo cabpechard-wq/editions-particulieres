@@ -7,9 +7,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
+SITE_ROOT = Path(__file__).resolve().parent
 BASE = "https://cabpechard-wq.github.io/editions-particulieres"
-CFG = json.loads((COMMERCE / "config.json").read_text(encoding="utf-8-sig"))
+CFG = json.loads((SITE_ROOT / "config.json").read_text(encoding="utf-8-sig"))
 
 
 def fetch(path: str) -> str:

@@ -3,7 +3,7 @@
 ## Setup (une fois)
 
 ```bash
-cd commerce/worker
+cd site/worker
 npm i -g wrangler
 wrangler login
 wrangler kv namespace create USERS
@@ -27,10 +27,10 @@ wrangler deploy
 ```
 
 Copier l’URL `https://flipcards-auth.<compte>.workers.dev` dans
-`commerce/config.json` → `auth.api_url`, puis :
+`site/config.json` → `auth.api_url`, puis :
 
 ```bash
-python commerce/build_assets.py
+python site/build_assets.py
 # deploy host-repo (auth.js, merci, membre, flipcards)
 ```
 

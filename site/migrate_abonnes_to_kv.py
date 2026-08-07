@@ -1,17 +1,17 @@
-"""Affiche la commande curl pour migrer abonnes.json → Worker KV (admin-migrate)."""
+﻿"""Affiche la commande curl pour migrer abonnes.json → Worker KV (admin-migrate)."""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
+SITE_ROOT = Path(__file__).resolve().parent
 
 
 def main() -> int:
-    cfg = json.loads((COMMERCE / "config.json").read_text(encoding="utf-8-sig"))
+    cfg = json.loads((SITE_ROOT / "config.json").read_text(encoding="utf-8-sig"))
     api = ((cfg.get("auth") or {}).get("api_url") or "").rstrip("/")
-    abonnes = json.loads((COMMERCE / "abonnes.json").read_text(encoding="utf-8-sig"))
+    abonnes = json.loads((SITE_ROOT / "abonnes.json").read_text(encoding="utf-8-sig"))
     print("Après wrangler deploy + AUTH_SECRET :")
     print()
     for email, row in sorted(abonnes.items()):

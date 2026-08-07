@@ -4,7 +4,7 @@
 Stack
 -----
 - Stripe     : Payment Links (redirect avec session_id)
-- Auth       : Cloudflare Worker + KV + Resend (commerce/worker/)
+- Auth       : Cloudflare Worker + KV + Resend (site/worker/)
 - Front      : https://cabpechard-wq.github.io/editions-particulieres/
                /          accueil
                /checkout/ abonnements
@@ -24,21 +24,21 @@ Parcours
 
 Setup auth (obligatoire)
 ------------------------
-Voir commerce/worker/README.md
+Voir site/worker/README.md
 Puis auth.api_url dans config.json + build_assets + deploy host.
 
 Stripe After payment
 --------------------
 https://cabpechard-wq.github.io/editions-particulieres/merci/?session_id={CHECKOUT_SESSION_ID}
-Details : commerce/stripe_post_payment.txt
+Details : site/stripe_post_payment.txt
 
 Scripts
 -------
-python commerce/build_assets.py
-python commerce/export_manuel.py   # Notion -> docx (notion_to_word) -> HTML -> /manuel/ (APRES build_assets.py)
-python commerce/migrate_abonnes_to_kv.py
-python commerce/test_e2e_access.py
-python commerce/verify_flow.py   # après deploy + api_url réel
+python site/build_assets.py
+python site/export_manuel.py   # Notion -> docx (notion_to_word) -> HTML -> /manuel/ (APRES build_assets.py)
+python site/migrate_abonnes_to_kv.py
+python site/test_e2e_access.py
+python site/verify_flow.py   # après deploy + api_url réel
 
 Manuel (/manuel/)
 -----------------
@@ -48,7 +48,7 @@ templates/manuel-sommaire.html + templates/manuel-page.html -> dist/site/manuel/
 Arborescence URL = référencement DP-XXX (chaque chiffre = un niveau), ex. /manuel/dp-000/dp-300/dp-310/dp-311/.
 Fiches DP-XXX/X (actualité) : mises de côté dans /manuel/_aside/ (hors sommaire / menu).
 Options : --reuse (sans rappeler Notion), --limit N.
-Relancer python commerce/export_manuel.py chaque fois que le Manuel change dans Notion
+Relancer python site/export_manuel.py chaque fois que le Manuel change dans Notion
 (build_assets.py recrée dist/site en entier, donc TOUJOURS après lui).
 Prérequis : pandoc sur le PATH, notion_to_word cloné avec .venv + NOTION_TOKEN (.env).
 

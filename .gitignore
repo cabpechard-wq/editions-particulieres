@@ -12,7 +12,7 @@ __pycache__/
 config/paths.json
 config/notion.json
 config/commerce.json
-site/commerce/config.json
+site/config.json
 site/worker/wrangler.toml
 
 # Sorties locales (les vraies sorties sont sur Google Drive)
@@ -20,10 +20,10 @@ data/*
 !data/.gitkeep
 
 # Build site
-site/commerce/dist/
-site/commerce/host-repo/*
-!site/commerce/host-repo/.gitkeep
-!site/commerce/host-repo/.github/
+site/dist/
+site/host-repo/*
+!site/host-repo/.gitkeep
+!site/host-repo/.github/
 
 # Matrices / caches (sur Drive)
 flipcards/matrices/*
@@ -42,9 +42,9 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Secrets commerce
-site/commerce/.members_password
-site/commerce/abonnes.json
-site/commerce/notion_state.json
-site/commerce/config.json
-site/commerce/*CLE*.txt
+# Secrets site
+site/.members_password
+site/abonnes.json
+site/notion_state.json
+site/config.json
+site/*CLE*.txt

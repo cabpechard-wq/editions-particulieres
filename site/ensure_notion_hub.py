@@ -1,4 +1,4 @@
-"""Crée un hub commerce Notion si la page Grands arrêts n'est pas partagée.
+﻿"""Crée un hub SITE_ROOT Notion si la page Grands arrêts n'est pas partagée.
 
 Essaie d'abord NOTION_COMMERCE_PARENT / page Grands arrêts.
 Sinon crée sous une page déjà accessible à l'intégration, ou affiche
@@ -21,7 +21,7 @@ from notion_client.errors import APIResponseError  # noqa: E402
 def find_writable_parent(client) -> str | None:
     """Retourne un page_id déjà accessible (hors bases) pour y accrocher le hub."""
     resp = client.search(
-        query="Flipcards commerce hub",
+        query="Flipcards SITE_ROOT hub",
         page_size=5,
         filter={"property": "object", "value": "page"},
     )
@@ -99,7 +99,7 @@ def main() -> int:
         print(
             "Aucune page accessible. Dans Notion : Share sur la page Grands arrêts → "
             "invite l'intégration « Projet GdN » → puis relance "
-            "python commerce/setup_notion.py",
+            "python site/setup_notion.py",
             file=sys.stderr,
         )
         return 1
@@ -131,7 +131,7 @@ def main() -> int:
                 "Action manuelle requise : Share la page "
                 "https://www.notion.so/3b2a29ad9f788035a69afa4a5ee4e189 "
                 "avec l'intégration « Projet GdN », puis : "
-                "python commerce/setup_notion.py",
+                "python site/setup_notion.py",
                 file=sys.stderr,
             )
             return 1

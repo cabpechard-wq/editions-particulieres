@@ -1,4 +1,4 @@
-Lemon Squeezy — création des abonnements Flipcards GADA
+﻿Lemon Squeezy — création des abonnements Flipcards GADA
 =======================================================
 
 Option A (recommandée) — API
@@ -8,10 +8,10 @@ Option A (recommandée) — API
 3) Dans .env :
    LEMON_SQUEEZY_API_KEY=...
    LEMON_SQUEEZY_STORE_ID=...   (optionnel)
-4) python commerce/setup_lemonsqueezy.py
-5) python commerce/build_assets.py
-6) python commerce/update_notion_links.py
-7) Redeploy host (commerce/host-repo)
+4) python site/setup_lemonsqueezy.py
+5) python site/build_assets.py
+6) python site/update_notion_links.py
+7) Redeploy host (site/host-repo)
 
 Produits attendus (voir aussi lemonsqueezy_products.json)
 ---------------------------------------------------------
@@ -24,13 +24,13 @@ Option B — manuel dans le dashboard
 1) Products → New product (subscription)
 2) Name: Flipcards GADA — Abonnement étudiants
 3) Variants Mensuel / Annuel aux prix ci-dessus
-4) Copie les share/checkout URLs dans commerce/config.json :
+4) Copie les share/checkout URLs dans site/config.json :
    lemonsqueezy.monthly_checkout_url
    lemonsqueezy.yearly_checkout_url
-5) python commerce/build_assets.py && update_notion_links.py
+5) python site/build_assets.py && update_notion_links.py
 
 Après paiement (manuel pour l’instant)
 --------------------------------------
-python commerce/record_subscriber.py --email eleve@univ.fr --statut actif --offre mensuel
-python commerce/build_membre_gate.py
+python site/record_subscriber.py --email eleve@univ.fr --statut actif --offre mensuel
+python site/build_membre_gate.py
 # puis redeploy host pour rafraîchir l’allowlist /membre/

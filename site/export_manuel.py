@@ -1,7 +1,7 @@
-"""Génère /manuel/ (sommaire + chapitres imbriqués) depuis Notion, via notion_to_word.
+﻿"""Génère /manuel/ (sommaire + chapitres imbriqués) depuis Notion, via notion_to_word.
 
 Chaîne : Notion (API) -> .docx (notion_to_word/manuel)
-         -> HTML (pandoc) -> pages du site (gabarits commerce/templates/manuel-*.html).
+         -> HTML (pandoc) -> pages du site (gabarits SITE_ROOT/templates/manuel-*.html).
 
 Arborescence : le référencement DP-XXX est invariable.
   Chaque chiffre significatif = un niveau
@@ -11,9 +11,9 @@ Fiches DP-XXX/X ou DP-XXX/XX (ex. DP-100/1, DP-311_1) : registre actualité,
 mises de côté dans /manuel/_aside/ (hors sommaire et menu).
 
 Usage :
-    python commerce/export_manuel.py [--limit N] [--reuse]
+    python site/export_manuel.py [--limit N] [--reuse]
 
-IMPORTANT : lancer APRÈS commerce/build_assets.py (qui recrée dist/site).
+IMPORTANT : lancer APRÈS SITE_ROOT/build_assets.py (qui recrée dist/site).
 """
 
 from __future__ import annotations
@@ -28,9 +28,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
-COMMERCE = Path(__file__).resolve().parent
-TEMPLATES = COMMERCE / "templates"
-SITE = COMMERCE / "dist" / "site"
+SITE_ROOT = Path(__file__).resolve().parent
+TEMPLATES = SITE_ROOT / "templates"
+SITE = SITE_ROOT / "dist" / "site"
 MANUEL_DIR = SITE / "manuel"
 ASIDE_DIR = MANUEL_DIR / "_aside"
 
@@ -51,7 +51,7 @@ def ensure_utf8_stdio() -> None:
 
 
 def load_config() -> dict[str, Any]:
-    cfg_path = COMMERCE / "config.json"
+    cfg_path = SITE_ROOT / "config.json"
     return json.loads(cfg_path.read_text(encoding="utf-8-sig"))
 
 
@@ -151,7 +151,7 @@ def run_notion_export(pipeline_dir: Path, database_url: str, out_dir: Path, limi
     if not venv_python.exists():
         raise SystemExit(
             f"Python introuvable dans le venv du pipeline : {venv_python}\n"
-            "Vérifie commerce/config.json -> manuel.pipeline_dir."
+            "Vérifie SITE_ROOT/config.json -> manuel.pipeline_dir."
         )
     if out_dir.exists():
         shutil.rmtree(out_dir)
@@ -361,14 +361,14 @@ def main() -> int:
     args = parser.parse_args()
 
     if not SITE.exists():
-        raise SystemExit("commerce/dist/site introuvable — lance d'abord : python commerce/build_assets.py")
+        raise SystemExit("SITE_ROOT/dist/site introuvable — lance d'abord : python site/build_assets.py")
 
     cfg = load_config()
     manuel_cfg = cfg.get("manuel") or {}
     database_url = (manuel_cfg.get("notion_database_url") or "").strip()
     pipeline_dir = Path((manuel_cfg.get("pipeline_dir") or "").strip())
     if not database_url or not pipeline_dir:
-        raise SystemExit("commerce/config.json -> manuel.notion_database_url / manuel.pipeline_dir manquants.")
+        raise SystemExit("SITE_ROOT/config.json -> manuel.notion_database_url / manuel.pipeline_dir manquants.")
     if not pipeline_dir.exists():
         raise SystemExit(f"Dossier pipeline introuvable : {pipeline_dir}")
 
@@ -529,7 +529,7 @@ def main() -> int:
         print(f"   {len(skipped)} ignorée(s) :")
         for s in skipped[:12]:
             print(f"     - {s}")
-    print("N'oublie pas de synchroniser commerce/dist/site/ vers commerce/host-repo/.")
+    print("N'oublie pas de synchroniser SITE_ROOT/dist/site/ vers SITE_ROOT/host-repo/.")
     return 0
 
 

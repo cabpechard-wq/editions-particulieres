@@ -1,4 +1,4 @@
-"""Déploie commerce/dist/site vers Netlify (draft puis prod) et met à jour config.json."""
+﻿"""Déploie SITE_ROOT/dist/site vers Netlify (draft puis prod) et met à jour config.json."""
 
 from __future__ import annotations
 
@@ -10,10 +10,10 @@ import sys
 from pathlib import Path
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-SITE = COMMERCE / "dist" / "site"
-CFG = COMMERCE / "config.json"
-NETLIFY_DIR = COMMERCE / ".netlify"
+SITE_ROOT = Path(__file__).resolve().parent
+SITE = SITE_ROOT / "dist" / "site"
+CFG = SITE_ROOT / "config.json"
+NETLIFY_DIR = SITE_ROOT / ".netlify"
 
 
 def which(cmd: str) -> str | None:
@@ -24,7 +24,7 @@ def run(cmd: list[str], *, env: dict | None = None) -> subprocess.CompletedProce
     print(">", " ".join(cmd))
     return subprocess.run(
         cmd,
-        cwd=str(COMMERCE),
+        cwd=str(SITE_ROOT),
         env=env or os.environ.copy(),
         text=True,
         capture_output=True,
@@ -46,7 +46,7 @@ def ensure_netlify_cli() -> list[str]:
 
 def main() -> int:
     if not SITE.exists():
-        print("Lance d'abord : python commerce/build_assets.py", file=sys.stderr)
+        print("Lance d'abord : python site/build_assets.py", file=sys.stderr)
         return 1
 
     cfg = json.loads(CFG.read_text(encoding="utf-8")) if CFG.exists() else {}
@@ -56,7 +56,7 @@ def main() -> int:
     from dotenv import load_dotenv
 
     load_dotenv(ROOT / ".env")
-    load_dotenv(COMMERCE / ".env")
+    load_dotenv(SITE_ROOT / ".env")
     token = (os.getenv("NETLIFY_AUTH_TOKEN") or "").strip()
     env = os.environ.copy()
     if token:
@@ -72,7 +72,7 @@ def main() -> int:
         str(SITE),
         "--prod",
         "--message",
-        "flipcards commerce v1",
+        "flipcards SITE_ROOT v1",
     ]
     if token:
         # non-interactive create
@@ -84,15 +84,15 @@ def main() -> int:
             "1) Crée un compte https://app.netlify.com\n"
             "2) User settings → Applications → New access token\n"
             "3) Ajoute NETLIFY_AUTH_TOKEN=... dans .env puis relance.\n"
-            "Fallback : déploiement manuel du dossier commerce/dist/site",
+            "Fallback : déploiement manuel du dossier SITE_ROOT/dist/site",
             file=sys.stderr,
         )
         # Écrit un script helper
-        helper = COMMERCE / "deploy_manual.txt"
+        helper = SITE_ROOT / "deploy_manual.txt"
         helper.write_text(
-            "Déployer le dossier commerce/dist/site sur Netlify Drop :\n"
+            "Déployer le dossier SITE_ROOT/dist/site sur Netlify Drop :\n"
             "https://app.netlify.com/drop\n"
-            "Puis reporter l'URL dans commerce/config.json (demo_url, flipcards_url).\n",
+            "Puis reporter l'URL dans SITE_ROOT/config.json (demo_url, flipcards_url).\n",
             encoding="utf-8",
         )
         return 2
@@ -125,7 +125,7 @@ def main() -> int:
                 "--site",
                 site_name,
                 "--message",
-                "flipcards commerce v1",
+                "flipcards SITE_ROOT v1",
             ],
             env=env,
         )

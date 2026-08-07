@@ -1,13 +1,13 @@
-"""Crée des Payment Links Stripe pour les abos mensuel/annuel.
+﻿"""Crée des Payment Links Stripe pour les abos mensuel/annuel.
 
 Prérequis dans .env :
   STRIPE_SECRET_KEY=sk_live_...   (ou sk_test_...)
 
-Lit commerce/config.json → stripe.monthly_product_id / yearly_product_id
+Lit SITE_ROOT/config.json → stripe.monthly_product_id / yearly_product_id
 Écrit les payment_link URLs et met à jour le checkout HTML via build_assets.
 
 Usage :
-  .\\.venv\\Scripts\\python.exe commerce\\setup_stripe_links.py
+  .\\.venv\\Scripts\\python.exe site\\setup_stripe_links.py
 """
 
 from __future__ import annotations
@@ -21,8 +21,8 @@ import httpx
 from dotenv import load_dotenv
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-CFG = COMMERCE / "config.json"
+SITE_ROOT = Path(__file__).resolve().parent
+CFG = SITE_ROOT / "config.json"
 API = "https://api.stripe.com/v1"
 
 
@@ -99,7 +99,7 @@ def ensure_payment_link(
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
-    load_dotenv(COMMERCE / ".env")
+    load_dotenv(SITE_ROOT / ".env")
     key = (os.getenv("STRIPE_SECRET_KEY") or "").strip()
     if not key:
         print(

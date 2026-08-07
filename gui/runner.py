@@ -57,7 +57,7 @@ def default_site_templates() -> Path:
     try:
         return resolve_path("templates_site")
     except (KeyError, OSError):
-        return ROOT / "site" / "commerce" / "templates"
+        return ROOT / "site" / "templates"
 
 
 def postlink_cmdline(python: Path | str, out: Path | None = None) -> list[str]:

@@ -16,7 +16,7 @@
     "flipcards_output": "{output_root}/flipcards/output",
     "site_build": "{output_root}/site-build",
     "templates_word": "{repo_root}/extract/templates",
-    "templates_site": "{repo_root}/site/commerce/templates"
+    "templates_site": "{repo_root}/site/templates"
   },
   "notes": "Copier vers config/paths.json. Les extractions écrivent sur Google Drive (sync Drive Desktop). Le code source reste dans le dépôt Git."
 }

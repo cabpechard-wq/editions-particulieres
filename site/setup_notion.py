@@ -1,7 +1,7 @@
-"""Crée / met à jour la structure Notion vitrine + espace membre + base Abonnés.
+﻿"""Crée / met à jour la structure Notion vitrine + espace membre + base Abonnés.
 
 Usage (depuis la racine du projet) :
-  .\\.venv\\Scripts\\python.exe commerce\\setup_notion.py
+  .\\.venv\\Scripts\\python.exe site\\setup_notion.py
 
 Parent par défaut : page Grands arrêts
   https://app.notion.com/p/...-3b2a29ad9f788035a69afa4a5ee4e189
@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 from notion_client import Client
 from notion_client.errors import APIResponseError
 
-from _repo import COMMERCE, REPO_ROOT as ROOT
+from _repo import SITE_ROOT, REPO_ROOT as ROOT
 STATE_PATH = Path(__file__).resolve().parent / "notion_state.json"
 DEFAULT_PARENT = "3b2a29ad9f788035a69afa4a5ee4e189"
 
@@ -294,10 +294,10 @@ def main() -> int:
     client = make_client()
     state = load_state()
 
-    commerce_cfg = COMMERCE / "config.json"
+    site_cfg = SITE_ROOT / "config.json"
     cfg = {}
-    if commerce_cfg.exists():
-        cfg = json.loads(commerce_cfg.read_text(encoding="utf-8-sig"))
+    if site_cfg.exists():
+        cfg = json.loads(site_cfg.read_text(encoding="utf-8-sig"))
 
     checkout = cfg.get("checkout_url") or PLACEHOLDER_CHECKOUT
     demo = cfg.get("demo_url") or PLACEHOLDER_DEMO
@@ -372,12 +372,12 @@ def main() -> int:
         "vitrine_url": page_url(vitrine_id),
         "membre_url": page_url(membre_id),
     }
-    commerce_cfg.write_text(
+    site_cfg.write_text(
         json.dumps(cfg, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     print(f"État : {STATE_PATH}")
-    print(f"Config : {commerce_cfg}")
+    print(f"Config : {site_cfg}")
     return 0
 
 

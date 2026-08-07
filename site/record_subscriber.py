@@ -1,4 +1,4 @@
-"""Enregistre / met à jour un abonné dans commerce/abonnes.json (GitHub)."""
+﻿"""Enregistre / met à jour un abonné dans SITE_ROOT/abonnes.json (GitHub)."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import sys
 from datetime import date
 from pathlib import Path
 
-COMMERCE = Path(__file__).resolve().parent
-ABONNES = COMMERCE / "abonnes.json"
+SITE_ROOT = Path(__file__).resolve().parent
+ABONNES = SITE_ROOT / "abonnes.json"
 
 STATUTS = ("actif", "essai", "résilié", "impayé")
 OFFRES = ("mensuel", "annuel", "test")
@@ -79,7 +79,7 @@ def main() -> int:
         print(f"Mot de passe mis à jour : {email}")
         print(f"Nouveau mot de passe (à communiquer une fois) : {new_pw}")
         print(f"Fichier : {ABONNES}")
-        print("Ensuite : python commerce/build_membre_gate.py  puis deploy host")
+        print("Ensuite : python site/build_membre_gate.py  puis deploy host")
         return 0
 
     is_new = prev is None
@@ -116,7 +116,7 @@ def main() -> int:
     if pw_generated or args.password is not None:
         print(f"Mot de passe (à communiquer une fois) : {password}")
     print(f"Fichier : {ABONNES}")
-    print("Ensuite : python commerce/build_membre_gate.py  puis deploy host")
+    print("Ensuite : python site/build_membre_gate.py  puis deploy host")
     return 0
 
 

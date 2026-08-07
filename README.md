@@ -10,11 +10,11 @@ editions-particulieres/
 ├── extract/              # Extraction Notion → Word/PDF/HTML (ex notion_to_word)
 ├── flipcards/            # Flipcards jurisprudence
 ├── site/
-│   ├── commerce/         # Build site statique
+│   ├── templates/        # Gabarits HTML + scripts de build
 │   ├── worker/           # Auth Cloudflare
-│   └── commerce/host-repo/  # Déploiement GitHub Pages
+│   └── host-repo/        # Déploiement GitHub Pages
 ├── mobile/               # App Expo (JSON flipcards)
-├── config/               # Chemins, Notion, commerce (.example → copier)
+├── config/               # Chemins, Notion, site (.example → copier)
 └── scripts/              # Pipelines PowerShell
 ```
 

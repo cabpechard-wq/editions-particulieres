@@ -1,4 +1,4 @@
-SOTION — configuration paywall (no-code)
+﻿SOTION — configuration paywall (no-code)
 ========================================
 
 Site Notion public deja actif :
@@ -16,8 +16,8 @@ Site Notion public deja actif :
 5) Gate UNIQUEMENT l'espace membre (vitrine reste publique).
 6) Domaine Notion : droit-public.notion.site (deja actif)
 7) Copie l'URL Sotion du site et enregistre-la :
-   Edite commerce/config.json -> sotion.site_url
-   puis : python commerce/update_notion_links.py
+   Edite site/config.json -> sotion.site_url
+   puis : python site/update_notion_links.py
 
 Test acces :
 - Sans abo -> page membre bloquee / login Sotion

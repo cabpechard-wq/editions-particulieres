@@ -1,9 +1,9 @@
-"""Ajoute une case CGV obligatoire (custom_fields) sur les Payment Links Stripe.
+﻿"""Ajoute une case CGV obligatoire (custom_fields) sur les Payment Links Stripe.
 
 Prérequis : STRIPE_SECRET_KEY dans .env
 
 Usage :
-  .\\.venv\\Scripts\\python.exe commerce\\update_stripe_cgv_consent.py
+  .\\.venv\\Scripts\\python.exe site\\update_stripe_cgv_consent.py
 """
 
 from __future__ import annotations
@@ -18,8 +18,8 @@ import httpx
 from dotenv import load_dotenv
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-CFG = COMMERCE / "config.json"
+SITE_ROOT = Path(__file__).resolve().parent
+CFG = SITE_ROOT / "config.json"
 API = "https://api.stripe.com/v1"
 
 # Label Stripe custom_fields : max 50 caractères
@@ -67,7 +67,7 @@ def cgv_custom_fields_payload() -> dict:
 
 def main() -> int:
     load_dotenv(ROOT / ".env")
-    load_dotenv(COMMERCE / ".env")
+    load_dotenv(SITE_ROOT / ".env")
     key = (os.getenv("STRIPE_SECRET_KEY") or "").strip()
     if not key:
         print("STRIPE_SECRET_KEY manquant dans .env", file=sys.stderr)

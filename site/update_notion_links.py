@@ -1,4 +1,4 @@
-"""Met à jour les liens checkout / démo / flipcards dans les pages Notion commerce."""
+﻿"""Met à jour les liens checkout / démo / flipcards dans les pages Notion SITE_ROOT."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from _repo import REPO_ROOT as ROOT
-COMMERCE = Path(__file__).resolve().parent
-STATE_PATH = COMMERCE / "notion_state.json"
-CFG_PATH = COMMERCE / "config.json"
+SITE_ROOT = Path(__file__).resolve().parent
+STATE_PATH = SITE_ROOT / "notion_state.json"
+CFG_PATH = SITE_ROOT / "config.json"
 
-sys.path.insert(0, str(COMMERCE))
+sys.path.insert(0, str(SITE_ROOT))
 from setup_notion import (  # noqa: E402
     make_client,
     membre_children,

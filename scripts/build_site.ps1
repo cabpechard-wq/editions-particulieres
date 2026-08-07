@@ -24,3 +24,11 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 & (Join-Path $PSScriptRoot "merge_dictionnaire_site.ps1")
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Push-Location $site
+try {
+    python build_membre_gate.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+} finally {
+    Pop-Location
+}

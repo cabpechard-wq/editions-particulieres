@@ -44,7 +44,19 @@ jobs:
       - name: Export flipcards matrice
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: python -m flipcards.export_matrice
+        run: |
+          for attempt in 1 2 3; do
+            echo "Tentative $attempt/3…"
+            python -m flipcards.export_matrice && break
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep 45
+          done
+          rows=$(python -c "import csv; print(sum(1 for _ in csv.reader(open('flipcards/matrices/flipcards_matrice.csv', encoding='utf-8'))) - 1)")
+          echo "Matrice : $rows lignes"
+          if [ "$rows" -lt 900 ]; then
+            echo "::error::Export Notion incomplet ($rows lignes, attendu ~995). Réessayez plus tard."
+            exit 1
+          fi
       - name: Build static site
         working-directory: site
         run: python build_assets.py
@@ -57,6 +69,9 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python export_dictionnaire.py --out site/dist/site
+      - name: Refresh auth.js (URL API injectée)
+        working-directory: site
+        run: python build_membre_gate.py
       - name: Verify manuel and dictionnaire in artifact
         run: |
           test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent — export_html.py a échoué ou n'a rien produit" && exit 1)

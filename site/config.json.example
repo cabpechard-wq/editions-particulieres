@@ -38,7 +38,7 @@
     "cgv_version": "2026-08-05"
   },
   "auth": {
-    "api_url": "https://flipcards-auth.EXAMPLE.workers.dev",
+    "api_url": "https://flipcards-auth.cab-pechard.workers.dev",
     "min_password_length": 4
   },
   "manuel": {

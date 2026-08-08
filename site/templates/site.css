@@ -328,7 +328,7 @@ a:hover { color: var(--accent-hover); }
   width: min(68rem, calc(100% - 2rem));
   max-width: 100%;
   margin: 0 auto;
-  padding: 2rem 0 0;
+  padding: 2rem 0 clamp(3rem, 6vw, 5rem);
 }
 
 .site-main.home-amphitheatre {

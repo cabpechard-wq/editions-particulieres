@@ -330,7 +330,7 @@ a:hover { color: var(--accent-hover); }
   width: min(68rem, calc(100% - 2rem));
   max-width: 100%;
   margin: 0 auto;
-  padding: 2rem 0 0;
+  padding: 2rem 0 clamp(3rem, 6vw, 5rem);
 }
 
 .site-main.home-amphitheatre {
@@ -1175,6 +1175,8 @@ input:focus {
   width: 100%;
   padding-left: clamp(1rem, 2.2vw, 2rem);
   padding-right: clamp(1rem, 2.2vw, 2rem);
+
+  padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .legal-prose {
@@ -2590,6 +2592,7 @@ input:focus {
   margin-inline: auto;
   box-sizing: border-box;
   padding-inline: clamp(1rem, 2.2vw, 2rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
 .site-main.arrets-fiche-page > .site-crumb,

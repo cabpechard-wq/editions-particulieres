@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlipCard } from "../src/components/FlipCard";
-import { colorForLabel } from "../src/data/cards";
+import {
+  cardImportanceLevel,
+  colorForLabel,
+  starsLabel,
+} from "../src/data/cards";
 import { useStudySession } from "../src/data/StudyContext";
 import { colors, notionTone } from "../src/theme/colors";
 
@@ -200,6 +204,7 @@ export default function StudyScreen() {
           verso={current.verso}
           flipped={flipped}
           onFlip={() => setFlipped((v) => !v)}
+          stars={starsLabel(cardImportanceLevel(current))}
         />
 
         <View style={styles.controls}>
@@ -278,6 +283,11 @@ export default function StudyScreen() {
               <View style={styles.rowLeft}>
                 <Text style={styles.rowTitle}>{c.recto}</Text>
                 <View style={styles.tags}>
+                  {starsLabel(cardImportanceLevel(c)) ? (
+                    <Text style={styles.rowStars}>
+                      {starsLabel(cardImportanceLevel(c))}
+                    </Text>
+                  ) : null}
                   {(c.themes || []).map((t) => (
                     <ColoredTag key={`t-${t}`} label={t} group="theme" />
                   ))}
@@ -438,7 +448,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: "serif",
   },
-  tags: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
+  tags: { flexDirection: "row", flexWrap: "wrap", gap: 4, alignItems: "center" },
+  rowStars: {
+    fontSize: 12,
+    letterSpacing: 1,
+    color: colors.accent,
+    fontWeight: "700",
+    marginRight: 2,
+  },
   tag: {
     fontSize: 11,
     fontWeight: "600",

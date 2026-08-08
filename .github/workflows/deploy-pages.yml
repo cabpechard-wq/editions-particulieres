@@ -179,24 +179,13 @@ jobs:
         working-directory: site
         run: python build_membre_gate.py
 
-      - name: Verify site artifact
-        run: |
-          test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent" && exit 1)
-          test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent" && exit 1)
-          test -f site/dist/site/arrets/index.html || (echo "::error::Arrêts absent" && exit 1)
-          for path in manuel dictionnaire; do
-            if grep -qiE 'Site en construction|OVHcloud|/__ovh/' "site/dist/site/$path/index.html"; then
-              echo "::error::$path contient encore la page OVH « site en construction »"
-              exit 1
-            fi
-          done
-          if grep -q '__AUTH_API__' site/dist/site/auth.js; then
-            echo "::warning::auth.js contient encore __AUTH_API__ (repli Worker actif)"
-          fi
-          grep -q 'workers.dev' site/dist/site/auth.js || (echo "::error::auth.js sans URL Worker" && exit 1)
-          grep -q 'buy.stripe.com' site/dist/site/checkout/index.html \
-            || (echo "::error::checkout sans Payment Links Stripe" && exit 1)
-          echo "Artefact OK."
+      - name: Index recherche full-text (Cours + Dictionnaire + Arrêts)
+        working-directory: site
+        run: python build_search_index.py
+
+      - name: Smoke artefact (dist/site)
+        working-directory: site
+        run: python smoke_artifact.py
 
       - uses: actions/upload-pages-artifact@v3
         with:
@@ -211,3 +200,43 @@ jobs:
     steps:
       - uses: actions/configure-pages@v5
       - uses: actions/deploy-pages@v4
+        id: deployment
+
+  smoke:
+    name: Smoke live (Pages)
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install smoke deps
+        run: pip install httpx certifi
+      - name: Attendre propagation CDN
+        run: sleep 20
+      - name: Smoke HTTP (www + fallback github.io)
+        run: |
+          python site/smoke_live.py \
+            --base https://www.editions-particulieres.fr \
+            --retries 12 \
+            --sleep 20
+      - name: Smoke commerce config (URLs)
+        working-directory: site
+        run: |
+          if [ ! -f config.json ]; then cp config.json.example config.json; fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("config.json")
+          cfg = json.loads(path.read_text(encoding="utf-8"))
+          base = "https://www.editions-particulieres.fr"
+          cfg["demo_url"] = f"{base}/demo/"
+          cfg["flipcards_url"] = f"{base}/flipcards/"
+          cfg.setdefault("stripe", {})
+          cfg["stripe"]["monthly_payment_link"] = cfg.get("stripe", {}).get("monthly_payment_link") or cfg.get("lemonsqueezy", {}).get("monthly_checkout_url") or "https://buy.stripe.com/6oUaEWgWQgc21PO8QPawo01"
+          cfg["stripe"]["yearly_payment_link"] = cfg.get("stripe", {}).get("yearly_payment_link") or cfg.get("lemonsqueezy", {}).get("yearly_checkout_url") or "https://buy.stripe.com/14AdR88qk3pgeCA0kjawo00"
+          cfg.setdefault("auth", {})["api_url"] = cfg.get("auth", {}).get("api_url") or "https://flipcards-auth.cab-pechard.workers.dev"
+          path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          PY
+          python test_commerce.py --skip-artifact

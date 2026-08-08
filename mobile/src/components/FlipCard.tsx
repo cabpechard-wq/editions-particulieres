@@ -13,9 +13,11 @@ type Props = {
   verso: string;
   flipped: boolean;
   onFlip: () => void;
+  /** Étiquettes ★ (importance), affichées recto et verso. */
+  stars?: string;
 };
 
-export function FlipCard({ recto, verso, flipped, onFlip }: Props) {
+export function FlipCard({ recto, verso, flipped, onFlip, stars }: Props) {
   const progress = useSharedValue(flipped ? 1 : 0);
 
   React.useEffect(() => {
@@ -44,9 +46,11 @@ export function FlipCard({ recto, verso, flipped, onFlip }: Props) {
     <Pressable onPress={onFlip} style={styles.scene} accessibilityRole="button">
       <View style={styles.inner}>
         <Animated.View style={[styles.face, frontStyle]}>
+          {stars ? <Text style={styles.stars}>{stars}</Text> : null}
           <Text style={styles.term}>{recto}</Text>
         </Animated.View>
         <Animated.View style={[styles.face, styles.faceBack, backStyle]}>
+          {stars ? <Text style={styles.stars}>{stars}</Text> : null}
           <Text style={[styles.def, !verso && styles.empty]}>
             {verso || "— Verso non renseigné —"}
           </Text>
@@ -87,6 +91,15 @@ const styles = StyleSheet.create({
     color: colors.ink,
     textAlign: "center",
     lineHeight: 28,
+  },
+  stars: {
+    position: "absolute",
+    top: 10,
+    right: 14,
+    fontSize: 13,
+    letterSpacing: 1,
+    color: colors.accent,
+    fontWeight: "700",
   },
   def: {
     fontSize: 15,

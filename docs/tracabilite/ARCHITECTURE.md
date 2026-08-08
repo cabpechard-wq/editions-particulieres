@@ -125,7 +125,8 @@ Toujours partir des `.example`.
 | `setup_output_dirs.ps1` | Crée l’arborescence Drive |
 | `refresh_extraction.ps1` | `python -m extract` |
 | `refresh_flipcards.ps1` | Matrice flipcards |
-| `build_site.ps1` | build_assets + merges + gate membre |
+| `build_site.ps1` | build_assets + merges + gate membre + index recherche |
+| `build_all.ps1` | Pipeline unique : pull JSON + HTML + flipcards + `build_site` |
 | `merge_*_site.ps1` | Copie Drive `export_site` → `dist` |
 | `fix_legacy_crumbs.py` | Nettoie fils d’Ariane legacy |
 | `patch_site_scripts.py` | Injecte TTS |

@@ -24,7 +24,16 @@ def default_export_dir() -> Path:
         return ROOT / "output"
 
 
+def default_site_export_dir() -> Path:
+    """Dossier de sortie HTML site (Drive export_site)."""
+    try:
+        return resolve_path("export_site")
+    except (KeyError, OSError):
+        return ROOT / "output" / "site"
+
+
 DEFAULT_OUT = default_export_dir()
+DEFAULT_OUT_HTML = default_site_export_dir()
 
 
 def resolve_python() -> Path:
@@ -116,12 +125,15 @@ def build_request(
         if lim <= 0:
             return None, "La limite doit être un entier positif."
 
-    out_path = Path(out.strip()) if out.strip() else DEFAULT_OUT
-
     try:
         fmt = ensure_format(format)
     except ValueError as e:
         return None, str(e)
+
+    if out.strip():
+        out_path = Path(out.strip())
+    else:
+        out_path = default_site_export_dir() if fmt == "html" else DEFAULT_OUT
 
     site_tpl: Path | None = None
     if fmt == "html" and ("manuel" in regs or "index" in regs or "arrets" in regs) and not combine:

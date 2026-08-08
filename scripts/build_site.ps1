@@ -32,6 +32,9 @@ Push-Location $site
 try {
     python build_membre_gate.py
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    python build_search_index.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } finally {
     Pop-Location
 }

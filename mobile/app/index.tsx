@@ -16,6 +16,8 @@ import {
   allNotions,
   allThemes,
   colorForLabel,
+  presentImportanceLevels,
+  starsLabel,
   type Card,
 } from "../src/data/cards";
 import { useStudySession } from "../src/data/StudyContext";
@@ -37,6 +39,7 @@ export default function HomeScreen() {
   const {
     selectedThemes,
     selectedNotions,
+    selectedImportance,
     filteredCards,
     count,
     isChipEnabled,
@@ -71,12 +74,15 @@ export default function HomeScreen() {
       <ScrollView contentContainerStyle={styles.scroll}>
         <Text style={styles.title}>{PAGE_TITLE}</Text>
         <Text style={styles.sub}>
-          Choisissez un thème et/ou des notions, puis lancez l’étude. Laissez
-          vide pour tout le set ({allCards.length} cartes).
+          1 thème (choix unique), notions et importance — comme sur le web.
+          Laissez vide pour tout le set ({allCards.length} cartes).
         </Text>
 
         <View style={styles.card}>
-          <Accordion title="Thèmes" onClear={() => clear("theme")}>
+          <Accordion
+            title="1 — Thèmes (1 seul choix)"
+            onClear={() => clear("theme")}
+          >
             <View style={styles.chips}>
               {allThemes.length ? (
                 allThemes.map((t) => (
@@ -95,7 +101,7 @@ export default function HomeScreen() {
             </View>
           </Accordion>
 
-          <Accordion title="Notions" onClear={() => clear("notion")}>
+          <Accordion title="2 — Notions" onClear={() => clear("notion")}>
             <View style={styles.chips}>
               {allNotions.length ? (
                 allNotions.map((n) => (
@@ -111,6 +117,27 @@ export default function HomeScreen() {
               ) : (
                 <Text style={styles.emptyChips}>Aucun classificateur renseigné.</Text>
               )}
+            </View>
+          </Accordion>
+
+          <Accordion
+            title="3 — Importance"
+            onClear={() => clear("importance")}
+          >
+            <View style={styles.chips}>
+              {(presentImportanceLevels.length
+                ? presentImportanceLevels
+                : [1, 2, 3, 4]
+              ).map((lvl) => (
+                <Chip
+                  key={lvl}
+                  label={starsLabel(lvl)}
+                  colorName="default"
+                  selected={selectedImportance.includes(lvl)}
+                  disabled={!isChipEnabled("importance", lvl)}
+                  onPress={() => toggle("importance", lvl)}
+                />
+              ))}
             </View>
           </Accordion>
 

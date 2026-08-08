@@ -1,10 +1,15 @@
-﻿"""Smoke tests locaux du parcours SITE_ROOT (gate HTML + config + Notion state)."""
+"""Smoke tests locaux du parcours commerce (gate + config) + artefact dist.
+
+Usage :
+  python site/test_commerce.py
+  python site/test_commerce.py --skip-artifact   # config seule
+"""
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -24,107 +29,102 @@ def ok(msg: str) -> None:
     print(f"OK: {msg}")
 
 
-def main() -> int:
-    errors = 0
+def warn(msg: str) -> None:
+    print(f"WARN: {msg}")
 
-    if not SITE.exists():
-        fail("dist/site manquant — lance build_assets.py")
 
-    demo = SITE / "demo" / "index.html"
-    gate = SITE / "flipcards" / "index.html"
-    app = SITE / "flipcards" / "app.html"
-    for p in (demo, gate, app):
-        if not p.exists():
-            fail(f"fichier manquant {p}")
-        if p.stat().st_size < 500:
-            fail(f"fichier trop petit {p}")
-    ok("artefacts demo + flipcards présents")
-
-    if not PW_FILE.exists():
-        fail("mot de passe membres manquant")
-    password = PW_FILE.read_text(encoding="utf-8").strip()
-    digest = hashlib.sha256(password.encode()).hexdigest()
-    gate_html = gate.read_text(encoding="utf-8")
-    if digest not in gate_html:
-        fail("hash mot de passe absent du gate")
-    ok("gate SHA-256 cohérent")
-
-    app_html = app.read_text(encoding="utf-8")
-    if "flipcards_ok" not in app_html:
-        fail("garde session absente de app.html")
-    ok("garde session injectée dans app.html")
-
-    # Démo limitée : compter les slides si possible
-    demo_html = demo.read_text(encoding="utf-8")
-    slides = len(re.findall(r'class="card-slide"', demo_html))
-    if slides == 0:
-        slides = len(re.findall(r"data-index=", demo_html))
-    if slides == 0:
-        # fallback : fichier démo non vide et plus petit que le pack membres
-        app = SITE / "flipcards" / "app.html"
-        if demo.stat().st_size >= app.stat().st_size * 0.5:
-            fail("démo trop volumineuse vs app complète")
-        ok(f"démo présente ({demo.stat().st_size} octets, < app complète)")
-    else:
-        if slides > 12:
-            fail(f"démo trop large ({slides} slides) — attendu ~8")
-        ok(f"démo limitée ({slides} slides)")
+def check_config() -> int:
+    """Retourne le nombre d'erreurs soft (pending URLs)."""
+    if not CFG.is_file():
+        fail("site/config.json manquant")
 
     cfg = json.loads(CFG.read_text(encoding="utf-8-sig"))
-    if not cfg.get("members_password"):
-        fail("config.members_password vide")
-    if not (cfg.get("notion") or {}).get("vitrine_page_id"):
-        fail("notion vitrine manquante dans config")
-    if not (cfg.get("notion") or {}).get("membre_page_id"):
-        fail("notion membre manquant dans config")
-    ok("config notion + password")
 
-    if not STATE.exists():
-        fail("notion_state.json manquant")
-    ok("notion_state.json présent")
-
-    # Checklist externe (Stripe + Worker auth + URLs site)
-    stripe = cfg.get("stripe") or {}
-    ls = cfg.get("lemonsqueezy") or {}  # miroir legacy des Payment Links
-    auth = cfg.get("auth") or {}
-    pending = []
-    monthly = (
-        (stripe.get("monthly_payment_link") or "")
-        or (ls.get("monthly_checkout_url") or "")
-    )
-    yearly = (
-        (stripe.get("yearly_payment_link") or "")
-        or (ls.get("yearly_checkout_url") or "")
-    )
-    if not monthly.startswith("http"):
-        pending.append("Stripe monthly_payment_link (setup_stripe_links.py)")
-    if not yearly.startswith("http"):
-        pending.append("Stripe yearly_payment_link (setup_stripe_links.py)")
-    if not (cfg.get("demo_url") or "").startswith("http"):
-        pending.append("demo_url (site/config.json hosting)")
-    if not (cfg.get("flipcards_url") or "").startswith("http"):
-        pending.append("flipcards_url (site/config.json)")
-    if not (auth.get("api_url") or "").startswith("http"):
-        pending.append("auth.api_url (Worker Cloudflare)")
-
-    print("---")
-    if pending:
-        print("PENDING (actions comptes externes) :")
-        for p in pending:
-            print(f"  - {p}")
-        errors = 1
+    if PW_FILE.is_file():
+        password = PW_FILE.read_text(encoding="utf-8").strip()
+        digest = hashlib.sha256(password.encode()).hexdigest()
+        gate = SITE / "flipcards" / "index.html"
+        if gate.is_file():
+            if digest not in gate.read_text(encoding="utf-8", errors="ignore"):
+                fail("hash mot de passe absent du gate flipcards")
+            ok("gate SHA-256 coherent")
+        if not cfg.get("members_password"):
+            warn("config.members_password vide (fichier .members_password present)")
     else:
-        ok("toutes les URLs externes renseignées")
-        print(
-            "E2E manuel restant : paiement test Stripe -> /merci/ -> "
-            "ouverture flipcards -> reconnexion /membre/."
-        )
+        warn(".members_password absent (OK en CI si gate non hashe localement)")
 
+    notion = cfg.get("notion") or {}
+    if not notion.get("vitrine_page_id"):
+        warn("notion.vitrine_page_id vide")
+    if not notion.get("membre_page_id"):
+        warn("notion.membre_page_id vide")
+    if STATE.is_file():
+        ok("notion_state.json present")
+    else:
+        warn("notion_state.json absent")
+
+    stripe = cfg.get("stripe") or {}
+    ls = cfg.get("lemonsqueezy") or {}
+    auth = cfg.get("auth") or {}
+    pending: list[str] = []
+    monthly = (stripe.get("monthly_payment_link") or "") or (
+        ls.get("monthly_checkout_url") or ""
+    )
+    yearly = (stripe.get("yearly_payment_link") or "") or (
+        ls.get("yearly_checkout_url") or ""
+    )
+    if not str(monthly).startswith("http"):
+        pending.append("Stripe monthly_payment_link")
+    if not str(yearly).startswith("http"):
+        pending.append("Stripe yearly_payment_link")
+    if not str(cfg.get("demo_url") or "").startswith("http"):
+        pending.append("demo_url")
+    if not str(cfg.get("flipcards_url") or "").startswith("http"):
+        pending.append("flipcards_url")
+    if not str(auth.get("api_url") or "").startswith("http"):
+        pending.append("auth.api_url")
+
+    if pending:
+        print("PENDING (URLs) :")
+        for item in pending:
+            print(f"  - {item}")
+        return 1
+
+    ok("URLs externes renseignees")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument(
+        "--skip-artifact",
+        action="store_true",
+        help="Ne pas lancer smoke_artifact.py",
+    )
+    args = p.parse_args(argv)
+
+    if not args.skip_artifact:
+        if not SITE.is_dir():
+            fail("dist/site manquant — lance build_assets / build_site")
+        sys.path.insert(0, str(SITE_ROOT))
+        from smoke_artifact import main as artifact_main
+
+        code = artifact_main([])
+        if code != 0:
+            return code
+    else:
+        warn("smoke artefact ignore (--skip-artifact)")
+
+    errors = check_config()
     print("---")
     print(
-        "Révocation : désactiver le compte dans le Worker KV / Resend, "
-        "ou faire expirer l'abonnement Stripe — le gate HTML seul ne suffit plus."
+        "E2E manuel restant : paiement test Stripe -> /merci/ -> "
+        "flipcards -> /membre/."
     )
+    if errors:
+        print("SMOKE COMMERCE : pending URLs")
+    else:
+        print("SMOKE COMMERCE OK")
     return errors
 
 

@@ -7,6 +7,8 @@
   function abs(path) {
     return new URL(path.replace(/^\//, ""), root).href;
   }
+  // Exposé pour site-search.js (même racine d'assets)
+  window.SiteNavAbs = abs;
 
   const header = document.createElement("header");
   header.className = "site-nav";
@@ -319,4 +321,12 @@
     console.warn("[site-theme] Impossible de charger site-theme.js — rebuild du site requis.");
   };
   document.body.appendChild(themeJs);
+
+  // Recherche full-text (Cours + Dictionnaire + Arrêts)
+  const searchJs = document.createElement("script");
+  searchJs.src = new URL("site-search.js?v=1", script.src).href;
+  searchJs.onerror = function () {
+    console.warn("[site-search] Impossible de charger site-search.js — rebuild du site requis.");
+  };
+  document.body.appendChild(searchJs);
 })();

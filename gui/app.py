@@ -12,6 +12,7 @@ from tkinter import filedialog, messagebox, ttk
 
 from .runner import (
     DEFAULT_OUT,
+    DEFAULT_OUT_HTML,
     ROOT,
     attach_styles_cmdline,
     build_request,
@@ -34,6 +35,9 @@ class NotionExportApp(tk.Tk):
         self._log_q: queue.Queue[str | None] = queue.Queue()
         self._running = False
         self._cancel = threading.Event()
+        self._out_docx = str(DEFAULT_OUT)
+        self._out_html = str(DEFAULT_OUT_HTML)
+        self._last_format = "docx"
 
         self._setup_style()
         self._build()
@@ -69,7 +73,7 @@ class NotionExportApp(tk.Tk):
         ttk.Label(root, text="Éditions Particulières", style="Title.TLabel").pack(anchor=tk.W)
         ttk.Label(
             root,
-            text="Word : export .docx · PDF : post-traitement Word · HTML : manuel, glossaire, arrêts ou pages .html",
+            text="Word : .docx / PDF · HTML : publier Cours, Glossaire ou Arrêts (même registres, même Générer)",
             style="Sub.TLabel",
         ).pack(anchor=tk.W, pady=(0, 10))
 
@@ -190,9 +194,10 @@ class NotionExportApp(tk.Tk):
         row1 = ttk.Frame(opt)
         row1.pack(fill=tk.X)
         self.combine = tk.BooleanVar(value=False)
-        ttk.Checkbutton(
+        self.cb_combine = ttk.Checkbutton(
             row1, text="Combiner → 1 fichier", variable=self.combine, command=self._sync_options
-        ).pack(side=tk.LEFT)
+        )
+        self.cb_combine.pack(side=tk.LEFT)
         ttk.Label(row1, text="Nom").pack(side=tk.LEFT, padx=(12, 4))
         self.name = tk.StringVar()
         self.name_entry = ttk.Entry(row1, textvariable=self.name, width=28)
@@ -242,10 +247,18 @@ class NotionExportApp(tk.Tk):
         ttk.Label(fmt_out, text="Format").pack(side=tk.LEFT)
         self.out_format = tk.StringVar(value="docx")
         ttk.Radiobutton(
-            fmt_out, text="Word (.docx)", value="docx", variable=self.out_format, command=self._sync_options
+            fmt_out,
+            text="Word (.docx)",
+            value="docx",
+            variable=self.out_format,
+            command=self._on_format_change,
         ).pack(side=tk.LEFT, padx=(12, 8))
         ttk.Radiobutton(
-            fmt_out, text="HTML (site)", value="html", variable=self.out_format, command=self._sync_options
+            fmt_out,
+            text="HTML (site)",
+            value="html",
+            variable=self.out_format,
+            command=self._on_format_change,
         ).pack(side=tk.LEFT, padx=(8, 0))
 
         pdf_row = ttk.Frame(opt)
@@ -258,6 +271,15 @@ class NotionExportApp(tk.Tk):
             command=self._sync_options,
         )
         self.cb_also_pdf.pack(side=tk.LEFT)
+
+        self.also_merge_site = tk.BooleanVar(value=True)
+        self.cb_also_merge = ttk.Checkbutton(
+            pdf_row,
+            text="Fusionner dans site/dist/site",
+            variable=self.also_merge_site,
+            command=self._sync_options,
+        )
+        self.cb_also_merge.pack(side=tk.LEFT, padx=(16, 0))
 
         self.site_tpl_row = ttk.Frame(opt)
         self.site_tpl_row.pack(fill=tk.X, pady=(6, 0))
@@ -524,6 +546,23 @@ class NotionExportApp(tk.Tk):
         for child in widget.winfo_children():
             self._set_widget_tree_state(child, state)
 
+    def _on_format_change(self) -> None:
+        """Mémorise le dossier de sortie Word/HTML et bascule le chemin par défaut."""
+        prev = getattr(self, "_last_format", "docx")
+        cur = self.out_format.get()
+        current_out = self.out.get().strip()
+        if prev == "docx":
+            self._out_docx = current_out or self._out_docx
+        else:
+            self._out_html = current_out or self._out_html
+        self._last_format = cur
+        if cur == "html":
+            self.out.set(self._out_html)
+            self.combine.set(False)
+        else:
+            self.out.set(self._out_docx)
+        self._sync_options()
+
     def _sync_options(self) -> None:
         mode = self.source_mode.get()
         pages_mode = mode == "pages"
@@ -536,14 +575,6 @@ class NotionExportApp(tk.Tk):
             cb.configure(state=regs_state)
         self.autres_text.configure(state=regs_state)
         self._set_widget_tree_state(self.fiches_box, pages_state)
-
-        if html_mode:
-            for cb in self._reg_checks:
-                if cb.cget("text") == "Jurisprudence":
-                    cb.configure(state=regs_state)
-        elif not pages_mode:
-            for cb in self._reg_checks:
-                cb.configure(state=tk.NORMAL)
 
         has_manuel = (
             self.var_manuel.get()
@@ -560,48 +591,65 @@ class NotionExportApp(tk.Tk):
             if not pages_mode
             else "arrets" in self._registres_for_pages_mode()
         )
+        site_section = has_manuel or has_index or has_arrets
         site_tpl_state = (
             tk.NORMAL
-            if html_mode and (has_manuel or has_index or has_arrets) and not self.combine.get()
+            if html_mode and site_section and not self.combine.get()
             else tk.DISABLED
         )
         self._set_widget_tree_state(self.site_tpl_row, site_tpl_state)
 
+        # Word-only / HTML-only
         docx_only = tk.NORMAL if not html_mode else tk.DISABLED
+        html_only = tk.NORMAL if html_mode else tk.DISABLED
         self.btn_postlink.configure(state=docx_only)
         self.btn_attach.configure(state=docx_only)
         self.btn_pdf.configure(state=docx_only)
         self.cb_also_pdf.configure(state=docx_only)
+        self.cb_combine.configure(state=docx_only)
+        self.cb_also_merge.configure(
+            state=tk.NORMAL if html_mode and site_section else tk.DISABLED
+        )
         if html_mode:
             self.also_pdf.set(False)
+            self.combine.set(False)
+        # also_merge_site : préférence conservée (activée seulement en HTML)
 
         if html_mode:
+            self.btn_run.configure(text="Publier HTML")
             if has_manuel and not self.combine.get():
-                hint = "HTML : export cours (sommaire + chapitres DP-XXX) vers export/site/manuel/."
+                hint = "HTML : publie le Cours (sommaire + chapitres DP-XXX) vers export/site/manuel/."
                 if has_index:
-                    hint += " Glossaire → export/site/dictionnaire/."
+                    hint += " Glossaire → dictionnaire/."
                 if has_arrets:
-                    hint += " Arrêts → export/site/arrets/."
+                    hint += " Arrêts → arrets/."
+                if self.also_merge_site.get() and site_section:
+                    hint += " Puis fusion vers site/dist/site."
                 self.fmt_hint.configure(text=hint)
             elif has_index and not self.combine.get():
-                hint = "HTML : export dictionnaire (index A–Z) vers export/site/dictionnaire/."
+                hint = "HTML : publie le dictionnaire (index A–Z) vers export/site/dictionnaire/."
                 if has_arrets:
-                    hint += " Arrêts → export/site/arrets/."
+                    hint += " Arrêts → arrets/."
+                if self.also_merge_site.get() and site_section:
+                    hint += " Puis fusion vers site/dist/site."
                 self.fmt_hint.configure(text=hint)
             elif has_arrets and not self.combine.get():
-                self.fmt_hint.configure(
-                    text="HTML : export fiches d'arrêts vers export/site/arrets/."
-                )
+                hint = "HTML : publie les fiches d'arrêts vers export/site/arrets/."
+                if self.also_merge_site.get():
+                    hint += " Puis fusion vers site/dist/site."
+                self.fmt_hint.configure(text=hint)
             else:
                 self.fmt_hint.configure(
                     text="HTML : un fichier .html par page (dossier du registre)."
                 )
-        elif self.also_pdf.get():
-            self.fmt_hint.configure(
-                text="PDF : conversion automatique après génération Word (Microsoft Word requis)."
-            )
         else:
-            self.fmt_hint.configure(text="")
+            self.btn_run.configure(text="Générer")
+            if self.also_pdf.get():
+                self.fmt_hint.configure(
+                    text="PDF : conversion automatique après génération Word (Microsoft Word requis)."
+                )
+            else:
+                self.fmt_hint.configure(text="")
 
         # Jurisprudence : MAJ CSV si arrets inclus ; A4/A5 seulement si arrets seul
         if pages_mode:
@@ -623,7 +671,7 @@ class NotionExportApp(tk.Tk):
             self.arrets_fmt.set("a4")
 
         self.name_entry.configure(
-            state=tk.NORMAL if self.combine.get() else tk.DISABLED
+            state=tk.NORMAL if (self.combine.get() and not html_mode) else tk.DISABLED
         )
 
     def _browse_site_templates(self) -> None:
@@ -838,9 +886,14 @@ class NotionExportApp(tk.Tk):
         self._append_log(f"Format : {req.format}\n")
         if req.format == "html":
             self._append_log(f"Gabarits site : {req.site_templates or '—'}\n")
+            if self.also_merge_site.get():
+                self._append_log("Fusion dist/site : oui\n")
         else:
             self._append_log(f"Master : {master_styles_path()}\n")
         self._append_log(f"Sortie : {req.out}\n\n")
+
+        do_merge = req.format == "html" and self.also_merge_site.get()
+        merge_regs = list(req.registres)
 
         def worker() -> None:
             try:
@@ -856,6 +909,24 @@ class NotionExportApp(tk.Tk):
                     self._log_q.put("\nAnnulé.\n")
                 elif code == 0:
                     self._log_q.put(f"\nSuccès — {len(paths)} fichier(s).\n")
+                    if do_merge and not self._cancel.is_set():
+                        self._log_q.put("\n--- Fusion site/dist/site ---\n")
+                        from extract.html.export_pipeline import resolve_site_root
+
+                        from .merge_site import merge_registres
+
+                        site_root = resolve_site_root(Path(req.out))
+                        mcode = merge_registres(
+                            merge_regs, export_site=site_root, log=log
+                        )
+                        if mcode == 0:
+                            self._log_q.put(
+                                "Fusion OK. Prévisualiser : .\\scripts\\serve_site.ps1\n"
+                            )
+                        else:
+                            self._log_q.put(
+                                f"Fusion terminée avec erreurs (code {mcode}).\n"
+                            )
                 else:
                     self._log_q.put(f"\nTerminé avec erreurs (code {code}).\n")
             except Exception as e:

@@ -3,7 +3,7 @@
   "hosting": {
     "provider": "github-pages",
     "site_name": "editions-particulieres",
-    "base_url": "https://cabpechard-wq.github.io/editions-particulieres"
+    "base_url": "https://www.editions-particulieres.fr"
   },
   "paths": {
     "output_root": "G:/Mon Drive/Editions Particulieres",

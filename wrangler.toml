@@ -1,5 +1,5 @@
 name = "flipcards-auth"
-main = "src/worker.js"
+main = "site/worker/src/worker.js"
 compatibility_date = "2024-11-01"
 
 [[kv_namespaces]]
@@ -8,8 +8,8 @@ id = "0f830d66f2d840b6a4caa0482f4df5c0"
 preview_id = "030c7124858c4daea4b3f5a39268de7b"
 
 [vars]
-SITE_ORIGIN = "https://cabpechard-wq.github.io"
-SITE_BASE = "https://cabpechard-wq.github.io/editions-particulieres"
+SITE_ORIGIN = "https://www.editions-particulieres.fr"
+SITE_BASE = "https://www.editions-particulieres.fr"
 RESEND_FROM = "Flipcards <onboarding@resend.dev>"
 # Secrets (wrangler secret put):
 #   STRIPE_SECRET_KEY

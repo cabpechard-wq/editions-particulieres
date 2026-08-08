@@ -32,7 +32,7 @@ San Francisco, CA 94107
 États-Unis  
 https://github.com
 
-Le site est publié à l’adresse https://cabpechard-wq.github.io/editions-particulieres/
+Le site est publié à l’adresse https://www.editions-particulieres.fr/
 
 L’authentification abonné s’appuie sur un service **Cloudflare Workers** (Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis). Le paiement des commandes est assuré séparément par **Stripe** (cf. CGV) ; GitHub et Cloudflare n’interviennent pas dans le traitement des données de paiement.
 

@@ -370,7 +370,7 @@ def main() -> int:
     cfg["merci_url"] = (
         f"{base.rstrip('/')}/merci/?session_id={{CHECKOUT_SESSION_ID}}"
         if base
-        else "https://cabpechard-wq.github.io/editions-particulieres/merci/?session_id={CHECKOUT_SESSION_ID}"
+        else "https://www.editions-particulieres.fr/merci/?session_id={CHECKOUT_SESSION_ID}"
     )
 
     # URL checkout dans config
@@ -419,6 +419,9 @@ def main() -> int:
         "User-agent: *\nDisallow: /flipcards/\nAllow: /demo/\n",
         encoding="utf-8",
     )
+    custom_domain = ((cfg.get("hosting") or {}).get("custom_domain") or "").strip()
+    if custom_domain:
+        (site / "CNAME").write_text(f"{custom_domain}\n", encoding="utf-8")
     print(f"Démo : {demo}")
     print(f"Membres gate : {members}")
     print(f"Site Netlify : {site}")

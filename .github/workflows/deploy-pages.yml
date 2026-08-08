@@ -48,6 +48,25 @@ jobs:
           if [ ! -f config/notion.json ]; then
             cp config/notion.json.example config/notion.json
           fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("site/config.json")
+          cfg = json.loads(path.read_text(encoding="utf-8"))
+          base = "https://www.editions-particulieres.fr"
+          hosting = cfg.setdefault("hosting", {})
+          hosting["base_url"] = base
+          hosting["custom_domain"] = "www.editions-particulieres.fr"
+          cfg["checkout_url"] = f"{base}/checkout/"
+          cfg["demo_url"] = f"{base}/demo/"
+          cfg["flipcards_url"] = f"{base}/flipcards/"
+          cfg["merci_url"] = f"{base}/merci/?session_id={{CHECKOUT_SESSION_ID}}"
+          legal = cfg.setdefault("legal", {})
+          legal["cgv_url"] = f"{base}/cgv/"
+          legal["mentions_url"] = f"{base}/mentions-legales/"
+          path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+          print("base_url:", base)
+          PY
       - name: Export flipcards matrice
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}

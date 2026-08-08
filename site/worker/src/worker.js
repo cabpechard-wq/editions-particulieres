@@ -532,12 +532,20 @@ function json(obj, status = 200, request = null, env = null) {
 function cors(res, request, env) {
   const origin = request.headers.get("Origin") || "";
   const allowed = [
-    env?.SITE_ORIGIN || "https://cabpechard-wq.github.io",
     "http://127.0.0.1:5500",
     "http://localhost:5500",
     "http://127.0.0.1:8080",
     "http://localhost:8080",
+    "https://cabpechard-wq.github.io",
   ];
+  for (const key of ["SITE_BASE", "SITE_ORIGIN"]) {
+    const raw = (env?.[key] || "").replace(/\/$/, "");
+    if (!raw) continue;
+    try {
+      const o = new URL(raw).origin;
+      if (!allowed.includes(o)) allowed.push(o);
+    } catch (_) {}
+  }
   const headers = new Headers(res.headers);
   if (!origin || allowed.some((a) => origin === a || origin.startsWith(a))) {
     headers.set("Access-Control-Allow-Origin", origin || "*");

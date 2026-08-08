@@ -2,7 +2,7 @@
 
 *Dernière mise à jour : 5 août 2026*
 
-Les présentes conditions générales de vente (ci-après « CGV ») s’appliquent à toute commande passée sur le site https://cabpechard-wq.github.io/editions-particulieres/ (ci-après « le Site »), édité par CABINET PECHARD, EURL au capital de 1 000 €, dont le siège social est situé 78 avenue des Champs-Élysées, 75008 Paris, immatriculée au RCS de Paris sous le numéro 889 924 650, sous l’enseigne **Éditions Particulières** (ci-après « le Vendeur »).
+Les présentes conditions générales de vente (ci-après « CGV ») s’appliquent à toute commande passée sur le site https://www.editions-particulieres.fr/ (ci-après « le Site »), édité par CABINET PECHARD, EURL au capital de 1 000 €, dont le siège social est situé 78 avenue des Champs-Élysées, 75008 Paris, immatriculée au RCS de Paris sous le numéro 889 924 650, sous l’enseigne **Éditions Particulières** (ci-après « le Vendeur »).
 
 Toute commande passée sur le Site implique l’acceptation sans réserve des présentes CGV par l’acheteur (ci-après « le Client »).
 

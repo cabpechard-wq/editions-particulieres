@@ -56,7 +56,7 @@ def main() -> int:
     write(MEMBRE / "robots.txt", "User-agent: *\nDisallow: /\n")
 
     base = (cfg.get("hosting") or {}).get("base_url") or (
-        "https://cabpechard-wq.github.io/editions-particulieres"
+        "https://www.editions-particulieres.fr"
     )
     cfg.setdefault("sotion", {})
     cfg["sotion"]["site_url"] = f"{base.rstrip('/')}/membre/"

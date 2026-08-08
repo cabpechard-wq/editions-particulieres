@@ -25,6 +25,9 @@
   --nav-h: 3.5rem;
   --ok: #6ee7b7;
   --danger: #f87171;
+  --link-dict: #6eb3e8;
+  --link-arret: #5ecf8f;
+  --link-manuel: var(--accent);
 }
 
 *,
@@ -1498,6 +1501,7 @@ input:focus {
 /* Colonne de lecture alignée au menu (menu latéral inchangé) */
 .manuel-shell .manuel-content > .site-title,
 .manuel-shell .manuel-content > .manuel-prose,
+.manuel-shell .manuel-content > .site-linked-resources,
 .manuel-shell .manuel-content > .manuel-chapternav,
 .manuel-shell .manuel-content > .site-tts--capsules {
   max-width: var(--read-column);
@@ -2305,6 +2309,62 @@ input:focus {
   color: var(--muted);
 }
 
+
+
+/* Ressources liées — pied de page Manuel / fiches arrêt */
+.site-linked-resources {
+  margin: 2rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+}
+
+.site-linked-resources-title {
+  margin: 0 0 .55rem;
+  font-family: var(--font-ui);
+  font-size: .92rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--secondary);
+}
+
+.site-linked-resources-links {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: .9rem;
+  line-height: 1.55;
+}
+
+.site-linked-resources-links a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-linked-resources-links a.dict-link {
+  color: var(--link-dict);
+}
+
+.site-linked-resources-links a.arret-link {
+  color: var(--link-arret);
+}
+
+.site-linked-resources-links a.manuel-link {
+  color: var(--link-manuel);
+}
+
+.site-linked-resources-links a:hover {
+  opacity: .88;
+}
+
+.site-linked-resources-sep {
+  margin: 0 .35rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.arrets-fiche-layout > .site-linked-resources,
+.arrets-fiche-layout > .manuel-chapternav {
+  max-width: var(--read-column);
+}
 
 /* —— Fiches d'arrêts —— */
 .arrets-toolbar {

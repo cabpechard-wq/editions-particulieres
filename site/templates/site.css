@@ -20,6 +20,9 @@
   --card: #162028;
   --ok: #6ee7b7;
   --danger: #f87171;
+  --link-dict: #337ea9;
+  --link-arret: #448361;
+  --link-manuel: var(--accent);
   --radius: 2px;
   /* Colonne de lecture (manuel, fiches arrêts) — ~44,5 rem ≈ 18,8 cm à 16 px/rem */
   --read-column: 46rem;
@@ -2373,15 +2376,15 @@ input:focus {
 }
 
 .site-linked-resources-links a.dict-link {
-  color: #337ea9;
+  color: var(--link-dict);
 }
 
 .site-linked-resources-links a.arret-link {
-  color: #448361;
+  color: var(--link-arret);
 }
 
 .site-linked-resources-links a.manuel-link {
-  color: var(--accent);
+  color: var(--link-manuel);
 }
 
 .site-linked-resources-links a:hover {

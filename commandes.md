@@ -1,4 +1,4 @@
-# Éditions Particulières — [commandes.md](http://commandes.md)
+# Éditions Particulières — commandes.md
 
 Fiche opérationnelle locale. Historique détaillé : `docs/tracabilite/`.
 
@@ -113,6 +113,10 @@ pip install -r requirements.txt
 ```
 
 ### 3.2 Extraction Word / PDF / HTML (GUI)
+
+**Word / PDF : uniquement en local** (Windows + Microsoft Word installé).  
+Pas d’export Word/PDF via GitHub Actions (pas de Word COM sur les runners Linux).  
+CI GitHub = site HTML Pages uniquement.
 
 ```powershell
 python -m gui

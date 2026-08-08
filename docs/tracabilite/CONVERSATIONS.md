@@ -20,7 +20,7 @@ Convention de citation Cursor : `[titre](uuid)` sans `.jsonl`.
 
 | Date (maj) | Titre | ID | Sujet | Statut |
 |------------|-------|-----|-------|--------|
-| 2026-08-08 | Project documentation and archiving | `94b00a18-637c-466c-9ef0-8a172c5a7312` | Création docs/tracabilite + nettoyage | active (cette session) |
+| 2026-08-08 | Project documentation and archiving | `94b00a18-637c-466c-9ef0-8a172c5a7312` | Traçabilité ; recherche ; dico/BU ; couleurs dico ; flipcards search ; smoke CI | active (cette session) |
 | 2026-08-08 | (3) Project connection | `d998d927-d6eb-4986-b0e1-0a61e10b9705` | TTS, auth, domaine, relations | à archiver |
 | 2026-08-08 | Detailed audit for patches | `eb79d3f1-a232-4f42-b384-992e59b7f581` | Audit CORS, seed, UX | à archiver |
 | 2026-08-08 | Graphic charter proposals | `761930c0-0485-43cb-9f37-bbc28e22470e` | Chartes / thèmes | à archiver |

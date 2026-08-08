@@ -46,5 +46,6 @@ Thumbs.db
 site/.members_password
 site/abonnes.json
 site/notion_state.json
+notion_state.json
 site/config.json
 site/*CLE*.txt

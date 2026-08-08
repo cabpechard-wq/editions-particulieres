@@ -59,7 +59,7 @@ copy config\notion.json.example config\notion.json
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 
-# Extraction Word (GUI)
+# Extraction Word (GUI) — **local Windows + Word COM uniquement** (pas via GitHub Actions)
 python -m gui
 
 # Pull JSON Drive
@@ -78,13 +78,20 @@ python -m flipcards
 
 # Assemblage site local
 .\scripts\build_site.ps1
+.\scripts\build_all.ps1          # pull + HTML + flipcards + build_site
 .\scripts\serve_site.ps1
+
+# Index recherche (aussi appelé par build_site)
+python site/build_search_index.py
+
+# Smoke local (artefact dist)
+python site/smoke_artifact.py --root site/dist/site
 
 # Mobile
 cd mobile; npm install; npm run sync-data; npm start
 ```
 
-CI : `.github/workflows/deploy-pages.yml` sur `main`.
+CI : `.github/workflows/deploy-pages.yml` sur `main` (+ job smoke post-deploy).
 
 ---
 
@@ -97,6 +104,18 @@ CI : `.github/workflows/deploy-pages.yml` sur `main`.
 | Auth API | Worker `flipcards-auth` (URL dans `site/config.json`) |
 | Paiement | Stripe Payment Links (mensuel / semestriel) |
 | Contenu pédagogique | `/manuel/`, `/dictionnaire/`, `/arrets/`, `/flipcards/`, `/demo/` |
+| Recherche | `search-index.json` + champ bandeau (`site-search.js`) |
+| Hub BU | Libellé site « Bibliothèque » ; bandeau reste **BU** |
+
+### Dictionnaire (couleurs)
+
+| Élément | Token CSS |
+|---------|-----------|
+| Titres de section (A, B, C…) | `--secondary` |
+| Noms d’entrées | `--accent` (ocre Campus) |
+| Références / liens dans les items | `--muted` (page dico) |
+
+Toolbar : alphabet + filtre + voix sur une ligne (`.dict-controls` — nécessite rebuild HTML).
 
 ### Parcours abonné
 

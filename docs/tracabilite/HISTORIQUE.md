@@ -233,6 +233,17 @@ G:/Mon Drive/Editions Particulieres/
 | `ffe814b` | 2026-08-08 | CI : rejeter seed manuel incomplet ; forcer export Notion |
 | `4c3d748` | 2026-08-08 | Relier Cours / Dictionnaire / Arrêts |
 | `86d8cde` | 2026-08-08 | Relations, navigation, UX pédagogique |
+| `6937cfb` | 2026-08-08 | Navigation (Ambiance avant Inscriptions) ; retrait legacy extract |
+| `14f8b59` | 2026-08-08 | Arrêts : filtre avancé (juridiction, formation, date, référence, nom) |
+| `7eef81c` | 2026-08-08 | Recherche full-text, GUI HTML publish/merge, parité mobile, smoke CI |
+| `a9413a3` | 2026-08-08 | Recherche bandeau alignée sur la colonne de lecture ; filtres arrêts |
+| `1414fb5` | 2026-08-08 | Smoke live : repli `github.io` si SSL www incorrect |
+| `c10e7f5` | 2026-08-08 | Dictionnaire (toolbar + alphabet), libellé Bibliothèque, recherche flipcards |
+| `0e19548` | 2026-08-08 | CI : seed manuel/dico corrigé (évite export Notion à chaque push) |
+| `b032731` | 2026-08-08 | Index arrêts : largeur pleine filtres / liste |
+| `cdc882c` | 2026-08-08 | Dictionnaire : sections en `--secondary`, noms d’entrées en `--accent` (ocre) |
+| `b98eb16`…`8ec7914` | 2026-08-08 | Thèmes : recherche bandeau, Ressources liées, filtres arrêts, marge bas |
+| `8861642` | 2026-08-08 | Arrêts : restaurer « Ressources liées » depuis le cache jurisprudence |
 
 ### 4.3 Décisions d’architecture monorepo
 
@@ -244,6 +255,9 @@ G:/Mon Drive/Editions Particulieres/
 6. **Charte** : plusieurs thèmes CSS (`site/templates/themes/`) ; défaut Campus ; Amphithéâtre (papier lys) affiné.
 7. **TTS** : `site-tts.js` (Web Speech API fr-FR) injecté sur pages exportées.
 8. **Relations cross-pages** : Cours ↔ Dictionnaire ↔ Arrêts via `site_links` / propriétés Notion.
+9. **Recherche full-text** : `site/build_search_index.py` → `search-index.json` ; UI `site-search.js` dans le bandeau (alignée JS sur la colonne de lecture ; ancre `.wrap` pour flipcards/démo).
+10. **Smoke** : `site/smoke_artifact.py` (artefact CI) + `site/smoke_live.py` (post-deploy) ; fallback Pages `github.io` si le certificat www est invalide.
+11. **Pipeline unique local** : `.\scripts\build_all.ps1` (pull → HTML → flipcards → `build_site`) en plus de `build_site.ps1`.
 
 ### 4.4 Sessions Cursor monorepo (thèmes)
 
@@ -254,6 +268,26 @@ G:/Mon Drive/Editions Particulieres/
 | Stripe | `de23d752` | Payment Links mensuel / semestriel |
 | Chartes | `761930c0` | Propositions + switcher thèmes |
 | Audit patches | `eb79d3f1` | CORS www, seed incomplet, relations, fond Campus |
+| Doc + UX site (suite) | `94b00a18` | Traçabilité ; recherche ; dico/BU ; couleurs dico ; alignement thèmes |
+
+### 4.5 Après-midi du 8 août 2026 — UX site & qualité
+
+Session principale : [Project documentation and archiving](94b00a18-637c-466c-9ef0-8a172c5a7312) (puis commits thèmes / arrêts en parallèle).
+
+| Sujet | Fait | Comment |
+|-------|------|---------|
+| **Traçabilité** | Création `docs/tracabilite/` ; purge stubs migration | `NETTOYAGE.md`, `commandes.md` |
+| **Recherche** | Index build-time Cours + Dico + Arrêts ; champ bandeau | `build_search_index.py`, `site-search.js` ; alignement sur ancre de lecture (`.site-main` / `.wrap`) |
+| **Dictionnaire** | Alphabet + filtre + voix sur une ligne ; refs grises ; couleurs section/entrée | `dictionnaire_render.py` (`.dict-controls`) ; CSS Campus + thèmes ; `cdc882c` inverse section=`--secondary` / entrée=`--accent` |
+| **Accueil / BU** | « Bibliothèque universitaire » → « Bibliothèque » ; titre « Dictionnaire juridique » rétabli | `home.html`, `bibliotheque.html`, fil d’Ariane dico ; bandeau **BU** inchangé |
+| **Flipcards** | Recherche bandeau collée sous le brand (pas d’ancre `.site-main`) | Ancre `.wrap` + CSS `left: max(1rem, calc(50% - 24rem))` dans `flipcards/generator.py` |
+| **GUI HTML** | Publier / fusionner vers `dist/site` | `gui/merge_site.py`, polish format |
+| **Mobile** | Parité thèmes / notions / importance | `sync-data.js`, thème single-select |
+| **CI** | Smoke artefact + live ; seed ; SSL www | `smoke_*.py` ; repli github.io (`1414fb5`) ; seed dico/manuel (`0e19548`) |
+| **Thèmes** | Parité Campus : recherche, Ressources liées, filtres arrêts, marge bas | `b98eb16`…`8ec7914` |
+| **Arrêts** | Filtre avancé ; largeur index ; Ressources liées depuis cache | `14f8b59`, `b032731`, `8861642` |
+
+**Décision couleurs dictionnaire (finale) :** titres de lettre (A, B, C…) = `--secondary` du thème ; noms d’entrées = `--accent` (ocre Campus) ; références / liens dans les items = gris (`--muted`) sur la page dico uniquement.
 
 ---
 
@@ -282,9 +316,11 @@ Notion DBs
 ### Dettes / points de vigilance connus
 
 - Seed CI peut empoisonner si DNS renvoie une page OVH « en construction » (garde-fous ajoutés).
+- Certificat SSL **www** : mismatch hostname possible → smoke live bascule sur `github.io` ; réémettre le certificat Pages (retrait / réajout du domaine) si besoin.
 - Comptes membres : migration `abonnes.json` → KV à vérifier après chaque déplacement de projet.
 - Anciens dépôts Desktop (~5,4 Go) à archiver hors machine de travail (voir `NETTOYAGE.md`).
-- Assemblage local : `.\scripts\build_site.ps1` (l’ancien `build_all.ps1` a été supprimé).
+- Assemblage local : `.\scripts\build_site.ps1` ou pipeline complet `.\scripts\build_all.ps1`.
+- HTML dictionnaire : régénérer (`export_dictionnaire.py` / `build_all`) pour appliquer `.dict-controls` (alphabet + filtre sur une ligne).
 
 ---
 
@@ -293,3 +329,5 @@ Notion DBs
 | Date | Auteur / session | Changement |
 |------|------------------|------------|
 | 2026-08-08 | Session « Project documentation and archiving » | Création initiale du répertoire `docs/tracabilite/` ; synthèse extraction + site + monorepo ; index conversations ; premier nettoyage monorepo |
+| 2026-08-08 (soir) | Même session + commits thèmes/arrêts | Journal §4.2–4.5 : recherche, dico/BU, couleurs dico, flipcards, smoke/SSL, parité thèmes ; dettes SSL www |
+| 2026-08-08 (soir) | Rangement | `commandes.md` : Word/PDF local only ; `notion_state.json` retiré du suivi git ; docs tracabilité à jour |

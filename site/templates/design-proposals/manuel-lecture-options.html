@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manuel — 3 options plein écran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css?v=16">
+<style>
+  html { scroll-snap-type: y proximity; }
+
+  body.site-body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .demo-intro {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 2rem clamp(1.25rem, 4vw, 3rem);
+    font-family: var(--font-ui);
+    font-size: .95rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .demo-intro h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 .75rem;
+    line-height: 1.15;
+  }
+  .demo-intro p { margin: 0 0 .75rem; }
+  .demo-intro strong { color: var(--ink); }
+  .demo-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+    margin: 1.25rem 0 0;
+  }
+  .demo-jump a {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    border: 1px solid rgba(196, 163, 90, .4);
+    border-radius: 999px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    background: var(--accent-soft);
+  }
+  .demo-jump a:hover { border-color: var(--accent); color: var(--ink); }
+
+  .layout-demo {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    border-top: 3px solid rgba(196, 163, 90, .35);
+  }
+
+  .demo-badge {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    flex: 0 0 auto;
+    padding: .7rem clamp(1.25rem, 4vw, 3rem);
+    background: rgba(14, 20, 25, .94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(196, 163, 90, .25);
+    font-family: var(--font-ui);
+  }
+  .demo-badge h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .demo-badge p {
+    margin: .25rem 0 0;
+    font-size: .82rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .demo-badge strong { color: var(--ink); }
+
+  .layout-demo .site-main {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: none;
+    padding: 1.25rem clamp(1.25rem, 4vw, 3rem) 3rem;
+  }
+
+  .layout-demo .manuel-shell {
+    width: 100%;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  /* —— Option A —— */
+  .layout-a .manuel-shell .manuel-content > .site-title,
+  .layout-a .manuel-shell .manuel-content > .manuel-prose,
+  .layout-a .manuel-shell .manuel-content > .manuel-chapternav {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* —— Option B —— */
+  .layout-b .manuel-shell .manuel-content > .site-title,
+  .layout-b .manuel-shell .manuel-content > .manuel-prose,
+  .layout-b .manuel-shell .manuel-content > .manuel-chapternav {
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* —— Option C —— */
+  .layout-c .manuel-shell .manuel-content > .site-title,
+  .layout-c .manuel-shell .manuel-content > .manuel-prose,
+  .layout-c .manuel-shell .manuel-content > .manuel-chapternav {
+    max-width: 46rem;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .demo-nav li { list-style: none; }
+  .demo-nav ul { margin: 0; padding: 0; }
+  .demo-nav .is-current > a .nav-title { color: var(--accent); }
+
+  .layout-demo .manuel-prose {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  .demo-scroll-hint {
+    text-align: center;
+    font-size: .75rem;
+    color: var(--muted);
+    margin-top: auto;
+    padding-top: 2rem;
+    letter-spacing: .04em;
+  }
+</style>
+</head>
+<body class="site-body">
+
+<section class="demo-intro">
+  <h1>Champ de lecture — Manuel</h1>
+  <p>Chaque option occupe <strong>un écran entier</strong> : défilez (ou utilisez les liens) pour comparer. Le menu latéral est identique ; seule la colonne de texte change.</p>
+  <p>Production actuelle : <strong>44,5 rem</strong>, centré.</p>
+  <nav class="demo-jump" aria-label="Aller à une option">
+    <a href="#opt-a">A — Centré étroit (40 rem)</a>
+    <a href="#opt-b">B — Centré confort (48 rem)</a>
+    <a href="#opt-c">C — Aligné menu (46 rem)</a>
+  </nav>
+  <p class="demo-scroll-hint">↓ défilez</p>
+</section>
+
+<!-- OPTION A -->
+<section class="layout-demo layout-a" id="opt-a">
+  <div class="demo-badge">
+    <h2>Option A — Centré étroit</h2>
+    <p><strong>40 rem</strong> · centré · marges larges à gauche et à droite du texte</p>
+  </div>
+  <main class="site-main legal-page manuel-layout">
+    <p class="site-crumb">
+      <a href="#">Droit public et administratif</a>
+      <span class="sep">›</span>
+      <a href="#">Bibliothèque universitaire</a>
+      <span class="sep">›</span>
+      <a href="#">Manuel</a>
+      <span class="sep">›</span>
+      <strong>Les vices de légalité</strong>
+    </p>
+    <div class="manuel-shell">
+      <nav class="manuel-nav manuel-nav-side demo-nav" aria-label="Navigation (démo)">
+        <p class="manuel-nav-heading">Manuel</p>
+        <ul>
+          <li><a href="#"><span class="nav-title">Les moyens juridiques</span></a>
+            <ul>
+              <li><a href="#"><span class="nav-title">Les actes administratifs</span></a></li>
+              <li class="is-current"><a href="#"><span class="nav-title">Les vices de légalité</span></a></li>
+            </ul>
+          </li>
+          <li><a href="#"><span class="nav-title">Le contrôle juridictionnel</span></a></li>
+        </ul>
+      </nav>
+      <div class="manuel-content">
+        <h1 class="site-title">Les vices de légalité</h1>
+        <article class="legal-prose manuel-prose">
+          <h2>Contrôle de légalité</h2>
+          <p>Le juge administratif vérifie la conformité de l’acte aux règles de droit applicables, qu’elles soient d’origine législative, réglementaire ou jurisprudentielle. Ce contrôle porte sur la compétence de l’auteur de l’acte, la forme, le fond et le motif.</p>
+          <p>Il s’exerce dans le cadre du recours pour excès de pouvoir, du référé-suspension et, sous certaines conditions, de l’exception d’illégalité.</p>
+          <h3>Incompétence de l’auteur</h3>
+          <p>L’acte est entaché d’illégalité lorsque l’autorité qui l’a pris n’était pas habilitée à le faire, soit parce qu’elle n’avait pas qualité pour agir, soit parce qu’elle a excédé les limites de sa compétence matérielle ou territoriale.</p>
+          <h4><a href="#">Violation de la loi</a> et <a href="#">erreur de droit</a></h4>
+          <p>La violation directe affecte le contenu ou l’objet de la décision. L’<a class="dict-link" href="#">erreur de droit</a> concerne les motifs et la cause de la décision, y compris l’application dans le temps et l’<a class="dict-link" href="#">exception d’illégalité</a>.</p>
+          <h4><a href="#">Erreur de fait</a> et qualification juridique</h4>
+          <p>L’<a class="dict-link" href="#">erreur de fait</a> est l’inexactitude des constatations matérielles sur lesquelles l’administration a fondé sa décision. La qualification juridique des faits peut également être contrôlée lorsqu’elle est manifestement erronée.</p>
+          <h4><a href="#">Détournement de pouvoir</a></h4>
+          <p>Le détournement de pouvoir suppose que l’autorité a poursuivi un objet autre que celui pour lequel elle détenait la compétence, ou qu’elle a satisfait à une fin étrangère à la décision prise.</p>
+          <blockquote><p>« <em>Le juge administratif est le juge de la légalité des actes de la puissance publique</em> ».</p></blockquote>
+          <h3>Conséquences de l’illégalité</h3>
+          <p>L’annulation de l’acte illégal est la sanction ordinaire. Le juge peut également prononcer la réformation de l’acte lorsque les faits sont suffisamment établis et que la situation peut être régularisée sans méconnaître la séparation des pouvoirs.</p>
+        </article>
+        <nav class="manuel-chapternav" aria-label="Chapitres voisin">
+          <a class="manuel-chapternav-prev" href="#"><span>Chapitre précédent</span>Les actes administratifs</a>
+          <a class="manuel-chapternav-toc" href="#">Sommaire</a>
+          <a class="manuel-chapternav-next" href="#"><span>Chapitre suivant</span>Les recours administratifs</a>
+        </nav>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- OPTION B -->
+<section class="layout-demo layout-b" id="opt-b">
+  <div class="demo-badge">
+    <h2>Option B — Centré confort</h2>
+    <p><strong>48 rem</strong> · centré · plus aéré que l’actuel (44,5 rem)</p>
+  </div>
+  <main class="site-main legal-page manuel-layout">
+    <p class="site-crumb">
+      <a href="#">Droit public et administratif</a>
+      <span class="sep">›</span>
+      <a href="#">Bibliothèque universitaire</a>
+      <span class="sep">›</span>
+      <a href="#">Manuel</a>
+      <span class="sep">›</span>
+      <strong>Les vices de légalité</strong>
+    </p>
+    <div class="manuel-shell">
+      <nav class="manuel-nav manuel-nav-side demo-nav" aria-label="Navigation (démo)">
+        <p class="manuel-nav-heading">Manuel</p>
+        <ul>
+          <li><a href="#"><span class="nav-title">Les moyens juridiques</span></a>
+            <ul>
+              <li><a href="#"><span class="nav-title">Les actes administratifs</span></a></li>
+              <li class="is-current"><a href="#"><span class="nav-title">Les vices de légalité</span></a></li>
+            </ul>
+          </li>
+          <li><a href="#"><span class="nav-title">Le contrôle juridictionnel</span></a></li>
+        </ul>
+      </nav>
+      <div class="manuel-content">
+        <h1 class="site-title">Les vices de légalité</h1>
+        <article class="legal-prose manuel-prose">
+          <h2>Contrôle de légalité</h2>
+          <p>Le juge administratif vérifie la conformité de l’acte aux règles de droit applicables, qu’elles soient d’origine législative, réglementaire ou jurisprudentielle. Ce contrôle porte sur la compétence de l’auteur de l’acte, la forme, le fond et le motif.</p>
+          <p>Il s’exerce dans le cadre du recours pour excès de pouvoir, du référé-suspension et, sous certaines conditions, de l’exception d’illégalité.</p>
+          <h3>Incompétence de l’auteur</h3>
+          <p>L’acte est entaché d’illégalité lorsque l’autorité qui l’a pris n’était pas habilitée à le faire, soit parce qu’elle n’avait pas qualité pour agir, soit parce qu’elle a excédé les limites de sa compétence matérielle ou territoriale.</p>
+          <h4><a href="#">Violation de la loi</a> et <a href="#">erreur de droit</a></h4>
+          <p>La violation directe affecte le contenu ou l’objet de la décision. L’<a class="dict-link" href="#">erreur de droit</a> concerne les motifs et la cause de la décision, y compris l’application dans le temps et l’<a class="dict-link" href="#">exception d’illégalité</a>.</p>
+          <h4><a href="#">Erreur de fait</a> et qualification juridique</h4>
+          <p>L’<a class="dict-link" href="#">erreur de fait</a> est l’inexactitude des constatations matérielles sur lesquelles l’administration a fondé sa décision. La qualification juridique des faits peut également être contrôlée lorsqu’elle est manifestement erronée.</p>
+          <h4><a href="#">Détournement de pouvoir</a></h4>
+          <p>Le détournement de pouvoir suppose que l’autorité a poursuivi un objet autre que celui pour lequel elle détenait la compétence, ou qu’elle a satisfait à une fin étrangère à la décision prise.</p>
+          <blockquote><p>« <em>Le juge administratif est le juge de la légalité des actes de la puissance publique</em> ».</p></blockquote>
+          <h3>Conséquences de l’illégalité</h3>
+          <p>L’annulation de l’acte illégal est la sanction ordinaire. Le juge peut également prononcer la réformation de l’acte lorsque les faits sont suffisamment établis et que la situation peut être régularisée sans méconnaître la séparation des pouvoirs.</p>
+        </article>
+        <nav class="manuel-chapternav" aria-label="Chapitres voisin">
+          <a class="manuel-chapternav-prev" href="#"><span>Chapitre précédent</span>Les actes administratifs</a>
+          <a class="manuel-chapternav-toc" href="#">Sommaire</a>
+          <a class="manuel-chapternav-next" href="#"><span>Chapitre suivant</span>Les recours administratifs</a>
+        </nav>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- OPTION C -->
+<section class="layout-demo layout-c" id="opt-c">
+  <div class="demo-badge">
+    <h2>Option C — Aligné au menu</h2>
+    <p><strong>46 rem</strong> · aligné à gauche · le texte part du bord interne du menu</p>
+  </div>
+  <main class="site-main legal-page manuel-layout">
+    <p class="site-crumb">
+      <a href="#">Droit public et administratif</a>
+      <span class="sep">›</span>
+      <a href="#">Bibliothèque universitaire</a>
+      <span class="sep">›</span>
+      <a href="#">Manuel</a>
+      <span class="sep">›</span>
+      <strong>Les vices de légalité</strong>
+    </p>
+    <div class="manuel-shell">
+      <nav class="manuel-nav manuel-nav-side demo-nav" aria-label="Navigation (démo)">
+        <p class="manuel-nav-heading">Manuel</p>
+        <ul>
+          <li><a href="#"><span class="nav-title">Les moyens juridiques</span></a>
+            <ul>
+              <li><a href="#"><span class="nav-title">Les actes administratifs</span></a></li>
+              <li class="is-current"><a href="#"><span class="nav-title">Les vices de légalité</span></a></li>
+            </ul>
+          </li>
+          <li><a href="#"><span class="nav-title">Le contrôle juridictionnel</span></a></li>
+        </ul>
+      </nav>
+      <div class="manuel-content">
+        <h1 class="site-title">Les vices de légalité</h1>
+        <article class="legal-prose manuel-prose">
+          <h2>Contrôle de légalité</h2>
+          <p>Le juge administratif vérifie la conformité de l’acte aux règles de droit applicables, qu’elles soient d’origine législative, réglementaire ou jurisprudentielle. Ce contrôle porte sur la compétence de l’auteur de l’acte, la forme, le fond et le motif.</p>
+          <p>Il s’exerce dans le cadre du recours pour excès de pouvoir, du référé-suspension et, sous certaines conditions, de l’exception d’illégalité.</p>
+          <h3>Incompétence de l’auteur</h3>
+          <p>L’acte est entaché d’illégalité lorsque l’autorité qui l’a pris n’était pas habilitée à le faire, soit parce qu’elle n’avait pas qualité pour agir, soit parce qu’elle a excédé les limites de sa compétence matérielle ou territoriale.</p>
+          <h4><a href="#">Violation de la loi</a> et <a href="#">erreur de droit</a></h4>
+          <p>La violation directe affecte le contenu ou l’objet de la décision. L’<a class="dict-link" href="#">erreur de droit</a> concerne les motifs et la cause de la décision, y compris l’application dans le temps et l’<a class="dict-link" href="#">exception d’illégalité</a>.</p>
+          <h4><a href="#">Erreur de fait</a> et qualification juridique</h4>
+          <p>L’<a class="dict-link" href="#">erreur de fait</a> est l’inexactitude des constatations matérielles sur lesquelles l’administration a fondé sa décision. La qualification juridique des faits peut également être contrôlée lorsqu’elle est manifestement erronée.</p>
+          <h4><a href="#">Détournement de pouvoir</a></h4>
+          <p>Le détournement de pouvoir suppose que l’autorité a poursuivi un objet autre que celui pour lequel elle détenait la compétence, ou qu’elle a satisfait à une fin étrangère à la décision prise.</p>
+          <blockquote><p>« <em>Le juge administratif est le juge de la légalité des actes de la puissance publique</em> ».</p></blockquote>
+          <h3>Conséquences de l’illégalité</h3>
+          <p>L’annulation de l’acte illégal est la sanction ordinaire. Le juge peut également prononcer la réformation de l’acte lorsque les faits sont suffisamment établis et que la situation peut être régularisée sans méconnaître la séparation des pouvoirs.</p>
+        </article>
+        <nav class="manuel-chapternav" aria-label="Chapitres voisin">
+          <a class="manuel-chapternav-prev" href="#"><span>Chapitre précédent</span>Les actes administratifs</a>
+          <a class="manuel-chapternav-toc" href="#">Sommaire</a>
+          <a class="manuel-chapternav-next" href="#"><span>Chapitre suivant</span>Les recours administratifs</a>
+        </nav>
+      </div>
+    </div>
+  </main>
+</section>
+
+</body>
+</html>

@@ -221,11 +221,49 @@
     applyManuelPreview(false);
     protectManuelCopy();
   }
-  refreshAuth().then((me) => {
-    const ok = Boolean(me && me.email);
-    applyHomeAuth(ok);
-    applyManuelPreview(ok);
-    applyFlipcardsEntry(ok);
+
+  function needsSiteTTS() {
+    if (!("speechSynthesis" in window)) return false;
+    return Boolean(
+      document.querySelector("article.manuel-prose") ||
+      document.querySelector(".dict-entries")
+    );
+  }
+
+  function ensureSiteTTS(cb) {
+    if (!needsSiteTTS()) {
+      cb();
+      return;
+    }
+    if (window.SiteTTS) {
+      cb();
+      return;
+    }
+    const existing = document.querySelector('script[src*="site-tts.js"]');
+    if (existing) {
+      if (window.SiteTTS) {
+        cb();
+        return;
+      }
+      existing.addEventListener("load", () => cb(), { once: true });
+      existing.addEventListener("error", () => cb(), { once: true });
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = abs("site-tts.js?v=6");
+    s.onload = () => cb();
+    s.onerror = () => cb();
+    document.body.appendChild(s);
+  }
+
+  ensureSiteTTS(() => {
+    refreshAuth().then((me) => {
+      const ok = Boolean(me && me.email);
+      applyHomeAuth(ok);
+      applyManuelPreview(ok);
+      applyFlipcardsEntry(ok);
+      if (window.SiteTTS) window.SiteTTS.init(ok);
+    });
   });
 
   function shouldShowErrorReport() {

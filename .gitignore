@@ -18,6 +18,7 @@ site/worker/wrangler.toml
 # Sorties locales (les vraies sorties sont sur Google Drive)
 data/*
 !data/.gitkeep
+output/
 
 # Build site
 site/dist/

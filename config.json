@@ -3,7 +3,7 @@
   "checkout_url": "https://cabpechard-wq.github.io/flipcards-host/checkout/",
   "demo_url": "https://cabpechard-wq.github.io/flipcards-host/demo/",
   "flipcards_url": "https://cabpechard-wq.github.io/flipcards-host/flipcards/",
-  "members_password": "nkncaJaAHlfP",
+  "members_password": "",
   "pricing": {
     "monthly_eur": 6.9,
     "yearly_eur": 30.9,
@@ -26,7 +26,7 @@
     "provider": "github-pages",
     "site_name": "editions-particulieres",
     "demo_path": "/demo/",
-    "members_path": "/flipcards/",/
+    "members_path": "/flipcards/",
     "base_url": "https://cabpechard-wq.github.io/editions-particulieres"
   },
   "notion": {

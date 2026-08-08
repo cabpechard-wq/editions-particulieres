@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B · Grille de preuve — Accueil marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  :root { --secondary: #c56a2d; }
+  .prop-bar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; gap: .75rem; align-items: center; justify-content: space-between;
+    padding: .5rem 1.25rem;
+    background: rgba(14,20,25,.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    font-size: .75rem; font-weight: 600;
+  }
+  .prop-bar nav { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .prop-bar a { color: var(--muted); text-decoration: none; }
+  .prop-bar a:hover, .prop-bar a.is-on { color: var(--accent); }
+  .prop-bar .tag { color: var(--accent); letter-spacing: .06em; text-transform: uppercase; font-size: .65rem; }
+
+  .mkt-offer {
+    scroll-margin-top: 4.5rem;
+    padding: 1.15rem 1.25rem 1.25rem;
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--accent);
+    background: var(--bg-elevated);
+  }
+  .mkt-offer h2 {
+    margin: 0 0 .35rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 600;
+  }
+  .mkt-price {
+    margin: 0 0 .5rem;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .mkt-price span {
+    font-family: var(--font-ui);
+    font-size: .85rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .mkt-offer > p {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: .85rem;
+    line-height: 1.45;
+  }
+  .mkt-offer-actions {
+    display: grid;
+    gap: .45rem;
+  }
+  .mkt-offer-actions .btn { width: 100%; }
+  .mkt-offer-link {
+    display: block;
+    margin-top: .65rem;
+    text-align: center;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .mkt-offer-link:hover { color: var(--accent); }
+
+  .proof-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .proof-head h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 600;
+  }
+  .proof-head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: .88rem;
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 700px) {
+    .proof-grid { grid-template-columns: 1fr; }
+  }
+  .proof-grid .ex-item {
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem .85rem 1rem 0;
+  }
+  .proof-grid .ex-item:nth-child(odd) {
+    padding-right: 1rem;
+    border-right: 1px solid var(--border);
+  }
+  @media (max-width: 700px) {
+    .proof-grid .ex-item:nth-child(odd) {
+      padding-right: 0;
+      border-right: 0;
+    }
+  }
+  .proof-grid .ex-item:hover {
+    background: var(--accent-soft);
+    padding-left: .35rem;
+  }
+  .campus-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem .85rem;
+    margin: 0 0 1.5rem;
+    font-size: .82rem;
+    font-weight: 600;
+  }
+  .campus-links a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .campus-links a:hover { color: var(--accent); }
+  .home-roadmap {
+    margin: 0 0 2.5rem;
+    color: var(--muted);
+    font-size: .88rem;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="prop-bar">
+  <span class="tag">B · Grille de preuve</span>
+  <nav>
+    <a href="./home-mkt-index.html">Sommaire</a>
+    <a href="./home-mkt-01-colonnes.html">A</a>
+    <a class="is-on" href="./home-mkt-02-grille.html">B</a>
+    <a href="./home-mkt-03-conversion.html">C</a>
+  </nav>
+</div>
+
+<main class="site-main home-amphitheatre">
+  <div class="home-hero">
+    <div class="home-hero-copy">
+      <p class="site-hero-kicker">Éditions Particulières</p>
+      <h1 class="site-title site-title-hero"><em>Droit</em> public<br>et administratif</h1>
+      <p class="site-lead">Cours, fiches d’arrêts et entraînement pour réussir le droit public à l’université.</p>
+    </div>
+
+    <aside class="mkt-offer" aria-labelledby="offre-title">
+      <p class="site-hero-kicker">Offre de lancement</p>
+      <h2 id="offre-title">Accès complet</h2>
+      <p class="mkt-price">6,90&nbsp;€ <span>/ mois</span></p>
+      <p>Mensuel ou semestriel (−25&nbsp;%). Sans engagement. BU, amphithéâtre et TD.</p>
+      <div class="mkt-offer-actions">
+        <a class="btn" href="#">S’inscrire</a>
+        <a class="btn secondary" href="#">Essayer 8 cartes</a>
+      </div>
+      <a class="mkt-offer-link" href="#">Déjà inscrit&nbsp;? Se connecter</a>
+    </aside>
+  </div>
+  <div class="home-rule" aria-hidden="true"></div>
+
+  <div class="proof-head">
+    <h2>Disponible maintenant</h2>
+    <p>Quatre ressources live — le reste arrive ensuite.</p>
+  </div>
+
+  <div class="proof-grid">
+    <a class="ex-item" href="#">
+      <div>
+        <p class="ex-item-type">BU · Cours</p>
+        <p class="ex-item-title">Cours de droit public</p>
+        <p class="ex-item-desc">Synthèse structurée, alignée sur le programme universitaire.</p>
+      </div>
+      <span class="ex-item-cta">Consulter →</span>
+    </a>
+    <a class="ex-item" href="#">
+      <div>
+        <p class="ex-item-type">BU · Dictionnaire</p>
+        <p class="ex-item-title">Dictionnaire juridique</p>
+        <p class="ex-item-desc">Notions essentielles du droit public, de A à Z.</p>
+      </div>
+      <span class="ex-item-cta">Ouvrir →</span>
+    </a>
+    <a class="ex-item" href="#">
+      <div>
+        <p class="ex-item-type">Amphi · Fiches</p>
+        <p class="ex-item-title">Fiches d’arrêts</p>
+        <p class="ex-item-desc">Faits, solution et portée des décisions clés.</p>
+      </div>
+      <span class="ex-item-cta">Consulter →</span>
+    </a>
+    <a class="ex-item" href="#">
+      <div>
+        <p class="ex-item-type">TD · Démo</p>
+        <p class="ex-item-title">Flipcards — grands arrêts</p>
+        <p class="ex-item-desc">Cartes recto / verso pour mémoriser la jurisprudence.</p>
+      </div>
+      <span class="ex-item-cta">Essayer →</span>
+    </a>
+  </div>
+
+  <nav class="campus-links" aria-label="Lieux du campus">
+    <a href="#">Bibliothèque universitaire →</a>
+    <a href="#">Amphithéâtre →</a>
+    <a href="#">Travaux dirigés →</a>
+  </nav>
+
+  <p class="home-roadmap">Bientôt&nbsp;: fiches thématiques, QCM et cas pratiques.</p>
+</main>
+</body>
+</html>

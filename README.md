@@ -13,10 +13,21 @@ editions-particulieres/
 │   ├── templates/        # Gabarits HTML + scripts de build
 │   ├── worker/           # Auth Cloudflare
 │   └── host-repo/        # Déploiement GitHub Pages
-├── mobile/               # App Expo (JSON flipcards)
+├── mobile/               # App Expo flipcards (npm start dans mobile/)
 ├── config/               # Chemins, Notion, site (.example → copier)
 └── scripts/              # Pipelines PowerShell
 ```
+
+## App mobile
+
+```powershell
+cd mobile
+npm install
+npm run sync-data   # JSON depuis EP_OUTPUT_ROOT / Drive / output/
+npm start
+```
+
+Ou `mobile\Lancer.ps1`.
 
 ## Sorties (Google Drive)
 

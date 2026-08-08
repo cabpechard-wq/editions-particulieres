@@ -20,6 +20,9 @@ if (-not (Test-Path $dictSrc)) {
 python (Join-Path $PSScriptRoot "fix_legacy_crumbs.py") $dictSrc
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+python (Join-Path $PSScriptRoot "patch_site_scripts.py") $dictSrc
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 if (-not (Test-Path $distSite)) {
     Write-Error "Build site manquant : lancez scripts\build_site.ps1 d'abord."
 }

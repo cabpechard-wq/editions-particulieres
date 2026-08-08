@@ -30,7 +30,7 @@ def write_aside_readme(aside_dir: Path, aside_chapters: list[dict[str, Any]]) ->
 
 def copy_site_assets(templates: Path, site_root: Path) -> None:
     site_root.mkdir(parents=True, exist_ok=True)
-    for asset in ("site.css", "site-nav.js"):
+    for asset in ("site.css", "site-nav.js", "site-tts.js"):
         src = templates / asset
         if src.exists():
             shutil.copy2(src, site_root / asset)

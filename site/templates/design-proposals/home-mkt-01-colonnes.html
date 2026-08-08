@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Colonnes campus — Accueil marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  :root { --secondary: #c56a2d; }
+  .prop-bar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; gap: .75rem; align-items: center; justify-content: space-between;
+    padding: .5rem 1.25rem;
+    background: rgba(14,20,25,.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    font-size: .75rem; font-weight: 600;
+  }
+  .prop-bar nav { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .prop-bar a { color: var(--muted); text-decoration: none; }
+  .prop-bar a:hover, .prop-bar a.is-on { color: var(--accent); }
+  .prop-bar .tag { color: var(--accent); letter-spacing: .06em; text-transform: uppercase; font-size: .65rem; }
+  .home-price {
+    margin: 0 0 .55rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .home-price span { font-family: var(--font-ui); font-size: .78rem; font-weight: 500; color: var(--muted); }
+  .home-col-more {
+    display: inline-block;
+    margin-top: .85rem;
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .home-col-more:hover { color: var(--accent); }
+  .home-roadmap {
+    margin: 0 0 2.5rem;
+    padding-top: .25rem;
+    color: var(--muted);
+    font-size: .88rem;
+    line-height: 1.5;
+  }
+  .home-hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 1rem;
+  }
+  .home-access-card.is-accent { order: -1; }
+  @media (min-width: 521px) {
+    .home-hero-access-stack { grid-template-columns: 1.15fr .85fr; }
+    .home-access-card.is-accent {
+      order: 0;
+      padding: 0 .9rem 0 0;
+      border-left: 0;
+      border-right: 1px solid var(--border);
+    }
+    .home-access-card:not(.is-accent) {
+      padding: 0 0 0 .9rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="prop-bar">
+  <span class="tag">A · Colonnes campus</span>
+  <nav>
+    <a href="./home-mkt-index.html">Sommaire</a>
+    <a class="is-on" href="./home-mkt-01-colonnes.html">A</a>
+    <a href="./home-mkt-02-grille.html">B</a>
+    <a href="./home-mkt-03-conversion.html">C</a>
+  </nav>
+</div>
+
+<main class="site-main home-amphitheatre">
+  <div class="home-hero">
+    <div class="home-hero-copy">
+      <p class="site-hero-kicker">Éditions Particulières</p>
+      <h1 class="site-title site-title-hero"><em>Droit</em> public<br>et administratif</h1>
+      <p class="site-lead">Cours, fiches d’arrêts et entraînement pour réussir le droit public à l’université.</p>
+      <div class="home-hero-ctas">
+        <a class="btn secondary" href="#">Essayer 8 cartes</a>
+      </div>
+    </div>
+
+    <aside class="home-hero-access" aria-labelledby="offre-title">
+      <p class="site-hero-kicker">Accès</p>
+      <h2 id="offre-title" class="home-hero-access-title">S’inscrire</h2>
+      <div class="home-hero-access-stack" role="group" aria-label="Inscription et connexion">
+        <div class="home-access-card is-accent">
+          <h3>Offre de lancement</h3>
+          <p class="home-price">dès 6,90&nbsp;€ <span>/ mois · sans engagement</span></p>
+          <p>Accès BU, amphithéâtre et travaux dirigés.</p>
+          <a class="btn" href="#">S’inscrire</a>
+        </div>
+        <div class="home-access-card">
+          <h3>Connexion</h3>
+          <p>Déjà inscrit&nbsp;? Accès avec e-mail et mot de passe.</p>
+          <a class="btn fill-secondary" href="#">Se connecter</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="home-rule" aria-hidden="true"></div>
+
+  <div class="home-columns">
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Bibliothèque</p>
+        <h2><a class="home-col-title" href="#">Bibliothèque universitaire</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Cours</p>
+            <p class="ex-item-title">Cours de droit public</p>
+            <p class="ex-item-desc">Synthèse structurée, alignée sur le programme universitaire.</p>
+          </div>
+          <span class="ex-item-cta">Consulter le cours →</span>
+        </a>
+      </div>
+      <a class="home-col-more" href="#">Voir la BU (cours + dictionnaire) →</a>
+    </section>
+
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Amphithéâtre</p>
+        <h2><a class="home-col-title" href="#">Amphithéâtre</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Fiches</p>
+            <p class="ex-item-title">Fiches d’arrêts et de décisions</p>
+            <p class="ex-item-desc">Faits, solution et portée — pour les avoir sous la main.</p>
+          </div>
+          <span class="ex-item-cta">Consulter les fiches →</span>
+        </a>
+      </div>
+      <a class="home-col-more" href="#">Voir l’amphithéâtre →</a>
+    </section>
+
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Travaux dirigés</p>
+        <h2><a class="home-col-title" href="#">Travaux dirigés</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Démo</p>
+            <p class="ex-item-title">Flipcards — grands arrêts</p>
+            <p class="ex-item-desc">Cartes recto / verso sur la jurisprudence essentielle.</p>
+          </div>
+          <span class="ex-item-cta">Essayer la démo →</span>
+        </a>
+      </div>
+      <a class="home-col-more" href="#">Voir les TD →</a>
+    </section>
+  </div>
+
+  <p class="home-roadmap">Bientôt&nbsp;: fiches thématiques, QCM et cas pratiques.</p>
+</main>
+</body>
+</html>

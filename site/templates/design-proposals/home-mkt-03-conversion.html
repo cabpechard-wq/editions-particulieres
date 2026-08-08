@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C · Conversion d’abord — Accueil marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../site.css">
+<style>
+  :root { --secondary: #c56a2d; }
+  .prop-bar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; gap: .75rem; align-items: center; justify-content: space-between;
+    padding: .5rem 1.25rem;
+    background: rgba(14,20,25,.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    font-size: .75rem; font-weight: 600;
+  }
+  .prop-bar nav { display: flex; gap: .65rem; flex-wrap: wrap; }
+  .prop-bar a { color: var(--muted); text-decoration: none; }
+  .prop-bar a:hover, .prop-bar a.is-on { color: var(--accent); }
+  .prop-bar .tag { color: var(--accent); letter-spacing: .06em; text-transform: uppercase; font-size: .65rem; }
+
+  .conv-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 26rem);
+    gap: 2rem 3rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 900px) {
+    .conv-hero { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  .conv-hero .site-title-hero { max-width: 16ch; margin-bottom: .75rem; }
+  .conv-hero .site-lead { margin-bottom: 1.15rem; }
+
+  .plan-stack {
+    display: grid;
+    gap: .65rem;
+    margin-bottom: 1rem;
+  }
+  .plan {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .35rem .75rem;
+    align-items: center;
+    padding: .85rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color .15s, background .15s;
+  }
+  .plan:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .plan.is-featured {
+    border-color: var(--accent);
+    border-left-width: 2px;
+  }
+  .plan-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .plan-meta {
+    margin: 0;
+    grid-column: 1;
+    font-size: .75rem;
+    color: var(--muted);
+  }
+  .plan-price {
+    margin: 0;
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .plan-price span {
+    font-family: var(--font-ui);
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .conv-aside .btn { width: 100%; margin-top: .25rem; }
+  .conv-aside-note {
+    margin: .85rem 0 0;
+    text-align: center;
+    font-size: .78rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .conv-aside-note a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .conv-aside-note a:hover { color: var(--accent-hover); }
+
+  .strip-label {
+    margin: 0 0 .75rem;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .proof-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin-bottom: 1.25rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 800px) {
+    .proof-strip { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .proof-strip { grid-template-columns: 1fr; }
+  }
+  .strip-item {
+    display: block;
+    padding: 1rem 1rem 1.1rem 0;
+    border-right: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: background .15s, padding-left .15s;
+  }
+  .strip-item:last-child { border-right: 0; padding-right: 0; }
+  .strip-item:hover {
+    background: var(--accent-soft);
+    padding-left: .4rem;
+  }
+  @media (max-width: 800px) {
+    .strip-item:nth-child(2) { border-right: 0; }
+    .strip-item:nth-child(1),
+    .strip-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+  }
+  .strip-item .ex-item-type { margin-bottom: .25rem; }
+  .strip-item .ex-item-title {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+  .strip-item .ex-item-cta {
+    display: inline-block;
+    margin-top: .45rem;
+  }
+  .home-roadmap {
+    margin: 0 0 2.5rem;
+    color: var(--muted);
+    font-size: .88rem;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="prop-bar">
+  <span class="tag">C · Conversion d’abord</span>
+  <nav>
+    <a href="./home-mkt-index.html">Sommaire</a>
+    <a href="./home-mkt-01-colonnes.html">A</a>
+    <a href="./home-mkt-02-grille.html">B</a>
+    <a class="is-on" href="./home-mkt-03-conversion.html">C</a>
+  </nav>
+</div>
+
+<main class="site-main home-amphitheatre">
+  <div class="conv-hero">
+    <div>
+      <p class="site-hero-kicker">Éditions Particulières</p>
+      <h1 class="site-title site-title-hero"><em>Droit</em> public<br>et administratif</h1>
+      <p class="site-lead">Cours, fiches d’arrêts et entraînement pour réussir le droit public à l’université.</p>
+      <p class="site-hero-kicker" style="margin-bottom:.35rem">Inclus dans l’abonnement</p>
+      <p style="margin:0;color:var(--muted);font-size:.9rem;line-height:1.5;max-width:28rem">
+        Bibliothèque universitaire, amphithéâtre et travaux dirigés — résiliable à tout moment.
+      </p>
+    </div>
+
+    <aside class="conv-aside" aria-labelledby="offre-title">
+      <p class="site-hero-kicker">Offre de lancement</p>
+      <h2 id="offre-title" class="site-title" style="font-size:1.75rem;margin:0 0 1rem">Choisir une formule</h2>
+      <div class="plan-stack">
+        <a class="plan is-featured" href="#">
+          <p class="plan-name">Mensuel</p>
+          <p class="plan-meta">Sans engagement</p>
+          <p class="plan-price">6,90&nbsp;€ <span>/ mois</span></p>
+        </a>
+        <a class="plan" href="#">
+          <p class="plan-name">Semestriel</p>
+          <p class="plan-meta">−25&nbsp;% · 6 mois</p>
+          <p class="plan-price">30,90&nbsp;€ <span>/ semestre</span></p>
+        </a>
+      </div>
+      <a class="btn" href="#">Continuer vers l’inscription</a>
+      <p class="conv-aside-note">
+        <a href="#">Essayer 8 cartes</a>
+        ·
+        <a href="#">Se connecter</a>
+      </p>
+    </aside>
+  </div>
+  <div class="home-rule" aria-hidden="true"></div>
+
+  <p class="strip-label">Preuve · disponible maintenant</p>
+  <div class="proof-strip">
+    <a class="strip-item" href="#">
+      <p class="ex-item-type">Cours</p>
+      <p class="ex-item-title">Manuel</p>
+      <span class="ex-item-cta">Lire →</span>
+    </a>
+    <a class="strip-item" href="#">
+      <p class="ex-item-type">Dictionnaire</p>
+      <p class="ex-item-title">Notions A–Z</p>
+      <span class="ex-item-cta">Ouvrir →</span>
+    </a>
+    <a class="strip-item" href="#">
+      <p class="ex-item-type">Amphi</p>
+      <p class="ex-item-title">Fiches d’arrêts</p>
+      <span class="ex-item-cta">Consulter →</span>
+    </a>
+    <a class="strip-item" href="#">
+      <p class="ex-item-type">TD</p>
+      <p class="ex-item-title">Flipcards</p>
+      <span class="ex-item-cta">Démo →</span>
+    </a>
+  </div>
+
+  <p class="home-roadmap">Bientôt&nbsp;: fiches thématiques, QCM et cas pratiques.</p>
+</main>
+</body>
+</html>

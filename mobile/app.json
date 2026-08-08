@@ -1,8 +1,33 @@
 {
   "expo": {
-    "name": "Editions Particulieres",
+    "name": "Éditions Particulières",
     "slug": "editions-particulieres",
     "version": "1.0.0",
-    "scheme": "editions-particulieres"
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "editions-particulieres",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.editions-particulieres.flipcards"
+    },
+    "android": {
+      "package": "fr.editions_particulieres.flipcards",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#0f766e",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ]
   }
 }

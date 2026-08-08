@@ -250,6 +250,7 @@ def build_demo(limit: int = 8) -> Path:
         title=title,
         classifier_rows=all_rows,
         aside_rows=aside,
+        demo_upsell=True,
     )
     (DEMO_DIR / "robots.txt").write_text("User-agent: *\nAllow: /\n", encoding="utf-8")
     return out

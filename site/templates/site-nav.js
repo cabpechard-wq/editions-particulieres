@@ -123,26 +123,15 @@
     const prose = document.querySelector("article.manuel-prose");
     if (!prose) return;
 
-    let wrap = document.querySelector(".manuel-readmore-wrap");
+    const wrap = document.querySelector(".manuel-readmore-wrap");
+    if (wrap) wrap.remove();
+
     if (isMember) {
       prose.classList.remove("is-preview");
-      if (wrap) wrap.hidden = true;
       return;
     }
 
     prose.classList.add("is-preview");
-    if (!wrap) {
-      wrap = document.createElement("p");
-      wrap.className = "manuel-readmore-wrap";
-      const a = document.createElement("a");
-      a.className = "manuel-readmore";
-      a.href = abs("membre/");
-      a.textContent = "Lire la suite";
-      a.setAttribute("aria-label", "Lire la suite — Espace pédagogique");
-      wrap.appendChild(a);
-      prose.insertAdjacentElement("afterend", wrap);
-    }
-    wrap.hidden = false;
   }
 
   function blockCopyOn(el) {
@@ -250,7 +239,7 @@
       return;
     }
     const s = document.createElement("script");
-    s.src = abs("site-tts.js?v=7");
+    s.src = abs("site-tts.js?v=8");
     s.onload = () => cb();
     s.onerror = () => cb();
     document.body.appendChild(s);

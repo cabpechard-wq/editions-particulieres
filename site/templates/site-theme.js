@@ -150,8 +150,8 @@
     const wrap = document.createElement("span");
     wrap.className = "site-theme-picker";
     wrap.innerHTML =
-      '<label for="site-theme-select">Charte</label>' +
-      '<select id="site-theme-select" aria-label="Choisir une charte graphique"></select>';
+      '<label for="site-theme-select">Ambiance</label>' +
+      '<select id="site-theme-select" aria-label="Choisir une ambiance"></select>';
     const select = wrap.querySelector("select");
     manifest.themes.forEach((t) => {
       const opt = document.createElement("option");

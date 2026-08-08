@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{{ASSET_PREFIX}}site.css?v=19">
+<link rel="stylesheet" href="{{ASSET_PREFIX}}site.css?v=20">
 </head>
 <body>
 <main class="site-main legal-page arrets-fiche-page">
@@ -25,7 +25,12 @@
     <article class="legal-prose manuel-prose arrets-prose">
 {{BODY}}
     </article>
-    <p class="arrets-back"><a href="../">← Toutes les fiches</a></p>
+{{LINKED_RESOURCES}}
+    <nav class="manuel-chapternav" aria-label="Fiches voisines">
+{{PREV_LINK}}
+      <a class="manuel-chapternav-toc" href="../">Toutes les fiches</a>
+{{NEXT_LINK}}
+    </nav>
   </div>
 </main>
 <script src="{{ASSET_PREFIX}}auth.js?v=4"></script>

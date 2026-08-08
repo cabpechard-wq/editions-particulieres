@@ -77,6 +77,7 @@ def build_manuel_site(
             page_tpl.replace("{{TITLE}}", ch["title_esc"])
             .replace("{{CRUMB_TRAIL}}", crumb)
             .replace("{{BODY}}", ch["body"])
+            .replace("{{LINKED_RESOURCES}}", ch.get("linked_resources_html") or "")
             .replace("{{ASSET_PREFIX}}", prefix)
             .replace("{{NAV_TREE}}", nav)
             .replace("{{TOC_HREF}}", rel_between(ch["segments"], []))
@@ -112,6 +113,7 @@ def build_manuel_site(
                     f'    <strong>{ch["title_esc"]}</strong>',
                 )
                 .replace("{{BODY}}", ch["body"])
+                .replace("{{LINKED_RESOURCES}}", ch.get("linked_resources_html") or "")
                 .replace("{{ASSET_PREFIX}}", prefix)
                 .replace("{{NAV_TREE}}", "")
                 .replace("{{TOC_HREF}}", "../")

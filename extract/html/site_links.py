@@ -222,14 +222,17 @@ def render_relation_extras(
     keys: Iterable[str],
     prefix: str,
     resolve_title: Callable[[str], str] | None = None,
+    section: bool = True,
 ) -> str:
-    """Paragraphes type « Jurisprudence : … · … » vers les pages du site."""
-    blocks: list[str] = []
+    """Liens relationnels Notion → pages du site (pied de page ou lignes dict-extra)."""
+    link_bits: list[str] = []
+    dict_blocks: list[str] = []
+
     for key in keys:
         ids = relation_ids(props, key)
         if not ids:
             continue
-        links: list[str] = []
+        row_links: list[str] = []
         for pid in ids:
             target = registry.resolve(pid)
             if not target:
@@ -243,13 +246,31 @@ def render_relation_extras(
                         title = resolved
                 except Exception:
                     pass
-            links.append(
-                f'<a href="{html.escape(href, quote=True)}">{html.escape(title)}</a>'
+            row_links.append(
+                f'<a class="{target.css_class}" '
+                f'href="{html.escape(href, quote=True)}">{html.escape(title)}</a>'
             )
-        if links:
+        if not row_links:
+            continue
+        if section:
+            link_bits.extend(row_links)
+        else:
             label = _LABELS.get(_norm(key), key.strip().capitalize())
-            blocks.append(f'<p class="dict-extra">{label} : {" · ".join(links)}</p>')
-    return "\n".join(blocks)
+            dict_blocks.append(
+                f'<p class="dict-extra">{label} : {" · ".join(row_links)}</p>'
+            )
+
+    if section:
+        if not link_bits:
+            return ""
+        sep = '<span class="site-linked-resources-sep" aria-hidden="true">·</span>'
+        return (
+            '<aside class="site-linked-resources" aria-label="Ressources liées">'
+            '<p class="site-linked-resources-title">Ressources liées…</p>'
+            f'<p class="site-linked-resources-links">{sep.join(link_bits)}</p>'
+            "</aside>"
+        )
+    return "\n".join(dict_blocks)
 
 
 # Compat : anciennes API manuel_links

@@ -407,6 +407,7 @@ def build_html_document(
     colors: dict[str, dict[str, str]] | None = None,
     classifier_rows: list[dict[str, str]] | None = None,
     aside_rows: list[dict[str, str]] | None = None,
+    demo_upsell: bool = False,
 ) -> str:
     cards = rows_to_cards(rows)
     # Catalogue des chips : jeu complet (ex. démo) ou limité aux cartes affichées
@@ -431,6 +432,14 @@ def build_html_document(
     importance_chips = _importance_chips_html()
     n = len(cards)
     color_css = _notion_color_css()
+    demo_upsell_html = (
+        '<p class="demo-upsell">'
+        '<a class="demo-upsell-link" href="../checkout/">'
+        "Accès à tout le jeu de cartes et aux ressources du site…"
+        "</a></p>"
+        if demo_upsell
+        else ""
+    )
     return f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -568,6 +577,24 @@ body {{
 .home-count {{ font-weight: 600; font-size: .98rem; }}
 .home-count span {{ color: var(--accent); font-family: var(--font-display); font-size: 1.2rem; }}
 .home-hint {{ display: block; margin-top: .15rem; font-size: .8rem; color: var(--muted); }}
+.demo-upsell {{
+  margin: 0 0 1.1rem;
+}}
+.demo-upsell-link {{
+  display: inline-block;
+  padding: .55rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-size: .88rem;
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: none;
+}}
+.demo-upsell-link:hover {{
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+}}
 .home-actions {{ display: flex; flex-wrap: wrap; gap: .55rem; align-items: center; }}
 .btn-random {{
   appearance: none;
@@ -1122,6 +1149,7 @@ body {{
   <section class="screen" id="screen-home" aria-label="Accueil">
     <h1 class="page-title">{_esc(title)}</h1>
     <p class="page-sub">Choisissez un thème et/ou des notions, puis lancez l’étude.<br>Laissez vide pour tout le set ({n} cartes).</p>
+    {demo_upsell_html}
     <div class="home-card">
       <div class="classifier" data-group-panel="theme">
         <div class="classifier-row">
@@ -2047,6 +2075,7 @@ def write_html(
     colors: dict[str, dict[str, str]] | None = None,
     classifier_rows: list[dict[str, str]] | None = None,
     aside_rows: list[dict[str, str]] | None = None,
+    demo_upsell: bool = False,
 ) -> Path:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(
@@ -2056,6 +2085,7 @@ def write_html(
             colors=colors,
             classifier_rows=classifier_rows,
             aside_rows=aside_rows,
+            demo_upsell=demo_upsell,
         ),
         encoding="utf-8",
     )
@@ -2073,6 +2103,7 @@ class FlipcardGenerator:
         title: str = DEFAULT_PAGE_TITLE,
         classifier_rows: list[dict[str, str]] | None = None,
         aside_rows: list[dict[str, str]] | None = None,
+        demo_upsell: bool = False,
     ) -> Path:
         return write_html(
             rows,
@@ -2080,6 +2111,7 @@ class FlipcardGenerator:
             title=title,
             classifier_rows=classifier_rows,
             aside_rows=aside_rows,
+            demo_upsell=demo_upsell,
         )
 
     def convert_many_json(self, rows: list[dict[str, str]], out_path: Path) -> Path:

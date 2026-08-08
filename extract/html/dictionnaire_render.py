@@ -40,6 +40,16 @@ def letter_key(term: str) -> str:
     return ch if "A" <= ch <= "Z" else "#"
 
 
+def alpha_sort_key(text: str) -> str:
+    """Tri français : ignorer les accents (é ≈ e, pas après z)."""
+    s = unicodedata.normalize("NFKD", text.casefold())
+    return "".join(c for c in s if not unicodedata.combining(c))
+
+
+def sort_entries(entries: list[dict]) -> None:
+    entries.sort(key=lambda e: (alpha_sort_key(e["term"]), e["slug"]))
+
+
 def build_manuel_title_map(manuel_roots: list[Path]) -> dict[str, str]:
     """Titre normalisé → chemin relatif depuis /dictionnaire/."""
     out: dict[str, str] = {}
@@ -141,6 +151,7 @@ def parse_entries_from_html(raw: str, title_map: dict[str, str]) -> list[dict]:
             continue
         i += 1
 
+    sort_entries(entries)
     _dedupe_slugs(entries)
     return entries
 

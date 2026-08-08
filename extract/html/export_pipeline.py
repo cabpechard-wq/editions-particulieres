@@ -105,29 +105,25 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
         if chapter:
             prefix = dict_prefix_for_chapter(chapter)
             body = rewrite_site_links(chapter["body"], registry, prefix=prefix)
-            extras = render_relation_extras(
+            chapter["linked_resources_html"] = render_relation_extras(
                 props,
                 registry,
                 keys=("jurisprudence", "index"),
                 prefix=prefix,
                 resolve_title=converter.resolve_title,
             )
-            if extras:
-                body = f"{body}\n{extras}" if body else extras
             chapter["body"] = body
             chapters.append(chapter)
         if aside_item:
             prefix = dict_prefix_for_aside()
             body = rewrite_site_links(aside_item["body"], registry, prefix=prefix)
-            extras = render_relation_extras(
+            aside_item["linked_resources_html"] = render_relation_extras(
                 props,
                 registry,
                 keys=("jurisprudence", "index"),
                 prefix=prefix,
                 resolve_title=converter.resolve_title,
             )
-            if extras:
-                body = f"{body}\n{extras}" if body else extras
             aside_item["body"] = body
             aside.append(aside_item)
 

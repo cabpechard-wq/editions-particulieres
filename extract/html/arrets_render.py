@@ -121,19 +121,33 @@ def entry_from_page(
         m = _DATE_PREFIX.match(head)
         if m:
             date_sort = m.group(1)
+    body_html = render_fiche_body(
+        page,
+        registry=registry,
+        resolve_title=resolve_title,
+        asset_prefix=asset_prefix,
+    )
+    linked_resources_html = ""
+    if registry is not None:
+        from .site_links import render_relation_extras
+
+        linked_resources_html = render_relation_extras(
+            props,
+            registry,
+            keys=("manuel", "index"),
+            prefix=asset_prefix,
+            resolve_title=resolve_title,
+        )
     return {
         "title": title,
+        "title_esc": html.escape(title),
         "slug": slugify(title),
         "theme": theme,
         "date": _format_date(date_raw.split("→", 1)[0].strip()) if date_raw else "",
         "date_sort": date_sort,
         "importance": prop_text(props, "Importance"),
-        "body_html": render_fiche_body(
-            page,
-            registry=registry,
-            resolve_title=resolve_title,
-            asset_prefix=asset_prefix,
-        ),
+        "body_html": body_html,
+        "linked_resources_html": linked_resources_html,
     }
 
 
@@ -176,19 +190,6 @@ def render_fiche_body(
         box.append("</aside>")
         parts.append("\n".join(box))
 
-    if registry is not None:
-        from .site_links import render_relation_extras
-
-        extras = render_relation_extras(
-            props,
-            registry,
-            keys=("manuel", "index"),
-            prefix=asset_prefix,
-            resolve_title=resolve_title,
-        )
-        if extras:
-            parts.append(extras)
-
     if not parts:
         return "<p class=\"arrets-empty\">Fiche en cours de rédaction.</p>"
     return "\n".join(parts)
@@ -226,6 +227,19 @@ def render_index_body(entries: list[dict]) -> tuple[str, str]:
         cards.append("</a>")
     cards.append("</div>")
     return "\n".join(filters), "\n".join(cards)
+
+
+def render_arret_nav_link(entry: dict | None, *, kind: str) -> str:
+    if entry is None:
+        return ""
+    label = "Fiche précédente" if kind == "prev" else "Fiche suivante"
+    css = "manuel-chapternav-prev" if kind == "prev" else "manuel-chapternav-next"
+    href = f'../{html.escape(entry["slug"], quote=True)}/'
+    title = entry.get("title_esc") or html.escape(entry.get("title") or "")
+    return (
+        f'    <a class="{css}" href="{href}">'
+        f"<span>{label}</span>{title}</a>"
+    )
 
 
 FILTER_JS = """

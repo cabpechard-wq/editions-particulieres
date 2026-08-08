@@ -210,7 +210,7 @@
   }
 
   function buildArticleSpeechText() {
-    const body = extractArticleText(!isMember);
+    const body = extractArticleText(false);
     if (!body) return "";
     const titleEl =
       document.querySelector("article.manuel-prose")?.closest(".manuel-content")
@@ -230,11 +230,7 @@
       entry.querySelector(".dict-def")?.textContent || ""
     );
     if (!term || !def) return "";
-    let text = term + ". " + def;
-    if (!isMember && text.length > PREVIEW_MAX_CHARS) {
-      text = text.slice(0, PREVIEW_MAX_CHARS).replace(/\s+\S*$/, "") + "\u2026";
-    }
-    return text;
+    return term + ". " + def;
   }
 
   function clearProgressTimer() {
@@ -533,8 +529,6 @@
       }
     });
 
-    const loginCue = makeLoginCue();
-
     btnPause.hidden = true;
     btnResume.hidden = true;
     btnStop.hidden = true;
@@ -549,8 +543,7 @@
       btnBack,
       btnForward,
       speedWrap,
-      voiceWrap,
-      loginCue
+      voiceWrap
     );
     root.append(capsules, progressWrap);
 
@@ -569,19 +562,12 @@
       seekInput,
       progressFill,
       timeEl,
-      loginCue,
       speedSelect,
     };
     articleUi = ui;
 
     function updateHint() {
-      if (isMember) {
-        ui.loginCue.hidden = true;
-        ui.btnPlay.textContent = "Écouter";
-      } else {
-        ui.loginCue.hidden = false;
-        ui.btnPlay.textContent = "Écouter l'aperçu";
-      }
+      ui.btnPlay.textContent = "Écouter";
     }
 
     btnPlay.addEventListener("click", () => {
@@ -719,23 +705,8 @@
     return ui;
   }
 
-  function makeLoginCue() {
-    const loginCue = document.createElement("a");
-    loginCue.className = "site-tts-login";
-    const membreNav =
-      document.querySelector('.site-nav a[data-nav="membre"]') ||
-      document.querySelector(".site-nav-guest a[href*='membre']");
-    loginCue.href = membreNav
-      ? membreNav.href
-      : new URL("membre/", document.baseURI || location.href).href;
-    loginCue.textContent = "Connectez-vous…";
-    loginCue.setAttribute("aria-label", "Se connecter pour l’écoute complète");
-    return loginCue;
-  }
-
   function initDictionaryEntries() {
     const dictToolbar = document.querySelector(".dict-toolbar");
-    let loginCue = null;
     if (dictToolbar && !dictToolbar.querySelector(".site-tts-voice")) {
       dictToolbar.appendChild(
         buildVoiceSelect(() => {
@@ -744,8 +715,6 @@
           }
         })
       );
-      loginCue = makeLoginCue();
-      dictToolbar.appendChild(loginCue);
     }
 
     document.querySelectorAll(".dict-entry").forEach((entry) => {
@@ -765,16 +734,6 @@
         if (window.speechSynthesis.speaking) stopAll();
       });
     }
-
-    function updateDictLogin() {
-      if (!loginCue) {
-        loginCue = dictToolbar && dictToolbar.querySelector(".site-tts-login");
-      }
-      if (loginCue) loginCue.hidden = Boolean(isMember);
-    }
-    updateDictLogin();
-    window.SiteTTS = window.SiteTTS || {};
-    window.SiteTTS._updateDictLogin = updateDictLogin;
   }
 
   if (mode === "dictionary") {

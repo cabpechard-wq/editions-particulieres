@@ -18,6 +18,7 @@ from .dictionnaire_render import (
     letter_key,
     render_body,
     slugify,
+    sort_entries,
 )
 from .manuel_tree import manuel_digits, pad_digits, path_segments_for
 from .site_links import SiteLinkRegistry, relation_ids, render_relation_extras
@@ -142,6 +143,7 @@ def entries_from_units(
                 keys=("jurisprudence",),
                 prefix=prefix,
                 resolve_title=converter.resolve_title,
+                section=False,
             )
             if jur:
                 extras.append(jur)
@@ -156,7 +158,7 @@ def entries_from_units(
             }
         )
 
-    entries.sort(key=lambda e: (e["term"].casefold(), e["slug"]))
+    sort_entries(entries)
     _dedupe_slugs(entries)
     return entries
 

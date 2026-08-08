@@ -384,13 +384,20 @@ def main() -> int:
         if src.exists():
             shutil.copy2(src, site / asset)
 
-    # Chartes live (sans motifs / images)
+    # Chartes live + médias décoratifs (lys Amphithéâtre, etc.)
     themes_src = SITE_ROOT / "templates" / "themes"
     if themes_src.is_dir():
         themes_dst = site / "themes"
         if themes_dst.exists():
             shutil.rmtree(themes_dst)
         shutil.copytree(themes_src, themes_dst)
+
+    media_src = SITE_ROOT / "templates" / "media"
+    if media_src.is_dir():
+        media_dst = site / "media"
+        if media_dst.exists():
+            shutil.rmtree(media_dst)
+        shutil.copytree(media_src, media_dst)
 
     # Hubs intermédiaires Accueil → Bibliothèque / Amphithéâtre / TD
     for hub in ("bibliotheque", "ressources", "exercices"):

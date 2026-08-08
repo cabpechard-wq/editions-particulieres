@@ -113,7 +113,8 @@
     const cssLink = findCssLink();
     if (!cssLink) return;
     const href = abs(theme.css);
-    const bust = "v=" + encodeURIComponent(theme.id);
+    const ver = (manifest.assetsVersion || "1") + "-" + theme.id;
+    const bust = "v=" + encodeURIComponent(ver);
     cssLink.href = href + (href.indexOf("?") >= 0 ? "&" : "?") + bust;
     const fonts = ensureFontsLink();
     if (theme.fonts) fonts.href = theme.fonts;
@@ -143,6 +144,9 @@
     }
     if (document.getElementById("site-theme-select")) return;
 
+    const currentId =
+      document.documentElement.dataset.theme || resolveInitial(manifest).id;
+
     const wrap = document.createElement("span");
     wrap.className = "site-theme-picker";
     wrap.innerHTML =
@@ -153,8 +157,10 @@
       const opt = document.createElement("option");
       opt.value = t.id;
       opt.textContent = t.label;
+      if (t.id === currentId) opt.selected = true;
       select.appendChild(opt);
     });
+    select.value = currentId;
     nav.appendChild(wrap);
 
     select.addEventListener("change", () => {

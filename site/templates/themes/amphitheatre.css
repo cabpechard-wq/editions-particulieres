@@ -43,10 +43,11 @@ html, body {
   font-family: var(--font-ui);
   background-color: var(--bg);
   background-image:
+    url("../media/cabinet-ornament.svg"),
     radial-gradient(ellipse 90% 55% at 85% -5%, rgba(212, 168, 75, .1) 0%, transparent 58%),
     radial-gradient(ellipse 70% 45% at -5% 105%, rgba(26, 61, 40, .55) 0%, transparent 55%),
     linear-gradient(180deg, #0f2618 0%, #0c1f14 100%);
-  background-size: auto, auto, auto;
+  background-size: 200px 200px, auto, auto, auto;
   background-attachment: fixed;
 }
 

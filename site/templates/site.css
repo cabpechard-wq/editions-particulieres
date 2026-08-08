@@ -53,9 +53,6 @@ body.site-body {
   padding: 0 0 3.5rem;
 }
 
-/* Aucun motif décoratif (papier peint / lys) sur le site live */
-.reading-lamp { display: none !important; }
-
 a { color: var(--accent); }
 a:hover { color: var(--accent-hover); }
 

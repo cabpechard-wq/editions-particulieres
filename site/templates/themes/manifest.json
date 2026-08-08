@@ -1,5 +1,6 @@
 {
   "default": "campus",
+  "assetsVersion": 4,
   "themes": [
     {
       "id": "campus",

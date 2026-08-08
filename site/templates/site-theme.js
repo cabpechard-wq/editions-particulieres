@@ -1,9 +1,18 @@
 /* Sélecteur de charte graphique (site live).
-   Campus = site.css par défaut. Persistance localStorage. Aucune image. */
+   Campus = site.css par défaut. Persistance localStorage. */
 (function () {
   const STORAGE_KEY = "ep-site-theme";
-  const script = document.currentScript;
-  const root = new URL("./", script.src).href;
+
+  function scriptBase() {
+    const el =
+      document.currentScript ||
+      document.querySelector('script[src*="site-theme"]') ||
+      document.querySelector('script[src*="site-nav"]');
+    if (el && el.src) return new URL("./", el.src).href;
+    return new URL("./", location.href).href;
+  }
+
+  const root = scriptBase();
 
   function abs(path) {
     return new URL(path.replace(/^\//, ""), root).href;
@@ -122,10 +131,17 @@
     } catch (_) {}
   }
 
-  function mountPicker(manifest) {
+  function mountPicker(manifest, attempt) {
+    attempt = attempt || 0;
     ensureUiStyles();
     const nav = document.querySelector(".site-nav-links");
-    if (!nav || document.getElementById("site-theme-select")) return;
+    if (!nav) {
+      if (attempt < 40) {
+        setTimeout(() => mountPicker(manifest, attempt + 1), 50);
+      }
+      return;
+    }
+    if (document.getElementById("site-theme-select")) return;
 
     const wrap = document.createElement("span");
     wrap.className = "site-theme-picker";

@@ -840,7 +840,7 @@ body {{
 .verso-title {{
   margin: 0;
   font-family: var(--font-ui);
-  font-size: .72rem;
+  font-size: var(--flip-verso-title-size, .72rem);
   font-weight: 700;
   line-height: 1.3;
   color: var(--ink);
@@ -867,14 +867,14 @@ body {{
 .term {{
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(1.05rem, 2.3vw, 1.4rem);
+  font-size: var(--flip-term-size, clamp(1.05rem, 2.3vw, 1.4rem));
   font-weight: 600; line-height: 1.35;
   text-align: center;
 }}
 .def {{
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(.92rem, 1.7vw, 1.05rem);
+  font-size: var(--flip-def-size, clamp(.92rem, 1.7vw, 1.05rem));
   font-weight: 500; line-height: 1.55;
   color: var(--muted);
   text-align: left;

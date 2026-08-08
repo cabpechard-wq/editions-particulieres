@@ -17,8 +17,8 @@
     "</a>" +
     '<nav class="site-nav-links" aria-label="Navigation">' +
       '<a data-nav="home" href="' + abs("index.html") + '">Accueil</a>' +
-      '<a data-nav="ressources" href="' + abs("ressources/") + '">Amphi\'</a>' +
       '<a data-nav="bibliotheque" href="' + abs("bibliotheque/") + '">BU</a>' +
+      '<a data-nav="ressources" href="' + abs("ressources/") + '">Amphi\'</a>' +
       '<a data-nav="exercices" href="' + abs("exercices/") + '">Salles de TD</a>' +
       '<a data-nav="checkout" href="' + abs("checkout/") + '">Inscriptions</a>' +
       '<span class="site-nav-guest">' +
@@ -250,7 +250,7 @@
       return;
     }
     const s = document.createElement("script");
-    s.src = abs("site-tts.js?v=6");
+    s.src = abs("site-tts.js?v=7");
     s.onload = () => cb();
     s.onerror = () => cb();
     document.body.appendChild(s);
@@ -281,14 +281,17 @@
     report.className = "site-error-report";
     report.href =
       "mailto:cab.pechard@gmail.com"
-      + "?subject=" + encodeURIComponent("Signaler une erreur")
+      + "?subject=" + encodeURIComponent("Signaler une erreur / suggérer un ajout")
       + "&body=" + encodeURIComponent(
-        "Bonjour,\n\nJe souhaite signaler une erreur sur la page suivante :\n"
+        "Bonjour,\n\nJe souhaite signaler une erreur ou suggérer un ajout sur la page suivante :\n"
         + location.href
         + "\n\nDescription :\n"
       );
-    report.textContent = "Signaler une erreur";
-    report.setAttribute("aria-label", "Signaler une erreur par e-mail");
+    report.textContent = "Signaler une erreur / suggérer un ajout";
+    report.setAttribute(
+      "aria-label",
+      "Signaler une erreur ou suggérer un ajout par e-mail"
+    );
     document.body.appendChild(report);
   }
 
@@ -310,7 +313,9 @@
 
   // Sélecteur de charte (Campus par défaut) — chargé après le bandeau
   const themeJs = document.createElement("script");
-  themeJs.src = new URL("site-theme.js", script.src).href;
-  themeJs.defer = true;
+  themeJs.src = new URL("site-theme.js?v=3", script.src).href;
+  themeJs.onerror = function () {
+    console.warn("[site-theme] Impossible de charger site-theme.js — rebuild du site requis.");
+  };
   document.body.appendChild(themeJs);
 })();

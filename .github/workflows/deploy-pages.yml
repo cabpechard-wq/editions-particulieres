@@ -12,6 +12,7 @@ on:
       - 'export_dictionnaire.py'
       - 'export_arrets.py'
       - 'scripts/fix_legacy_crumbs.py'
+      - 'scripts/seed_live_html.py'
       - 'requirements.txt'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
@@ -89,58 +90,12 @@ jobs:
 
       # Contourne les rate limits Notion : on réutilise le contenu déjà publié
       # sauf si workflow_dispatch → refresh_notion=true.
+      # github.io redirige vers www : wget -np ne récursait qu'une page ; seed Python.
       - name: Seed manuel/dictionnaire from live Pages
         id: seed
         if: ${{ github.event_name != 'workflow_dispatch' || inputs.refresh_notion != true }}
         continue-on-error: true
-        run: |
-          set -euo pipefail
-          # Prefer custom domain; fall back to github.io. Reject OVH "site en construction"
-          # pages that poisoned a previous deploy during DNS cutover.
-          # cut-dirs: github.io a le préfixe /editions-particulieres/ ; www non.
-          try_seed() {
-            local BASE="$1"
-            local CUT="$2"
-            echo "Tentative seed depuis $BASE (cut-dirs=$CUT) …"
-            rm -rf site/dist/site/manuel site/dist/site/dictionnaire
-            for path in manuel dictionnaire; do
-              wget -q -r -np -nH --cut-dirs="$CUT" --level=inf \
-                --reject-regex '[?]' \
-                -P site/dist/site \
-                "$BASE/$path/" || return 1
-              f="site/dist/site/$path/index.html"
-              test -f "$f" || return 1
-              if grep -qiE 'Site en construction|OVHcloud|/__ovh/' "$f"; then
-                echo "::warning::Seed $path depuis $BASE = page OVH (ignoré)"
-                return 1
-              fi
-            done
-            return 0
-          }
-          mkdir -p site/dist/site
-          if try_seed "https://www.editions-particulieres.fr" 0; then
-            :
-          elif try_seed "https://cabpechard-wq.github.io/editions-particulieres" 1; then
-            :
-          else
-            echo "Seed impossible depuis les miroirs live"
-            exit 1
-          fi
-          test -f site/dist/site/manuel/index.html
-          test -f site/dist/site/dictionnaire/index.html
-          manuel_pages=$(find site/dist/site/manuel -name 'index.html' | wc -l)
-          dict_pages=$(find site/dist/site/dictionnaire -name 'index.html' | wc -l)
-          echo "Seed pages : manuel=$manuel_pages dictionnaire=$dict_pages"
-          if [ "$manuel_pages" -lt 15 ]; then
-            echo "::warning::Seed manuel incomplet ($manuel_pages pages HTML, attendu >= 15)"
-            exit 1
-          fi
-          if [ "$dict_pages" -lt 1 ]; then
-            echo "::warning::Seed dictionnaire vide"
-            exit 1
-          fi
-          echo "Seed OK ($(du -sh site/dist/site/manuel site/dist/site/dictionnaire | tr '\n' ' '))"
-          echo "ok=true" >> "$GITHUB_OUTPUT"
+        run: python scripts/seed_live_html.py --out site/dist/site
 
       - name: Export manuel HTML into site
         if: ${{ inputs.refresh_notion == true || steps.seed.outcome != 'success' }}

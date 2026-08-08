@@ -154,19 +154,34 @@ PATH_CHECKS: list[tuple[str, list[CheckFn], dict]] = [
 
 
 def probe_base(base: str) -> bool:
-    status, body, _ = fetch(join_url(base, ""))
+    try:
+        status, body, _ = fetch(join_url(base, ""))
+    except Exception as e:
+        print(f"  (erreur probe : {e})")
+        return False
     if status != 200:
+        print(f"  (HTTP {status})")
         return False
     if OVH_POISON.search(body):
+        print("  (page OVH)")
         return False
-    return "Éditions Particulières" in body or "editions" in body.lower()
+    if not ("Éditions Particulières" in body or "editions" in body.lower()):
+        print("  (contenu inattendu)")
+        return False
+    return True
 
 
 def run_suite(base: str) -> None:
     print(f"Base : {base}")
     for path, checkers, opts in PATH_CHECKS:
         url = join_url(base, path) if path else base.rstrip("/") + "/"
-        status, body, headers = fetch(url, expect_json=bool(opts.get("expect_json")))
+        try:
+            status, body, headers = fetch(
+                url, expect_json=bool(opts.get("expect_json"))
+            )
+        except Exception as e:
+            print(f"  URL : {url}")
+            fail(f"fetch impossible : {e}")
         label = path or "/"
         try:
             for check in checkers:
@@ -179,7 +194,12 @@ def run_suite(base: str) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--base", default="", help="URL canonique du site")
+    p.add_argument(
+        "--base",
+        action="append",
+        default=[],
+        help="URL a tester (repetable). Defaut : www puis github.io",
+    )
     p.add_argument("--retries", type=int, default=10, help="Tentatives (propagation CDN)")
     p.add_argument("--sleep", type=float, default=15.0, help="Pause entre tentatives (s)")
     p.add_argument(
@@ -187,16 +207,27 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Ignore les erreurs SSL (dev local Windows uniquement)",
     )
+    p.add_argument(
+        "--require-base",
+        default="",
+        help="Si defini, echoue si cette base n'est pas joignable (meme si un fallback OK)",
+    )
     args = p.parse_args(argv)
 
     global INSECURE
     INSECURE = bool(args.insecure)
 
     bases: list[str] = []
-    if args.base.strip():
-        bases.append(args.base.strip().rstrip("/"))
+    for b in args.base:
+        b = b.strip().rstrip("/")
+        if b and b not in bases:
+            bases.append(b)
+    if not bases:
+        bases = [DEFAULT_BASE, FALLBACK_BASE]
     else:
-        bases.extend([DEFAULT_BASE, FALLBACK_BASE])
+        # Toujours garder github.io en secours si www SSL/DNS casse
+        if FALLBACK_BASE not in bases:
+            bases.append(FALLBACK_BASE)
 
     last_err: BaseException | None = None
     for attempt in range(1, max(1, args.retries) + 1):
@@ -204,13 +235,11 @@ def main(argv: list[str] | None = None) -> int:
         chosen = None
         for b in bases:
             print(f"Probe {b} ...")
-            try:
-                if probe_base(b):
-                    chosen = b
-                    break
-                print("  (indisponible ou page invalide)")
-            except Exception as e:
-                print(f"  (erreur probe : {e})")
+            if probe_base(b):
+                chosen = b
+                if b != bases[0]:
+                    print(f"WARN: base primaire indisponible — smoke sur {b}")
+                break
         if not chosen:
             last_err = RuntimeError("aucune base joignable")
             if attempt < args.retries:
@@ -218,6 +247,12 @@ def main(argv: list[str] | None = None) -> int:
             continue
         try:
             run_suite(chosen)
+            req = (args.require_base or "").strip().rstrip("/")
+            if req and chosen.rstrip("/") != req:
+                fail(
+                    f"smoke OK sur {chosen} mais --require-base={req} "
+                    f"est injoignable (souvent certificat SSL www)"
+                )
             print("SMOKE LIVE OK")
             return 0
         except SystemExit as e:

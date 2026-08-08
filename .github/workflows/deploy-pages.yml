@@ -217,8 +217,11 @@ jobs:
         run: sleep 20
       - name: Smoke HTTP (www + fallback github.io)
         run: |
+          # www peut avoir un certificat GitHub Pages invalide / en cours
+          # de renouvellement (Hostname mismatch) : on smoke github.io en secours.
           python site/smoke_live.py \
             --base https://www.editions-particulieres.fr \
+            --base https://cabpechard-wq.github.io/editions-particulieres \
             --retries 12 \
             --sleep 20
       - name: Smoke commerce config (URLs)

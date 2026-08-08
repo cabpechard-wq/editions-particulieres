@@ -1,4 +1,4 @@
-/* Thème universitaire — Salle de lecture (accessibilité) - Jour (Lot 1 · accessibilité) */
+﻿/* Thème universitaire — Salle de lecture (accessibilité) - Jour (Lot 1 · accessibilité) */
 :root {
   --bg: #ffe03d;
   --bg-elevated: #ffe03d;
@@ -1490,7 +1490,7 @@ input:focus {
   opacity: 0.88;
 }
 
-.manuel-content .legal-prose :is(h2, h3, h4, h5) a.dict-link {
+.manuel-content .legal-prose :is(h2, h3, h4, h5) a:is(.dict-link, .manuel-link, .arret-link) {
   color: inherit;
 }
 
@@ -1630,21 +1630,21 @@ input:focus {
 }
 
 /* Glossaire : discret, formatage d'origine (gras / souligné si présent dans Notion) */
-.manuel-content .legal-prose a.dict-link {
+.manuel-content .legal-prose a:is(.dict-link, .manuel-link, .arret-link) {
   color: var(--ink);
   font-weight: inherit;
   text-decoration: none;
 }
 
 /* Autres liens : couleur Notion ou héritée ; soulignement = couleur du texte du lien */
-.manuel-content .legal-prose a:not(.dict-link) {
+.manuel-content .legal-prose a:not(.dict-link):not(.manuel-link):not(.arret-link) {
   color: inherit;
   font-weight: inherit;
   text-decoration: none;
 }
 
-.manuel-content .legal-prose a:not(.dict-link) > span[style*="color"],
-.manuel-content .legal-prose a:not(.dict-link):not(:has(span)):not(:has(u)) {
+.manuel-content .legal-prose a:not(.dict-link):not(.manuel-link):not(.arret-link) > span[style*="color"],
+.manuel-content .legal-prose a:not(.dict-link):not(.manuel-link):not(.arret-link):not(:has(span)):not(:has(u)) {
   text-decoration: underline;
   text-decoration-color: currentColor;
   text-underline-offset: 0.12em;

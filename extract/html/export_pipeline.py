@@ -17,13 +17,14 @@ from .converter import PageConverter
 from .arrets_site import build_arrets_site
 from .dictionnaire_site import build_dictionnaire_site, entries_from_units, manuel_roots_for
 from .manuel_links import (
-    build_glossary_slug_map,
+    build_site_link_registry,
     dict_prefix_for_aside,
     dict_prefix_for_chapter,
-    rewrite_glossary_links,
+    rewrite_site_links,
 )
 from .manuel_site import build_manuel_site
 from .manuel_tree import classify_chapter
+from .site_links import render_relation_extras
 from extract.word.pages import page_reference
 
 
@@ -77,9 +78,15 @@ def _check_manuel_templates(templates: Path) -> str | None:
 
 def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[Path]]:
     converter = PageConverter(fetcher)
-    glossary_map = build_glossary_slug_map(fetcher)
-    if glossary_map:
-        req.log(f"Glossaire : {len(set(glossary_map.values()))} entrée(s) pour les liens Cours\n")
+    registry = build_site_link_registry(fetcher)
+    counts = registry.counts()
+    if any(counts.values()):
+        req.log(
+            "Liens site : "
+            f"{counts.get('index', 0)} Index · "
+            f"{counts.get('manuel', 0)} Cours · "
+            f"{counts.get('arrets', 0)} Arrêts\n"
+        )
     chapters: list[dict] = []
     aside: list[dict] = []
     skipped: list[str] = []
@@ -94,19 +101,34 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
         if skip:
             skipped.append(skip)
             continue
+        props = unit.page.get("properties") or {}
         if chapter:
-            chapter["body"] = rewrite_glossary_links(
-                chapter["body"],
-                glossary_map,
-                dict_prefix=dict_prefix_for_chapter(chapter),
+            prefix = dict_prefix_for_chapter(chapter)
+            body = rewrite_site_links(chapter["body"], registry, prefix=prefix)
+            extras = render_relation_extras(
+                props,
+                registry,
+                keys=("jurisprudence", "index"),
+                prefix=prefix,
+                resolve_title=converter.resolve_title,
             )
+            if extras:
+                body = f"{body}\n{extras}" if body else extras
+            chapter["body"] = body
             chapters.append(chapter)
         if aside_item:
-            aside_item["body"] = rewrite_glossary_links(
-                aside_item["body"],
-                glossary_map,
-                dict_prefix=dict_prefix_for_aside(),
+            prefix = dict_prefix_for_aside()
+            body = rewrite_site_links(aside_item["body"], registry, prefix=prefix)
+            extras = render_relation_extras(
+                props,
+                registry,
+                keys=("jurisprudence", "index"),
+                prefix=prefix,
+                resolve_title=converter.resolve_title,
             )
+            if extras:
+                body = f"{body}\n{extras}" if body else extras
+            aside_item["body"] = body
             aside.append(aside_item)
 
     if not chapters and not aside:
@@ -139,8 +161,14 @@ def export_dictionnaire_html(req, units, fetcher, templates: Path) -> tuple[int,
             "Attention : aucune page Cours trouvée — les liens « Cours » seront limités.\n"
         )
 
+    registry = build_site_link_registry(fetcher, include=("manuel", "arrets"))
     index_units = [u for u in units if u.kind == "index"]
-    entries = entries_from_units(index_units, fetcher, manuel_roots=manuel_roots)
+    entries = entries_from_units(
+        index_units,
+        fetcher,
+        manuel_roots=manuel_roots,
+        registry=registry,
+    )
     if not entries:
         req.log("Aucune entrée glossaire (propriété Définition ou corps de page).\n")
         return 1, []
@@ -159,18 +187,24 @@ def export_dictionnaire_html(req, units, fetcher, templates: Path) -> tuple[int,
     return 0, [dst / "index.html"]
 
 
-def export_arrets_html(req, units, templates: Path) -> tuple[int, list[Path]]:
+def export_arrets_html(req, units, fetcher, templates: Path) -> tuple[int, list[Path]]:
     site_root = resolve_site_root(Path(req.out))
     arrets_pages = [u.page for u in units if u.kind == "arrets" and u.page]
     if not arrets_pages:
         req.log("Aucune fiche jurisprudence (propriétés Nom / Objet / fiche).\n")
         return 1, []
 
+    registry = build_site_link_registry(fetcher, include=("manuel", "index"))
+    converter = PageConverter(fetcher) if fetcher else None
+    resolve_title = converter.resolve_title if converter else None
+
     try:
         dst = build_arrets_site(
             arrets_pages,
             templates=templates,
             site_root=site_root,
+            registry=registry,
+            resolve_title=resolve_title,
             log=req.log,
         )
     except (FileNotFoundError, ValueError) as e:
@@ -178,7 +212,6 @@ def export_arrets_html(req, units, templates: Path) -> tuple[int, list[Path]]:
         return 1, []
 
     return 0, [dst / "index.html"]
-
 
 def build_manuel_title_map_safe(manuel_roots: list[Path]) -> dict:
     from .dictionnaire_render import build_manuel_title_map
@@ -286,7 +319,7 @@ def run_html_pipeline(req) -> tuple[int, list[Path]]:
                 return 1, produced
         arrets_units = [u for u in units if u.kind == "arrets"]
         req.log(f"{len(arrets_units)} fiche(s) → arrêts HTML\n\n")
-        code, paths = export_arrets_html(req, arrets_units, templates)
+        code, paths = export_arrets_html(req, arrets_units, fetcher, templates)
         exit_code = max(exit_code, code)
         produced.extend(paths)
 

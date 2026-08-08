@@ -102,7 +102,13 @@ def _dedupe_slugs(entries: list[dict]) -> None:
             e["slug"] = f"{base}-{n + 1}"
 
 
-def entry_from_page(page: dict[str, Any]) -> dict[str, Any] | None:
+def entry_from_page(
+    page: dict[str, Any],
+    *,
+    registry=None,
+    resolve_title=None,
+    asset_prefix: str = "../../",
+) -> dict[str, Any] | None:
     props = page.get("properties") or {}
     title = title_from_page(page)
     if not title or title == "Sans titre":
@@ -122,11 +128,22 @@ def entry_from_page(page: dict[str, Any]) -> dict[str, Any] | None:
         "date": _format_date(date_raw.split("→", 1)[0].strip()) if date_raw else "",
         "date_sort": date_sort,
         "importance": prop_text(props, "Importance"),
-        "body_html": render_fiche_body(page),
+        "body_html": render_fiche_body(
+            page,
+            registry=registry,
+            resolve_title=resolve_title,
+            asset_prefix=asset_prefix,
+        ),
     }
 
 
-def render_fiche_body(page: dict[str, Any]) -> str:
+def render_fiche_body(
+    page: dict[str, Any],
+    *,
+    registry=None,
+    resolve_title=None,
+    asset_prefix: str = "../../",
+) -> str:
     props = page.get("properties") or {}
     parts: list[str] = []
 
@@ -158,6 +175,19 @@ def render_fiche_body(page: dict[str, Any]) -> str:
             )
         box.append("</aside>")
         parts.append("\n".join(box))
+
+    if registry is not None:
+        from .site_links import render_relation_extras
+
+        extras = render_relation_extras(
+            props,
+            registry,
+            keys=("manuel", "index"),
+            prefix=asset_prefix,
+            resolve_title=resolve_title,
+        )
+        if extras:
+            parts.append(extras)
 
     if not parts:
         return "<p class=\"arrets-empty\">Fiche en cours de rédaction.</p>"

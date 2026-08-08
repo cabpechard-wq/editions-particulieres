@@ -128,6 +128,17 @@ jobs:
           fi
           test -f site/dist/site/manuel/index.html
           test -f site/dist/site/dictionnaire/index.html
+          manuel_pages=$(find site/dist/site/manuel -name 'index.html' | wc -l)
+          dict_pages=$(find site/dist/site/dictionnaire -name 'index.html' | wc -l)
+          echo "Seed pages : manuel=$manuel_pages dictionnaire=$dict_pages"
+          if [ "$manuel_pages" -lt 15 ]; then
+            echo "::warning::Seed manuel incomplet ($manuel_pages pages HTML, attendu >= 15)"
+            exit 1
+          fi
+          if [ "$dict_pages" -lt 1 ]; then
+            echo "::warning::Seed dictionnaire vide"
+            exit 1
+          fi
           echo "Seed OK ($(du -sh site/dist/site/manuel site/dist/site/dictionnaire | tr '\n' ' '))"
           echo "ok=true" >> "$GITHUB_OUTPUT"
 

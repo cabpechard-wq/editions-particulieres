@@ -244,10 +244,20 @@ class JurisprudenceConverter(PageConverter):
             elif isinstance(value, dict) and "start" in value:
                 props_raw[name] = {"type": "date", "date": value}
             elif isinstance(value, list):
-                props_raw[name] = {
-                    "type": "multi_select",
-                    "multi_select": [{"name": str(x)} for x in value],
-                }
+                if value and all(isinstance(x, dict) and x.get("id") for x in value):
+                    props_raw[name] = {
+                        "type": "relation",
+                        "relation": [
+                            {"id": x["id"]}
+                            for x in value
+                            if isinstance(x, dict) and x.get("id")
+                        ],
+                    }
+                else:
+                    props_raw[name] = {
+                        "type": "multi_select",
+                        "multi_select": [{"name": str(x)} for x in value],
+                    }
             else:
                 props_raw[name] = {
                     "type": "rich_text",

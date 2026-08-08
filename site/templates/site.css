@@ -2264,6 +2264,95 @@ input:focus {
   font: 500 .88rem var(--font-ui);
 }
 
+.arrets-advanced {
+  position: relative;
+  font-size: .88rem;
+}
+
+.arrets-advanced > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: .55rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.arrets-advanced > summary::-webkit-details-marker {
+  display: none;
+}
+
+.arrets-advanced > summary::after {
+  content: " ▾";
+  font-size: .75rem;
+  color: var(--muted);
+}
+
+.arrets-advanced[open] > summary::after {
+  content: " ▴";
+}
+
+.arrets-advanced-row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: .45rem .65rem;
+  margin-top: .55rem;
+  padding: .65rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.arrets-advanced-field {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+  flex: 0 0 auto;
+  min-width: 7.5rem;
+}
+
+.arrets-advanced-field[data-field="arrets-reference"],
+.arrets-advanced-field[data-field="arrets-nom"] {
+  min-width: 9.5rem;
+}
+
+.arrets-advanced-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.arrets-advanced-field select,
+.arrets-advanced-field input[type="search"] {
+  width: 100%;
+  min-width: 7rem;
+  padding: .45rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--ink);
+  font: 500 .84rem var(--font-ui);
+}
+
+.arrets-advanced-field input[type="search"]:focus,
+.arrets-advanced-field select:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+
+@media (max-width: 860px) {
+  .arrets-advanced-row {
+    flex-wrap: wrap;
+  }
+}
+
 .arrets-list {
   display: grid;
   gap: .85rem;

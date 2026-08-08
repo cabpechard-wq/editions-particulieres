@@ -439,42 +439,22 @@ def build_html_document(
 <title>{_esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../site.css">
+<link id="theme-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link id="theme-css" rel="stylesheet" href="../site.css">
 <style>
+/* Flipcards — la charte (couleurs, polices) vient de site.css / themes/ via site-theme.js */
 :root {{
-  --bg: #0e1419;
-  --bg-elevated: #162028;
-  --card: #162028;
-  --card-verso: #162028;
-  --ink: #e8ebe6;
-  --muted: #8b969e;
-  --accent: #c4a35a;
-  --accent-hover: #d4b56e;
-  --accent-soft: rgba(196, 163, 90, .14);
-  --secondary: #c56a2d;
-  --secondary-soft: rgba(197, 106, 45, .18);
-  --brass: #c4a35a;
-  --border: rgba(232, 235, 230, .12);
-  --ok: #6ee7b7;
-  --ok-soft: rgba(110, 231, 183, .14);
-  --radius: 2px;
-  --font-ui: "DM Sans", system-ui, sans-serif;
-  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --card-verso: var(--bg-elevated);
+  --brass: var(--accent);
 }}
 * {{ box-sizing: border-box; }}
 html, body {{
   margin: 0; min-height: 100%;
   color: var(--ink);
   font-family: var(--font-ui);
-  background: var(--bg);
 }}
 body {{
   padding: 0 0 3.5rem;
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, #1c2a35 0%, transparent 55%),
-    radial-gradient(ellipse 40% 30% at 100% 80%, #1a2420 0%, transparent 45%);
 }}
 .wrap {{ max-width: 48rem; margin: 0 auto; padding: 1.5rem 1rem 0; }}
 .wrap.is-study {{ max-width: 36rem; }}
@@ -2053,7 +2033,7 @@ applyDeepLink();
 updateHomeCount();
 </script>
 <script src="../auth.js?v=4"></script>
-<script src="../site-nav.js?v=3"></script>
+<script src="../site-nav.js?v=16"></script>
 </body>
 </html>
 """

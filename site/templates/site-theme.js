@@ -115,6 +115,11 @@
     const select = document.getElementById("site-theme-select");
     if (select && select.value !== theme.id) select.value = theme.id;
     void manifest;
+    try {
+      document.dispatchEvent(
+        new CustomEvent("ep-theme-change", { detail: { theme: theme } })
+      );
+    } catch (_) {}
   }
 
   function mountPicker(manifest) {
@@ -153,15 +158,38 @@
 
   function boot(manifest) {
     mountPicker(manifest);
-    applyTheme(resolveInitial(manifest), manifest);
   }
+
+  let cachedManifest = null;
 
   function start() {
     fetch(abs("themes/manifest.json"))
       .then((r) => (r.ok ? r.json() : FALLBACK))
       .catch(() => FALLBACK)
-      .then(boot);
+      .then((manifest) => {
+        cachedManifest = manifest;
+        const theme = resolveInitial(manifest);
+        applyTheme(theme, manifest);
+        const finish = () => boot(manifest);
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", finish);
+        } else {
+          finish();
+        }
+      });
   }
+
+  window.addEventListener("storage", (e) => {
+    if (e.key !== STORAGE_KEY || !cachedManifest) return;
+    applyTheme(resolveInitial(cachedManifest), cachedManifest);
+  });
+
+  window.EPSiteTheme = {
+    STORAGE_KEY: STORAGE_KEY,
+    applyTheme: applyTheme,
+    resolveInitial: resolveInitial,
+    abs: abs,
+  };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);

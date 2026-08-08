@@ -95,15 +95,37 @@ jobs:
         continue-on-error: true
         run: |
           set -euo pipefail
-          BASE="https://cabpechard-wq.github.io/editions-particulieres"
+          # Prefer custom domain; fall back to github.io. Reject OVH "site en construction"
+          # pages that poisoned a previous deploy during DNS cutover.
+          # cut-dirs: github.io a le préfixe /editions-particulieres/ ; www non.
+          try_seed() {
+            local BASE="$1"
+            local CUT="$2"
+            echo "Tentative seed depuis $BASE (cut-dirs=$CUT) …"
+            rm -rf site/dist/site/manuel site/dist/site/dictionnaire
+            for path in manuel dictionnaire; do
+              wget -q -r -np -nH --cut-dirs="$CUT" --level=inf \
+                --reject-regex '[?]' \
+                -P site/dist/site \
+                "$BASE/$path/" || return 1
+              f="site/dist/site/$path/index.html"
+              test -f "$f" || return 1
+              if grep -qiE 'Site en construction|OVHcloud|/__ovh/' "$f"; then
+                echo "::warning::Seed $path depuis $BASE = page OVH (ignoré)"
+                return 1
+              fi
+            done
+            return 0
+          }
           mkdir -p site/dist/site
-          for path in manuel dictionnaire; do
-            echo "Mirroring /$path/ …"
-            wget -q -r -np -nH --cut-dirs=1 --level=inf \
-              --reject-regex '[?]' \
-              -P site/dist/site \
-              "$BASE/$path/"
-          done
+          if try_seed "https://www.editions-particulieres.fr" 0; then
+            :
+          elif try_seed "https://cabpechard-wq.github.io/editions-particulieres" 1; then
+            :
+          else
+            echo "Seed impossible depuis les miroirs live"
+            exit 1
+          fi
           test -f site/dist/site/manuel/index.html
           test -f site/dist/site/dictionnaire/index.html
           echo "Seed OK ($(du -sh site/dist/site/manuel site/dist/site/dictionnaire | tr '\n' ' '))"
@@ -151,6 +173,12 @@ jobs:
           test -f site/dist/site/manuel/index.html || (echo "::error::Manuel absent" && exit 1)
           test -f site/dist/site/dictionnaire/index.html || (echo "::error::Dictionnaire absent" && exit 1)
           test -f site/dist/site/arrets/index.html || (echo "::error::Arrêts absent" && exit 1)
+          for path in manuel dictionnaire; do
+            if grep -qiE 'Site en construction|OVHcloud|/__ovh/' "site/dist/site/$path/index.html"; then
+              echo "::error::$path contient encore la page OVH « site en construction »"
+              exit 1
+            fi
+          done
           if grep -q '__AUTH_API__' site/dist/site/auth.js; then
             echo "::warning::auth.js contient encore __AUTH_API__ (repli Worker actif)"
           fi

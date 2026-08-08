@@ -537,6 +537,11 @@ function cors(res, request, env) {
     "http://127.0.0.1:8080",
     "http://localhost:8080",
     "https://cabpechard-wq.github.io",
+    // Domaine custom (HTTP tant que Enforce HTTPS Pages n'est pas actif)
+    "https://www.editions-particulieres.fr",
+    "http://www.editions-particulieres.fr",
+    "https://editions-particulieres.fr",
+    "http://editions-particulieres.fr",
   ];
   for (const key of ["SITE_BASE", "SITE_ORIGIN"]) {
     const raw = (env?.[key] || "").replace(/\/$/, "");
@@ -544,6 +549,14 @@ function cors(res, request, env) {
     try {
       const o = new URL(raw).origin;
       if (!allowed.includes(o)) allowed.push(o);
+      // Autoriser aussi la variante http↔https du même host
+      if (o.startsWith("https://")) {
+        const http = "http://" + o.slice("https://".length);
+        if (!allowed.includes(http)) allowed.push(http);
+      } else if (o.startsWith("http://")) {
+        const https = "https://" + o.slice("http://".length);
+        if (!allowed.includes(https)) allowed.push(https);
+      }
     } catch (_) {}
   }
   const headers = new Headers(res.headers);

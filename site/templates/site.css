@@ -22,7 +22,7 @@
   --danger: #f87171;
   --radius: 2px;
   /* Colonne de lecture (manuel, fiches arrêts) — ~44,5 rem ≈ 18,8 cm à 16 px/rem */
-  --read-column: 44.5rem;
+  --read-column: 46rem;
   --font-ui: "DM Sans", system-ui, sans-serif;
   --font-display: "Cormorant Garamond", "Times New Roman", serif;
   --nav-h: 3.5rem;
@@ -2400,14 +2400,6 @@ input:focus {
 }
 
 /* —— Fiches d'arrêts —— */
-.arrets-index .arrets-filters,
-.arrets-index .arrets-list {
-  max-width: var(--read-column);
-  width: 100%;
-  margin-left: 0;
-  margin-right: auto;
-}
-
 .arrets-filters {
   margin: 0 0 1.75rem;
   font-family: var(--font-ui);

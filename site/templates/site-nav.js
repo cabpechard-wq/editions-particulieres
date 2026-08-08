@@ -324,7 +324,7 @@
 
   // Recherche full-text (Cours + Dictionnaire + Arrêts)
   const searchJs = document.createElement("script");
-  searchJs.src = new URL("site-search.js?v=1", script.src).href;
+  searchJs.src = new URL("site-search.js?v=2", script.src).href;
   searchJs.onerror = function () {
     console.warn("[site-search] Impossible de charger site-search.js — rebuild du site requis.");
   };

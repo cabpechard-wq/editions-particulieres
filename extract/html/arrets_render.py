@@ -116,16 +116,17 @@ def _render_select(
     values: list[str],
     *,
     empty_label: str = "Toutes",
-    hidden: bool = False,
+    collapsed: bool = False,
     disabled: bool = False,
 ) -> str:
+    field_cls = "arrets-advanced-field"
+    if collapsed:
+        field_cls += " is-collapsed"
     attrs = f'id="{select_id}" aria-label="{html.escape(label)}"'
-    if hidden:
-        attrs += ' hidden'
     if disabled:
         attrs += " disabled"
     lines = [
-        f'<label class="arrets-advanced-field" data-field="{html.escape(select_id)}">',
+        f'<label class="{field_cls}" data-field="{html.escape(select_id)}">',
         f'<span class="arrets-advanced-label">{html.escape(label)}</span>',
         f"<select {attrs}>",
         f'<option value="">{html.escape(empty_label)}</option>',
@@ -267,12 +268,16 @@ def render_index_body(entries: list[dict]) -> tuple[str, str]:
     )
     formation_map = _build_formation_map(entries)
 
-    filters = ['<div class="arrets-toolbar">']
+    filters = ['<div class="arrets-filters">']
+    filters.append('<div class="arrets-toolbar-row">')
     filters.append(
-        '<label class="sr-only" for="arrets-filter">Filtrer</label>'
+        '<label class="arrets-search-field" for="arrets-filter">'
+        '<span class="sr-only">Filtrer</span>'
         '<input id="arrets-filter" type="search" placeholder="Rechercher un arrêt…" autocomplete="off">'
+        "</label>"
     )
     if themes:
+        filters.append('<div class="arrets-theme-field">')
         filters.append('<span class="arrets-theme-label">Thème :</span>')
         filters.append('<select id="arrets-theme" aria-label="Filtrer par thème">')
         filters.append('<option value="">Tous</option>')
@@ -280,10 +285,16 @@ def render_index_body(entries: list[dict]) -> tuple[str, str]:
             filters.append(
                 f'<option value="{html.escape(_filter_key(th), quote=True)}">{html.escape(th)}</option>'
             )
-        filters.append("</select>")
+        filters.append("</select></div>")
+    filters.append(
+        '<button type="button" class="arrets-advanced-toggle" id="arrets-advanced-toggle" '
+        'aria-expanded="false" aria-controls="arrets-advanced-panel">Filtre avancé</button>'
+    )
+    filters.append("</div>")
 
-    filters.append('<details class="arrets-advanced">')
-    filters.append('<summary>Filtre avancé</summary>')
+    filters.append(
+        '<div class="arrets-advanced-panel" id="arrets-advanced-panel" hidden>'
+    )
     filters.append(
         '<div class="arrets-advanced-row" role="group" aria-label="Filtre avancé">'
     )
@@ -296,7 +307,7 @@ def render_index_body(entries: list[dict]) -> tuple[str, str]:
             "Formation de jugement",
             [],
             empty_label="Toutes",
-            hidden=True,
+            collapsed=True,
             disabled=True,
         )
     )
@@ -322,7 +333,7 @@ def render_index_body(entries: list[dict]) -> tuple[str, str]:
         'autocomplete="off" aria-label="Filtrer par nom">'
         "</label>"
     )
-    filters.append("</div></details>")
+    filters.append("</div></div>")
     filters.append(
         '<script type="application/json" id="arrets-formation-map">'
         f"{json.dumps(formation_map, ensure_ascii=False)}"
@@ -376,6 +387,8 @@ FILTER_JS = """
   const reference = document.getElementById("arrets-reference");
   const nom = document.getElementById("arrets-nom");
   const formationField = document.querySelector('[data-field="arrets-formation"]');
+  const advancedToggle = document.getElementById("arrets-advanced-toggle");
+  const advancedPanel = document.getElementById("arrets-advanced-panel");
   const cards = Array.from(document.querySelectorAll(".arrets-card"));
 
   let formationMap = {};
@@ -403,9 +416,12 @@ FILTER_JS = """
     });
     const active = Boolean(jKey && options.length);
     formation.disabled = !active;
-    formation.hidden = !active;
+    const row = formationField && formationField.closest(".arrets-advanced-row");
     if (formationField) {
-      formationField.hidden = !active;
+      formationField.classList.toggle("is-collapsed", !active);
+    }
+    if (row) {
+      row.classList.toggle("has-formation", active);
     }
     if (!active) {
       formation.value = "";
@@ -451,6 +467,16 @@ FILTER_JS = """
   onChange(dateYear, "change");
   onChange(reference, "input");
   onChange(nom, "input");
+
+  if (advancedToggle && advancedPanel) {
+    advancedToggle.addEventListener("click", () => {
+      const open = advancedPanel.hidden;
+      advancedPanel.hidden = !open;
+      advancedToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      advancedToggle.classList.toggle("is-open", open);
+    });
+  }
+
   updateFormation();
 })();
 </script>

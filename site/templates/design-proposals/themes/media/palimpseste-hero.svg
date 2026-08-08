@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <rect width="640" height="480" fill="#ddd6c8"/>
+  <g opacity=".5" font-family="Georgia, serif" fill="#1e1b4b">
+    <text x="48" y="120" font-size="56" font-style="italic" opacity=".2">scriptura</text>
+    <text x="90" y="200" font-size="40" opacity=".15">superimposita</text>
+    <text x="60" y="300" font-size="72" opacity=".1">juris</text>
+  </g>
+  <g fill="none" stroke="#dc2626" stroke-width="2" opacity=".4">
+    <path d="M40 420c120-80 200-40 280-100s180-40 280-20"/>
+  </g>
+  <rect x="36" y="36" width="568" height="408" fill="none" stroke="#1e1b4b" stroke-width="1" opacity=".25"/>
+  <rect x="44" y="44" width="552" height="392" fill="none" stroke="#1e1b4b" stroke-width="1" opacity=".15" stroke-dasharray="4 6"/>
+</svg>

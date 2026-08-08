@@ -513,10 +513,16 @@ def main() -> int:
     (MANUEL_DIR / "index.html").write_text(sommaire, encoding="utf-8")
 
     # CSS / nav à jour même si build_assets n'a pas été relancé
-    for asset in ("site.css", "site-nav.js"):
+    for asset in ("site.css", "site-nav.js", "site-tts.js", "site-theme.js"):
         src = TEMPLATES / asset
         if src.exists():
             shutil.copy2(src, SITE / asset)
+    themes_src = TEMPLATES / "themes"
+    if themes_src.is_dir():
+        themes_dst = SITE / "themes"
+        if themes_dst.exists():
+            shutil.rmtree(themes_dst)
+        shutil.copytree(themes_src, themes_dst)
 
     print(f"OK : {len(chapters)} chapitre(s) manuel → {MANUEL_DIR}")
     if aside:

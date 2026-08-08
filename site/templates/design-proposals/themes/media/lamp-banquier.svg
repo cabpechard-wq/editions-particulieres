@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="480" viewBox="0 0 420 480" fill="none">
+  <!-- Banker's lamp facing left — Emeralite shade -->
+  <g transform="translate(420,0) scale(-1,1)">
+  <defs>
+    <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e6c87a"/>
+      <stop offset="45%" stop-color="#c4a35a"/>
+      <stop offset="100%" stop-color="#8a6a2e"/>
+    </linearGradient>
+    <linearGradient id="shadeOuter" x1="250" y1="40" x2="250" y2="175" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2f9a58"/>
+      <stop offset="35%" stop-color="#1a6b3a"/>
+      <stop offset="100%" stop-color="#0d4424"/>
+    </linearGradient>
+    <linearGradient id="shadeInner" x1="250" y1="95" x2="250" y2="175" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff8e8"/>
+      <stop offset="100%" stop-color="#f0e0b8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="250" cy="175" r="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff6d0" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#fff6d0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="255" cy="190" rx="95" ry="28" fill="url(#glow)"/>
+  <ellipse cx="118" cy="455" rx="72" ry="10" fill="#000" opacity=".35"/>
+
+  <ellipse cx="118" cy="442" rx="68" ry="16" fill="#8a6a2e"/>
+  <ellipse cx="118" cy="434" rx="58" ry="13" fill="url(#brass)"/>
+  <ellipse cx="118" cy="426" rx="44" ry="10" fill="#8a6a2e"/>
+  <ellipse cx="118" cy="420" rx="32" ry="8" fill="url(#brass)"/>
+  <ellipse cx="118" cy="414" rx="22" ry="6" fill="#a67c3a"/>
+
+  <path d="M108 414 C108 400, 128 400, 128 414" fill="url(#brass)"/>
+  <ellipse cx="118" cy="402" rx="10" ry="6" fill="#c4a35a"/>
+
+  <path d="M118 402 C118 340, 118 290, 130 250 C145 200, 175 165, 215 145 C235 135, 250 132, 262 132"
+        stroke="#8a6a2e" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <path d="M118 402 C118 340, 118 290, 130 250 C145 200, 175 165, 215 145 C235 135, 250 132, 262 132"
+        stroke="url(#brass)" stroke-width="7" stroke-linecap="round" fill="none"/>
+  <path d="M118 402 C118 340, 118 290, 130 250 C145 200, 175 165, 215 145 C235 135, 250 132, 262 132"
+        stroke="#e6c87a" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".7"/>
+
+  <ellipse cx="262" cy="132" rx="10" ry="7" fill="url(#brass)"/>
+  <rect x="256" y="126" width="12" height="14" rx="3" fill="#c4a35a"/>
+
+  <path d="M155 95 C155 55, 190 42, 250 42 C310 42, 345 55, 345 95 L345 155 C345 168, 310 178, 250 178 C190 178, 155 168, 155 155 Z"
+        fill="url(#shadeOuter)"/>
+  <path d="M175 78 C195 58, 230 52, 250 52 C270 52, 300 58, 320 75"
+        stroke="#6fd492" stroke-width="4" stroke-linecap="round" fill="none" opacity=".55"/>
+  <path d="M162 145 C175 162, 210 172, 250 172 C290 172, 325 162, 338 145 C330 158, 295 168, 250 168 C205 168, 170 158, 162 145 Z"
+        fill="url(#shadeInner)"/>
+  <path d="M158 152 C175 168, 210 176, 250 176 C290 176, 325 168, 342 152"
+        stroke="#c4a35a" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <path d="M158 152 C175 168, 210 176, 250 176 C290 176, 325 168, 342 152"
+        stroke="#e6c87a" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".6"/>
+
+  <circle cx="292" cy="138" r="3.2" fill="#c4a35a"/>
+  <line x1="292" y1="141" x2="292" y2="175" stroke="#c4a35a" stroke-width="1.6"/>
+  <circle cx="292" cy="180" r="4" fill="url(#brass)"/>
+  </g>
+</svg>

@@ -269,4 +269,10 @@
       "</nav>" +
     "</div>";
   document.body.appendChild(footer);
+
+  // Sélecteur de charte (Campus par défaut) — chargé après le bandeau
+  const themeJs = document.createElement("script");
+  themeJs.src = new URL("site-theme.js", script.src).href;
+  themeJs.defer = true;
+  document.body.appendChild(themeJs);
 })();

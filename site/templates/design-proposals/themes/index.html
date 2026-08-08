@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chartes graphiques — Éditions Particulières</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --line: rgba(26, 26, 26, .12);
+    --bg: #fafafa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  main { max-width: 44rem; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; }
+  .lot {
+    font-size: .68rem;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 .75rem;
+  }
+  h1 {
+    font-family: "EB Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    letter-spacing: -.02em;
+    margin: 0 0 .75rem;
+    line-height: 1.1;
+  }
+  .lead {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 2.5rem;
+    max-width: 36rem;
+    font-size: .95rem;
+  }
+  .grid { display: grid; gap: 0; border-top: 1px solid var(--line); }
+  a.row {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid var(--line);
+    transition: opacity .15s;
+  }
+  a.row:hover { opacity: .72; }
+  .num {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--muted);
+    line-height: 1.2;
+  }
+  .name {
+    font-family: "EB Garamond", Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin: 0 0 .35rem;
+    letter-spacing: -.01em;
+  }
+  .desc {
+    margin: 0;
+    font-size: .88rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .swatches {
+    display: flex;
+    gap: .25rem;
+    margin-top: .45rem;
+  }
+  .swatches span {
+    width: .85rem;
+    height: .85rem;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,.08);
+  }
+  .meta {
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .04em;
+    white-space: nowrap;
+    padding-top: .2rem;
+  }
+  .tools {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    font-size: .82rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .tools code {
+    font-size: .78rem;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: .1rem .35rem;
+  }
+  .tools p { margin: 0 0 .5rem; }
+  .tools p:last-child { margin: 0; }
+  .back { margin-bottom: 2rem; }
+  .back a {
+    font-size: .78rem;
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .back a:hover { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <p class="back"><a href="../index.html">← Propositions de design</a></p>
+  <p class="lot">Chartes retenues</p>
+  <h1>Propositions de charte</h1>
+  <p class="lead">Variantes CSS complètes du <code>site.css</code>. Comparaison via le menu déroulant du bandeau de prévisualisation.</p>
+  <div class="grid">
+    <a class="row" href="./preview.html?theme=amphitheatre">
+      <span class="num">01</span>
+      <div>
+        <p class="name">Amphithéâtre</p>
+        <p class="desc">Vert forêt, laiton — grand amphi (travées bois) en motif de fond.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#0c1f14"></span>
+          <span style="background:#d4a84b"></span>
+          <span style="background:#e8e2d4"></span>
+        </div>
+      </div>
+      <span class="meta">Carte blanche</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-td">
+      <span class="num">02</span>
+      <div>
+        <p class="name">Salle de TD</p>
+        <p class="desc">Bleu / rouge — motif créatif (dossiers, encre, tableau) à droite.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#f7f5f2"></span>
+          <span style="background:#1e3a5f"></span>
+          <span style="background:#c8102e"></span>
+        </div>
+      </div>
+      <span class="meta">Dynamique</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture">
+      <span class="num">03</span>
+      <div>
+        <p class="name">Salle de lecture - Jour</p>
+        <p class="desc">Monochrome + rayonnage Sainte-Geneviève en fond (bord flou).</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#fafafa"></span>
+          <span style="background:#1a1a1a"></span>
+          <span style="background:#6b6b6b"></span>
+        </div>
+      </div>
+      <span class="meta">Sobre</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-access-jour">
+      <span class="num">03b</span>
+      <div>
+        <p class="name">Salle de lecture (accessibilité) - Jour</p>
+        <p class="desc">Noir sur fond jaune — contraste optimal, texte agrandi, Atkinson Hyperlegible.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#ffe03d"></span>
+          <span style="background:#000000"></span>
+        </div>
+      </div>
+      <span class="meta">Access. Jour</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-access-nuit">
+      <span class="num">03c</span>
+      <div>
+        <p class="name">Salle de lecture (accessibilité) - Nuit</p>
+        <p class="desc">Jaune sur noir — contraste optimal pour les yeux, mêmes aides de lecture.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#000000"></span>
+          <span style="background:#ffe03d"></span>
+        </div>
+      </div>
+      <span class="meta">Access. Nuit</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-nuit">
+      <span class="num">03d</span>
+      <div>
+        <p class="name">Salle de lecture · Nuit</p>
+        <p class="desc">Blanc sur noir + rayonnage bibliothèque nocturne à droite.</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#000000"></span>
+          <span style="background:#ffffff"></span>
+          <span style="background:#b0b0b0"></span>
+        </div>
+      </div>
+      <span class="meta">Nuit</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-nuit-lampe-spirale">
+      <span class="num">L1</span>
+      <div>
+        <p class="name">Nuit + Lampe Spirale</p>
+        <p class="desc">Ruban LED hélicoïdal à droite — halo ambré sur la page.</p>
+      </div>
+      <span class="meta">Lampe</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-nuit-lampe-courbe">
+      <span class="num">L2</span>
+      <div>
+        <p class="name">Nuit + Lampe Courbe</p>
+        <p class="desc">Bras en C, abat-jour blanc — faisceau dirigé vers le texte.</p>
+      </div>
+      <span class="meta">Lampe</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-nuit-lampe-ampoule">
+      <span class="num">L3</span>
+      <div>
+        <p class="name">Nuit + Lampe Ampoule</p>
+        <p class="desc">Ampoule LED suspendue — lumière froide depuis le haut à droite.</p>
+      </div>
+      <span class="meta">Lampe</span>
+    </a>
+    <a class="row" href="./preview.html?theme=salle-lecture-nuit-lampe-banquier">
+      <span class="num">L4</span>
+      <div>
+        <p class="name">Nuit + Lampe Banquier</p>
+        <p class="desc">Abat-jour émeraude, laiton — flaque de lumière chaude type bibliothèque.</p>
+      </div>
+      <span class="meta">Lampe</span>
+    </a>
+    <a class="row" href="./preview.html?theme=campus">
+      <span class="num">04</span>
+      <div>
+        <p class="name">Campus</p>
+        <p class="desc">Encre / or — université et allée en motif de fond (bords flous).</p>
+        <div class="swatches" aria-hidden="true">
+          <span style="background:#0e1419"></span>
+          <span style="background:#c4a35a"></span>
+          <span style="background:#e8ebe6"></span>
+        </div>
+      </div>
+      <span class="meta">Production</span>
+    </a>
+  </div>
+  <div class="tools">
+    <p><strong>Prévisualiser</strong> — <code>.\scripts\serve_theme_proposals.ps1</code></p>
+    <p>Puis <code>http://localhost:8777/design-proposals/themes/preview.html</code> · menu <strong>Charte</strong> en haut à droite.</p>
+  </div>
+</main>
+</body>
+</html>

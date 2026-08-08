@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <rect width="640" height="480" fill="#0c1f14"/>
+  <g opacity=".45">
+    <ellipse cx="480" cy="160" rx="180" ry="120" fill="#1a3d28"/>
+    <ellipse cx="200" cy="340" rx="220" ry="140" fill="#143322"/>
+  </g>
+  <g fill="none" stroke="#d4a84b" stroke-width="1.25" opacity=".55">
+    <rect x="48" y="48" width="544" height="384" rx="2"/>
+    <rect x="60" y="60" width="520" height="360"/>
+    <path d="M48 100h544M540 48v384"/>
+  </g>
+  <g fill="#d4a84b" opacity=".7" font-family="Georgia, serif">
+    <text x="80" y="140" font-size="22">Cabinet de curiosités</text>
+    <text x="80" y="172" font-size="13" opacity=".75">Éditions · particularités · savoirs</text>
+  </g>
+  <g fill="none" stroke="#d4a84b" opacity=".35">
+    <circle cx="420" cy="280" r="70"/>
+    <circle cx="420" cy="280" r="40"/>
+    <path d="M420 210v140M350 280h140"/>
+  </g>
+</svg>

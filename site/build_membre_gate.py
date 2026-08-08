@@ -40,8 +40,16 @@ def main() -> int:
         api,
     )
     write(SITE / "auth.js", auth_js)
-    for asset in ("site.css", "site-nav.js"):
-        shutil.copy2(TEMPLATES / asset, SITE / asset)
+    for asset in ("site.css", "site-nav.js", "site-theme.js"):
+        src = TEMPLATES / asset
+        if src.exists():
+            shutil.copy2(src, SITE / asset)
+    themes_src = TEMPLATES / "themes"
+    if themes_src.is_dir():
+        themes_dst = SITE / "themes"
+        if themes_dst.exists():
+            shutil.rmtree(themes_dst)
+        shutil.copytree(themes_src, themes_dst)
 
     pages = [
         ("membre.html", MEMBRE / "index.html"),

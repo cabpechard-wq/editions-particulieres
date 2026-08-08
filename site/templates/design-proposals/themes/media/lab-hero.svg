@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="480" viewBox="0 0 640 480">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d9488" stop-opacity=".35"/>
+      <stop offset="55%" stop-color="#f43f5e" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#1a1a1f" stop-opacity=".08"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="480" fill="url(#g)"/>
+  <g fill="none" stroke="#fff" stroke-width="1.5" opacity=".35">
+    <path d="M80 360 L220 120 L360 360 Z"/>
+    <circle cx="460" cy="200" r="90"/>
+    <rect x="400" y="300" width="160" height="100" transform="rotate(-8 480 350)"/>
+  </g>
+  <text x="72" y="72" fill="#fff" opacity=".55" font-family="system-ui,sans-serif" font-size="14" letter-spacing="4">LABORATOIRE</text>
+</svg>

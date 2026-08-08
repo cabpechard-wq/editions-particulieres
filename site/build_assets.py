@@ -379,8 +379,18 @@ def main() -> int:
     cfg_path.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     home_tpl = (SITE_ROOT / "templates" / "home.html").read_text(encoding="utf-8")
     (site / "index.html").write_text(home_tpl, encoding="utf-8")
-    for asset in ("site.css", "site-nav.js"):
-        shutil.copy2(SITE_ROOT / "templates" / asset, site / asset)
+    for asset in ("site.css", "site-nav.js", "site-tts.js", "site-theme.js"):
+        src = SITE_ROOT / "templates" / asset
+        if src.exists():
+            shutil.copy2(src, site / asset)
+
+    # Chartes live (sans motifs / images)
+    themes_src = SITE_ROOT / "templates" / "themes"
+    if themes_src.is_dir():
+        themes_dst = site / "themes"
+        if themes_dst.exists():
+            shutil.rmtree(themes_dst)
+        shutil.copytree(themes_src, themes_dst)
 
     # Hubs intermédiaires Accueil → Bibliothèque / Amphithéâtre / TD
     for hub in ("bibliotheque", "ressources", "exercices"):

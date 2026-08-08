@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aperçu thème — Droit public et administratif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="theme-fonts" rel="stylesheet" href="">
+<link id="theme-css" rel="stylesheet" href="./site-campus.css">
+<style>
+  .theme-lab {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem 1rem;
+    padding: .55rem clamp(1rem, 3vw, 2rem);
+    font-family: system-ui, sans-serif; font-size: .78rem; font-weight: 600;
+    background: #111; color: #e8e8e8; border-bottom: 1px solid rgba(255,255,255,.12);
+  }
+  .theme-lab a { color: #c8c8c8; text-decoration: none; }
+  .theme-lab a:hover { text-decoration: underline; }
+  .theme-lab .picker {
+    display: flex; align-items: center; gap: .55rem;
+  }
+  .theme-lab label {
+    font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    opacity: .55;
+  }
+  .theme-lab select {
+    appearance: none;
+    font: inherit; font-size: .82rem; font-weight: 600;
+    color: #111;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23111' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") no-repeat right .7rem center;
+    border: none;
+    border-radius: 2px;
+    padding: .4rem 2rem .4rem .75rem;
+    min-width: 12rem;
+    cursor: pointer;
+  }
+  .theme-lab select:focus {
+    outline: 2px solid #c4a35a;
+    outline-offset: 2px;
+  }
+  .theme-lab .hint { opacity: .7; font-weight: 500; }
+  .preview-section { scroll-margin-top: 3.5rem; }
+  .preview-label {
+    margin: 0 0 1rem;
+    padding: .35rem 0;
+    font-size: .68rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--border);
+  }
+</style>
+</head>
+<body class="site-body">
+<aside class="reading-lamp" aria-hidden="true"></aside>
+<div class="theme-lab" role="toolbar" aria-label="Choisir une charte">
+  <div>
+    <a href="./index.html">← Chartes</a>
+    <span class="hint"> · CSS interchangeable avec <code>site.css</code></span>
+  </div>
+  <div class="picker">
+    <label for="theme-select">Charte</label>
+    <select id="theme-select" aria-label="Choisir une charte graphique">
+      <option value="campus">Campus</option>
+      <option value="amphitheatre">Amphithéâtre</option>
+      <option value="salle-lecture-nuit-lampe-ampoule">Nuit + Lampe Ampoule</option>
+      <option value="salle-lecture-nuit-lampe-banquier">Nuit + Lampe Banquier</option>
+      <option value="salle-lecture-nuit-lampe-courbe">Nuit + Lampe Courbe</option>
+      <option value="salle-lecture-nuit-lampe-spirale">Nuit + Lampe Spirale</option>
+      <option value="salle-lecture">Salle de lecture - Jour</option>
+      <option value="salle-lecture-access-jour">Salle de lecture (accessibilité) - Jour</option>
+      <option value="salle-lecture-access-nuit">Salle de lecture (accessibilité) - Nuit</option>
+      <option value="salle-lecture-nuit">Salle de lecture · Nuit</option>
+      <option value="salle-td">Salle de TD</option>
+    </select>
+  </div>
+</div>
+
+<header class="site-nav" aria-label="Navigation (maquette)">
+  <a class="site-nav-brand" href="#">
+    <span class="site-nav-kicker">Éditions Particulières</span>
+    <span class="site-nav-product">Droit public et administratif</span>
+  </a>
+  <nav class="site-nav-links" aria-label="Navigation">
+    <a class="is-active" href="#">Accueil</a>
+    <a href="#">Amphi'</a>
+    <a href="#">BU</a>
+    <a href="#">Salles de TD</a>
+    <a href="#">Inscriptions</a>
+    <a href="#">Espace pédagogique</a>
+  </nav>
+</header>
+
+<main class="site-main home-amphitheatre preview-section" id="accueil">
+  <p class="preview-label">Accueil</p>
+  <div class="home-hero">
+    <div class="home-hero-copy">
+      <p class="site-hero-kicker">Éditions Particulières</p>
+      <h1 class="site-title site-title-hero"><em>Droit</em> public<br>et administratif</h1>
+      <p class="site-lead">Ressources pédagogiques pour étudiants, juristes et curieux du droit public.</p>
+    </div>
+    <aside class="home-hero-access" aria-label="Espace pédagogique">
+      <p class="site-hero-kicker">Accès &amp; Formules</p>
+      <h2 class="home-hero-access-title">Espace pédagogique</h2>
+      <div class="home-hero-access-stack">
+        <div class="home-access-card">
+          <h3>Connexion</h3>
+          <p>Accès à la BU, à l'amphi et aux TD.</p>
+          <a class="btn fill-secondary" href="#">Se connecter</a>
+        </div>
+        <div class="home-access-card is-accent">
+          <h3>Inscriptions</h3>
+          <p>Offre de lancement — mensuel ou semestriel.</p>
+          <a class="btn outline-accent" href="#">Voir les offres</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="home-rule" aria-hidden="true"></div>
+  <div class="home-columns">
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Fonds &amp; Références</p>
+        <h2><a class="home-col-title" href="#">Bibliothèque universitaire</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Cours</p>
+            <p class="ex-item-title">Cours de Droit public et administratif</p>
+            <p class="ex-item-desc">Cours structuré suivant le programme universitaire.</p>
+          </div>
+          <span class="ex-item-cta">Consulter le cours →</span>
+        </a>
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Ressource</p>
+            <p class="ex-item-title">Dictionnaire juridique</p>
+            <p class="ex-item-desc">Définitions des notions essentielles, de A à Z.</p>
+          </div>
+          <span class="ex-item-cta">Ouvrir le dictionnaire →</span>
+        </a>
+      </div>
+    </section>
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Savoirs &amp; Veille</p>
+        <h2><a class="home-col-title" href="#">Amphithéâtre</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Ressource</p>
+            <p class="ex-item-title">Fiches d'arrêts et de décisions</p>
+            <p class="ex-item-desc">Faits, solution et portée des décisions majeures.</p>
+          </div>
+          <span class="ex-item-cta">Consulter les fiches →</span>
+        </a>
+      </div>
+    </section>
+    <section class="home-col">
+      <div class="site-section-header">
+        <p class="site-hero-kicker">Entraînement &amp; Méthode</p>
+        <h2><a class="home-col-title" href="#">Travaux dirigés</a></h2>
+      </div>
+      <div class="home-col-stack">
+        <a class="ex-item" href="#">
+          <div>
+            <p class="ex-item-type">Démo</p>
+            <p class="ex-item-title">Flipcards (Grands arrêts)</p>
+            <p class="ex-item-desc">Cartes recto / verso sur la jurisprudence essentielle.</p>
+          </div>
+          <span class="ex-item-cta">Essayer la démo →</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<main class="site-main legal-page manuel-layout preview-section" id="cours" style="margin-top: 3rem;">
+  <p class="preview-label">Page cours (extrait)</p>
+  <p class="site-crumb">
+    <a href="#">Droit public et administratif</a>
+    <span class="sep">›</span>
+    <a href="#">Bibliothèque universitaire</a>
+    <span class="sep">›</span>
+    <a href="#">Cours</a>
+    <span class="sep">›</span>
+    <strong>La séparation des pouvoirs</strong>
+  </p>
+  <div class="manuel-shell">
+    <nav class="manuel-nav manuel-nav-side" aria-label="Navigation du cours">
+      <p class="manuel-nav-heading">Cours</p>
+      <ul class="manuel-nav-list">
+        <li><a href="#">I. Sources du droit</a></li>
+        <li><a class="is-current" href="#">II. Séparation des pouvoirs</a></li>
+        <li><a href="#">III. Actes administratifs</a></li>
+      </ul>
+    </nav>
+    <div class="manuel-content">
+      <h1 class="site-title">La séparation des pouvoirs</h1>
+      <article class="legal-prose manuel-prose">
+        <p>Le principe de séparation des pouvoirs structure l'organisation de l'État moderne et limite les abus de pouvoir.</p>
+        <h3>Origine et fondement</h3>
+        <p>Issu de la pensée libérale du XVIII<sup>e</sup> siècle, il repose sur la distinction entre fonctions législative, exécutive et judiciaire.</p>
+        <blockquote><p>« Lorsque le législatif et l'exécutif sont réunis dans la même personne, il ne peut y avoir de liberté. » — Montesquieu</p></blockquote>
+        <div class="encadre">
+          <p><strong>À retenir</strong> — En droit administratif français, la séparation est souple : le Gouvernement participe à la fonction législative via les ordonnances et le contrôle du Parlement.</p>
+        </div>
+        <h4>Contrôle du juge administratif</h4>
+        <p>Le juge vérifie la légalité des actes et la protection des libertés publiques face à l'administration.</p>
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer preview-section" id="pied">
+  <div class="site-footer-inner">
+    <div class="site-footer-meta">
+      <p class="site-footer-brand">Éditions Particulières — Droit public et administratif</p>
+      <p class="site-footer-copy">© Éditions Particulières · Tous droits réservés · Reproductions / exportations interdites</p>
+    </div>
+    <nav class="site-footer-links" aria-label="Informations légales">
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var THEMES = {
+    amphitheatre: {
+      css: "./site-amphitheatre.css",
+      fonts: "https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Commissioner:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap",
+      title: "Amphithéâtre"
+    },
+    "salle-td": {
+      css: "./site-salle-td.css",
+      fonts: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap",
+      title: "Salle de TD"
+    },
+    "salle-lecture": {
+      css: "./site-salle-lecture.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Salle de lecture - Jour"
+    },
+    "salle-lecture-access-jour": {
+      css: "./site-salle-lecture-access-jour.css",
+      fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      title: "Salle de lecture (accessibilité) - Jour"
+    },
+    "salle-lecture-access-nuit": {
+      css: "./site-salle-lecture-access-nuit.css",
+      fonts: "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+      title: "Salle de lecture (accessibilité) - Nuit"
+    },
+    "salle-lecture-nuit": {
+      css: "./site-salle-lecture-nuit.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Salle de lecture · Nuit"
+    },
+    "salle-lecture-nuit-lampe-spirale": {
+      css: "./site-salle-lecture-nuit-lampe-spirale.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Nuit + Lampe Spirale"
+    },
+    "salle-lecture-nuit-lampe-courbe": {
+      css: "./site-salle-lecture-nuit-lampe-courbe.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Nuit + Lampe Courbe"
+    },
+    "salle-lecture-nuit-lampe-ampoule": {
+      css: "./site-salle-lecture-nuit-lampe-ampoule.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Nuit + Lampe Ampoule"
+    },
+    "salle-lecture-nuit-lampe-banquier": {
+      css: "./site-salle-lecture-nuit-lampe-banquier.css",
+      fonts: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap",
+      title: "Nuit + Lampe Banquier"
+    },
+    campus: {
+      css: "./site-campus.css",
+      fonts: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap",
+      title: "Campus"
+    }
+  };
+
+  var ALIASES = {
+    cabinet: "amphitheatre",
+    tribune: "salle-td",
+    silence: "salle-lecture",
+    amphitheatre_old: "campus",
+    "salle-lecture-malvoyants": "salle-lecture-access-jour"
+  };
+
+  var cssEl = document.getElementById("theme-css");
+  var fontEl = document.getElementById("theme-fonts");
+  var select = document.getElementById("theme-select");
+
+  function applyTheme(key) {
+    if (ALIASES[key]) key = ALIASES[key];
+    var t = THEMES[key] || THEMES.campus;
+    key = Object.keys(THEMES).find(function (k) { return THEMES[k] === t; }) || "campus";
+    cssEl.href = t.css + "?v=" + Date.now();
+    fontEl.href = t.fonts;
+    document.title = "Aperçu " + t.title + " — Droit public et administratif";
+    select.value = key;
+    try {
+      var url = new URL(location.href);
+      url.searchParams.set("theme", key);
+      history.replaceState(null, "", url);
+    } catch (_) {}
+  }
+
+  select.addEventListener("change", function () {
+    applyTheme(select.value);
+  });
+
+  var initial = (new URLSearchParams(location.search).get("theme") || "campus").toLowerCase();
+  if (ALIASES[initial]) initial = ALIASES[initial];
+  if (!THEMES[initial]) initial = "campus";
+  applyTheme(initial);
+})();
+</script>
+</body>
+</html>

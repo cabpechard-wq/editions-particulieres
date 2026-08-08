@@ -105,7 +105,7 @@ def build_manuel_site(
                     "{{CRUMB_TRAIL}}",
                     f'    <a href="{prefix}index.html">Droit public et administratif</a>\n'
                     '    <span class="sep">›</span>\n'
-                    f'    <a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>\n'
+                    f'    <a href="{prefix}ressources/">Amphithéâtre</a>\n'
                     '    <span class="sep">›</span>\n'
                     f'    <a href="../">Cours</a>\n'
                     '    <span class="sep">›</span>\n'

@@ -157,7 +157,7 @@ def build_breadcrumb_html(chapter: dict[str, Any], by_digits: dict[str, dict[str
     bits = [
         f'<a href="{prefix}index.html">Droit public et administratif</a>',
         '<span class="sep">›</span>',
-        f'<a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>',
+        f'<a href="{prefix}ressources/">Amphithéâtre</a>',
         '<span class="sep">›</span>',
         f'<a href="{rel_between(chapter["segments"], [])}">Cours</a>',
     ]

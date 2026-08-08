@@ -47,14 +47,14 @@
       if (key === "home") {
         if (cur === p) a.classList.add("is-active");
       } else if (key === "ressources") {
-        // Amphithéâtre uniquement (pas Manuel / Dictionnaire)
-        if (cur === p) {
+        const onManuel = cur.indexOf("/manuel") !== -1;
+        const onArrets = cur.indexOf("/arrets") !== -1;
+        if (cur === p || onManuel || onArrets) {
           a.classList.add("is-active");
         }
       } else if (key === "bibliotheque") {
-        const onManuel = cur.indexOf("/manuel") !== -1;
         const onDict = cur.indexOf("/dictionnaire") !== -1;
-        if (cur === p || onManuel || onDict) {
+        if (cur === p || onDict) {
           a.classList.add("is-active");
         }
       } else if (key === "exercices") {

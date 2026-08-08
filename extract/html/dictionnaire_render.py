@@ -170,20 +170,28 @@ def render_body(entries: list[dict]) -> tuple[str, str]:
     letters = sorted({e["letter"] for e in entries if e["letter"] != "#"}) + (
         ["#"] if any(e["letter"] == "#" for e in entries) else []
     )
-    index = ['<nav class="dict-index" aria-label="Index alphabétique">']
+    controls = [
+        '<div class="dict-controls">',
+        '<nav class="dict-index" aria-label="Index alphabétique">',
+    ]
     for L in letters:
-        index.append(f'<a href="#lettre-{html.escape(L)}">{html.escape(L)}</a>')
-    index.append("</nav>")
+        controls.append(f'<a href="#lettre-{html.escape(L)}">{html.escape(L)}</a>')
+    controls.extend(
+        [
+            "</nav>",
+            '<p class="dict-toolbar">',
+            '<label class="sr-only" for="dict-filter">Filtrer</label>',
+            '<input id="dict-filter" type="search" placeholder="Filtrer une entrée…" autocomplete="off">',
+            "</p>",
+            "</div>",
+        ]
+    )
 
     by_letter: dict[str, list[dict]] = {}
     for e in entries:
         by_letter.setdefault(e["letter"], []).append(e)
 
     blocks = [
-        '<p class="dict-toolbar">'
-        '<label class="sr-only" for="dict-filter">Filtrer</label>'
-        '<input id="dict-filter" type="search" placeholder="Filtrer une entrée…" autocomplete="off">'
-        "</p>",
         '<div class="dict-entries">',
     ]
     for L in letters:
@@ -203,7 +211,7 @@ def render_body(entries: list[dict]) -> tuple[str, str]:
             blocks.append("</article>")
         blocks.append("</section>")
     blocks.append("</div>")
-    return "\n".join(index), "\n".join(blocks)
+    return "\n".join(controls), "\n".join(blocks)
 
 
 FILTER_JS = """

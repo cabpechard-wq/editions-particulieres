@@ -1745,6 +1745,8 @@ input:focus {
 
 .dict-toolbar .site-tts-voice-wrap {
   margin-left: 0;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
 .site-tts-btn {
@@ -1999,11 +2001,23 @@ input:focus {
   border: 0;
 }
 
+.dict-controls {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  margin: 1.5rem 0 1.75rem;
+}
+
 .dict-index {
   display: flex;
-  flex-wrap: wrap;
-  gap: .35rem .55rem;
-  margin: 1.5rem 0 1rem;
+  flex-wrap: nowrap;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: .35rem .45rem;
+  margin: 0;
+  min-width: 0;
+  overflow-x: auto;
   font-family: var(--font-ui);
   font-size: .82rem;
   font-weight: 650;
@@ -2014,6 +2028,7 @@ input:focus {
   text-decoration: none;
   padding: .2rem .4rem;
   border-bottom: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .dict-index a:hover {
@@ -2023,26 +2038,47 @@ input:focus {
 
 .dict-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.5rem 0.65rem;
-  margin: 0 0 1.75rem;
+  margin: 0;
+  font-family: var(--font-ui);
 }
 
 .dict-toolbar input[type="search"] {
-  width: min(100%, 22rem);
-  padding: .65rem .85rem;
+  width: min(100%, 16rem);
+  max-width: 100%;
+  padding: .55rem .75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg-elevated);
   color: var(--ink);
-  font: 500 .92rem var(--font-ui);
+  font: 500 .88rem var(--font-ui);
 }
 
 .dict-toolbar input[type="search"]:focus {
   outline: 2px solid var(--accent-soft);
   border-color: var(--accent);
 }
+
+@media (max-width: 720px) {
+  .dict-controls {
+    flex-wrap: wrap;
+  }
+
+  .dict-toolbar {
+    flex: 1 1 100%;
+    justify-content: stretch;
+  }
+
+  .dict-toolbar input[type="search"] {
+    flex: 1 1 auto;
+    width: auto;
+  }
+}
+
 
 .dict-letter {
   margin: 0 0 2.25rem;
@@ -2074,12 +2110,13 @@ input:focus {
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--secondary);
   line-height: 1.25;
 }
 
 .dict-term-label {
   display: inline;
+  color: var(--secondary);
 }
 
 .dict-term .site-tts--entry {
@@ -2099,6 +2136,25 @@ input:focus {
   color: var(--ink);
 }
 
+.dict-def a,
+.dict-entries .dict-extra a,
+.dict-entries .dict-fiches a,
+.dict-entries a.dict-link,
+.dict-entries a.manuel-link,
+.dict-entries a.arret-link {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.dict-def a:hover,
+.dict-entries .dict-extra a:hover,
+.dict-entries .dict-fiches a:hover,
+.dict-entries a.dict-link:hover,
+.dict-entries a.manuel-link:hover,
+.dict-entries a.arret-link:hover {
+  color: var(--ink);
+}
+
 .dict-fiches,
 .dict-extra {
   margin: 0 0 .25rem;
@@ -2107,9 +2163,6 @@ input:focus {
   color: var(--muted);
 }
 
-.dict-extra a {
-  font-weight: 600;
-}
 
 /* —— Fiches d'arrêts —— */
 .arrets-toolbar {

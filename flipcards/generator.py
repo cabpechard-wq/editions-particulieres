@@ -467,6 +467,10 @@ body {{
 }}
 .wrap {{ max-width: 48rem; margin: 0 auto; padding: 1.5rem 1rem 0; }}
 .wrap.is-study {{ max-width: 36rem; }}
+/* Recherche bandeau : ancrage sur .wrap (site-search.js affine ensuite) */
+.site-nav-search {{
+  left: max(1rem, calc(50% - 24rem));
+}}
 .screen[hidden] {{ display: none !important; }}
 :fullscreen .site-nav,
 :-webkit-full-screen .site-nav {{ display: none !important; }}
@@ -2061,7 +2065,7 @@ applyDeepLink();
 updateHomeCount();
 </script>
 <script src="../auth.js?v=4"></script>
-<script src="../site-nav.js?v=16"></script>
+<script src="../site-nav.js?v=17"></script>
 </body>
 </html>
 """

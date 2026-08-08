@@ -172,8 +172,11 @@
       main.querySelector(".manuel-content > .legal-prose") ||
       main.querySelector(".arrets-fiche-layout") ||
       main.querySelector(".home-hero-copy") ||
+      main.querySelector(".dict-controls") ||
       main.querySelector(".dict-toolbar") ||
       main.querySelector(".site-panel") ||
+      main.querySelector(".page-title") ||
+      main.querySelector(".home-card") ||
       main.querySelector(".site-title") ||
       main
     );
@@ -182,7 +185,11 @@
   function alignNavSearch() {
     const nav = document.querySelector(".site-nav");
     const search = nav && nav.querySelector(".site-nav-search");
-    const main = document.querySelector(".site-main");
+    // Flipcards / démo : colonne .wrap (pas de .site-main)
+    const main =
+      document.querySelector(".site-main") ||
+      document.querySelector(".wrap") ||
+      document.querySelector("main");
     if (!nav || !search || !main) return;
     if (window.matchMedia("(max-width: 720px)").matches) {
       search.style.left = "";

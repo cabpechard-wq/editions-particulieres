@@ -32,6 +32,7 @@ def build_arrets_site(
             registry=registry,
             resolve_title=resolve_title,
             asset_prefix="../../",
+            site_root=site_root,
         )
         if entry:
             entries.append(entry)

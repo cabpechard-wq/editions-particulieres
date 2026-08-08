@@ -83,29 +83,29 @@ def main() -> int:
         fail("notion_state.json manquant")
     ok("notion_state.json présent")
 
-    # Checklist externe
-    ls = cfg.get("lemonsqueezy") or {}
-    sotion = cfg.get("sotion") or {}
-    hosting = cfg.get("hosting") or {}
-
+    # Checklist externe (Stripe + Worker auth + URLs site)
+    stripe = cfg.get("stripe") or {}
+    ls = cfg.get("lemonsqueezy") or {}  # miroir legacy des Payment Links
+    auth = cfg.get("auth") or {}
     pending = []
-    ls = cfg.get("lemonsqueezy") or {}
-    products_brief = SITE_ROOT / "lemonsqueezy_products.json"
-    checkout_page = SITE / "checkout" / "index.html"
-    if not (ls.get("monthly_checkout_url") or "").startswith("http"):
-        if products_brief.exists() and checkout_page.exists():
-            ok(
-                "Lemon Squeezy : catalogue + page /checkout/ prets "
-                "(URLs live apres LEMON_SQUEEZY_API_KEY)"
-            )
-        else:
-            pending.append("Lemon Squeezy checkout URL (setup_lemonsqueezy.py + API key)")
+    monthly = (
+        (stripe.get("monthly_payment_link") or "")
+        or (ls.get("monthly_checkout_url") or "")
+    )
+    yearly = (
+        (stripe.get("yearly_payment_link") or "")
+        or (ls.get("yearly_checkout_url") or "")
+    )
+    if not monthly.startswith("http"):
+        pending.append("Stripe monthly_payment_link (setup_stripe_links.py)")
+    if not yearly.startswith("http"):
+        pending.append("Stripe yearly_payment_link (setup_stripe_links.py)")
     if not (cfg.get("demo_url") or "").startswith("http"):
-        pending.append("Hébergement demo_url (deploy_netlify.py ou surge)")
+        pending.append("demo_url (site/config.json hosting)")
     if not (cfg.get("flipcards_url") or "").startswith("http"):
-        pending.append("Hébergement flipcards_url")
-    if not (sotion.get("site_url") or "").startswith("http"):
-        pending.append("Sotion/membre site_url (build_membre_gate.py)")
+        pending.append("flipcards_url (site/config.json)")
+    if not (auth.get("api_url") or "").startswith("http"):
+        pending.append("auth.api_url (Worker Cloudflare)")
 
     print("---")
     if pending:
@@ -116,16 +116,14 @@ def main() -> int:
     else:
         ok("toutes les URLs externes renseignées")
         print(
-            "E2E manuel restant : paiement test Lemon Squeezy -> acces membre -> "
-            "ouverture flipcards -> resiliation -> coupure."
+            "E2E manuel restant : paiement test Stripe -> /merci/ -> "
+            "ouverture flipcards -> reconnexion /membre/."
         )
 
-    # Test logique révocation soft
     print("---")
     print(
-        "Révocation soft : retirer le membre Sotion / changer "
-        f"SITE_ROOT/.members_password puis rebuild (build_assets.py) "
-        f"coupe l'accès HTML même si le fichier a été bookmarké sans session."
+        "Révocation : désactiver le compte dans le Worker KV / Resend, "
+        "ou faire expirer l'abonnement Stripe — le gate HTML seul ne suffit plus."
     )
     return errors
 

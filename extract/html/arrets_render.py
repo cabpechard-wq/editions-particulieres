@@ -108,6 +108,7 @@ def entry_from_page(
     registry=None,
     resolve_title=None,
     asset_prefix: str = "../../",
+    site_root: Path | None = None,
 ) -> dict[str, Any] | None:
     props = page.get("properties") or {}
     title = title_from_page(page)
@@ -137,6 +138,7 @@ def entry_from_page(
             keys=("manuel", "index"),
             prefix=asset_prefix,
             resolve_title=resolve_title,
+            site_root=site_root,
         )
     return {
         "title": title,

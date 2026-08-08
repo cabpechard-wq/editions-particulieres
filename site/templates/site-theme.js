@@ -161,7 +161,12 @@
       select.appendChild(opt);
     });
     select.value = currentId;
-    nav.appendChild(wrap);
+    const anchor = nav.querySelector('[data-nav="checkout"]');
+    if (anchor) {
+      nav.insertBefore(wrap, anchor);
+    } else {
+      nav.appendChild(wrap);
+    }
 
     select.addEventListener("change", () => {
       const theme = manifest.themes.find((t) => t.id === select.value);

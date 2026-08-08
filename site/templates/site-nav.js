@@ -123,15 +123,27 @@
     const prose = document.querySelector("article.manuel-prose");
     if (!prose) return;
 
-    const wrap = document.querySelector(".manuel-readmore-wrap");
-    if (wrap) wrap.remove();
+    let wrap = document.querySelector(".manuel-readmore-wrap");
 
     if (isMember) {
       prose.classList.remove("is-preview");
+      if (wrap) wrap.hidden = true;
       return;
     }
 
     prose.classList.add("is-preview");
+    if (!wrap) {
+      wrap = document.createElement("p");
+      wrap.className = "manuel-readmore-wrap";
+      const a = document.createElement("a");
+      a.className = "manuel-readmore";
+      a.href = abs("membre/");
+      a.textContent = "Lire la suite";
+      a.setAttribute("aria-label", "Lire la suite — Espace pédagogique");
+      wrap.appendChild(a);
+      prose.insertAdjacentElement("afterend", wrap);
+    }
+    wrap.hidden = false;
   }
 
   function blockCopyOn(el) {
@@ -302,7 +314,7 @@
 
   // Sélecteur de charte (Campus par défaut) — chargé après le bandeau
   const themeJs = document.createElement("script");
-  themeJs.src = new URL("site-theme.js?v=5", script.src).href;
+  themeJs.src = new URL("site-theme.js?v=6", script.src).href;
   themeJs.onerror = function () {
     console.warn("[site-theme] Impossible de charger site-theme.js — rebuild du site requis.");
   };

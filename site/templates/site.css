@@ -764,6 +764,13 @@ a:hover { color: var(--accent-hover); }
   color: var(--accent);
 }
 
+.ex-item-access {
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
 .ex-item-title {
   margin: 0;
   font-family: var(--font-display);
@@ -914,6 +921,33 @@ input:focus {
   font-size: .85rem;
   line-height: 1.7;
   color: var(--muted);
+}
+
+.form-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .65rem 1rem;
+  line-height: 1.45;
+}
+
+.form-links-account {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem .5rem;
+}
+
+.form-links-sep {
+  color: var(--muted);
+  opacity: .65;
+  user-select: none;
+}
+
+.form-links-row .btn-capsule {
+  margin-top: 0;
+  flex-shrink: 0;
 }
 
 /* —— Footer légal —— */

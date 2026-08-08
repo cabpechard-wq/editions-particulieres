@@ -90,6 +90,7 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
     chapters: list[dict] = []
     aside: list[dict] = []
     skipped: list[str] = []
+    site_root = resolve_site_root(Path(req.out))
 
     for unit in units:
         if unit.kind != "manuel" or unit.page is None:
@@ -111,6 +112,7 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
                 keys=("jurisprudence", "index"),
                 prefix=prefix,
                 resolve_title=converter.resolve_title,
+                site_root=site_root,
             )
             chapter["body"] = body
             chapters.append(chapter)
@@ -123,6 +125,7 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
                 keys=("jurisprudence", "index"),
                 prefix=prefix,
                 resolve_title=converter.resolve_title,
+                site_root=site_root,
             )
             aside_item["body"] = body
             aside.append(aside_item)
@@ -131,7 +134,6 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
         req.log("Aucune page manuel classée (réf. DP-XXX).\n")
         return 1, []
 
-    site_root = resolve_site_root(Path(req.out))
     manuel_dir = build_manuel_site(
         chapters,
         aside,

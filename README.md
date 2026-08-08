@@ -2,20 +2,26 @@
 
 Extraction Notion → Google Drive → flipcards → site internet.
 
+**Traçabilité (norme) :** [`docs/tracabilite/`](docs/tracabilite/) — historique détaillé, architecture, index des conversations, journal de nettoyage.
+
 ## Structure
 
 ```
 editions-particulieres/
 ├── packages/ep_core/     # Config + chemins (Google Drive)
-├── extract/              # Extraction Notion → Word/PDF/HTML (ex notion_to_word)
+├── extract/              # Extraction Notion → Word/PDF/HTML
+│   ├── word/             # Pipeline .docx / PDF
+│   ├── html/             # Pipeline site (manuel, dictionnaire, arrêts)
+│   └── pull/             # Caches JSON Drive
 ├── flipcards/            # Flipcards jurisprudence
 ├── site/
 │   ├── templates/        # Gabarits HTML + scripts de build
 │   ├── worker/           # Auth Cloudflare
-│   └── host-repo/        # Déploiement GitHub Pages
-├── mobile/               # App Expo flipcards (npm start dans mobile/)
-├── config/               # Chemins, Notion, site (.example → copier)
-└── scripts/              # Pipelines PowerShell
+│   └── host-repo/        # Miroir optionnel GitHub Pages
+├── mobile/               # App Expo flipcards
+├── config/               # Chemins, Notion (.example → copier)
+├── scripts/              # Pipelines PowerShell
+└── docs/tracabilite/     # Mémoire officielle du chantier
 ```
 
 ## App mobile
@@ -47,6 +53,7 @@ Configurer via `.env` (`EP_OUTPUT_ROOT`) ou `config/paths.json`.
 ```powershell
 copy .env.example .env
 copy config\paths.json.example config\paths.json
+copy config\notion.json.example config\notion.json
 .\scripts\setup_output_dirs.ps1
 python -m venv .venv
 .venv\Scripts\activate
@@ -57,21 +64,23 @@ pip install -r requirements.txt
 
 Double-clic `Lancer-GUI.bat` ou `python -m gui`.
 
-Interface identique à l'ancien `notion_to_word` : registres (Manuel, Fiches, Méthode, Formule, Glossaire, Jurisprudence), mode fiches, combiner, export Word, post-traitement PDF, postlink, attacher styles.
+Registres : Manuel, Fiches, Méthode, Formule, Glossaire, Jurisprudence — Word, PDF, postlink, attacher styles.
 
 - **Word (.docx)** : format principal pour « Générer ».
-- **PDF** : post-traitement des `.docx` via Microsoft Word (pywin32) — case « Générer aussi PDF » ou bouton « Convertir en PDF ».
-- **HTML** : option visible, non branchée.
-- **Attacher styles** : opérationnel (`Editions_Particulieres.dotx`).
-- **Actualiser la liste** : charge les fiches depuis Notion (bases `config/notion.json`).
-
-Conversion PDF en ligne de commande :
+- **PDF** : post-traitement via Microsoft Word (pywin32).
+- **HTML site** : `python export_html.py` / `export_dictionnaire.py` / `export_arrets.py` (aussi CI).
+- **Attacher styles** : `Editions_Particulieres.dotx`.
 
 ```powershell
 python -m extract.word.convert_pdf --out "G:\Mon Drive\Editions Particulieres\export"
+.\scripts\build_site.ps1
 ```
 
-## Anciens dépôts
+Site live : `https://www.editions-particulieres.fr`
 
-- `notion_to_word` → `extract/`
+## Anciens dépôts (archives)
+
+Ne plus modifier. À zipper sur Drive puis retirer du Bureau — détail : `docs/tracabilite/NETTOYAGE.md`.
+
+- `notion_to_word` → `extract/` + `gui/`
 - `flipcards-jp` → `flipcards/` + `site/` + `mobile/`

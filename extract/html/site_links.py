@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Iterable
 
 from packages.ep_core.notion import NotionFetcher, page_title
@@ -102,13 +103,19 @@ def relation_ids(props: dict[str, Any], *canonical: str) -> list[str]:
                 break
         if not matched:
             wanted.add(k)
+    seen: set[str] = set()
+    ids: list[str] = []
     for name, prop in props.items():
         if _norm(name) not in wanted:
             continue
         if prop.get("type") != "relation":
             continue
-        return [r["id"] for r in (prop.get("relation") or []) if r.get("id")]
-    return []
+        for r in prop.get("relation") or []:
+            pid = r.get("id")
+            if pid and pid not in seen:
+                seen.add(pid)
+                ids.append(pid)
+    return ids
 
 
 def _register_index(fetcher: NotionFetcher, reg: SiteLinkRegistry) -> None:
@@ -215,6 +222,66 @@ def rewrite_site_links(body: str, registry: SiteLinkRegistry, *, prefix: str) ->
     return _NOTION_LINK_RE.sub(repl, body)
 
 
+def _resolve_link_target(
+    pid: str,
+    registry: SiteLinkRegistry,
+    *,
+    prefix: str,
+    resolve_title: Callable[[str], str] | None,
+    site_root: Path | None,
+    key: str,
+) -> tuple[str, str, str] | None:
+    """Résout un lien relationnel (registre Notion, repli sur le site exporté)."""
+    target = registry.resolve(pid)
+    title = ""
+    if resolve_title:
+        try:
+            title = (resolve_title(pid) or "").strip()
+        except Exception:
+            pass
+    if target:
+        return (
+            registry.href(target, prefix=prefix),
+            target.css_class,
+            title or target.title,
+        )
+    if not site_root or not title:
+        return None
+
+    key_norm = _norm(key)
+    manuel_keys = _RELATION_ALIASES.get("manuel", frozenset())
+    index_keys = _RELATION_ALIASES.get("index", frozenset())
+    arret_keys = _RELATION_ALIASES.get("jurisprudence", frozenset())
+
+    if key_norm in manuel_keys:
+        from .dictionnaire_render import build_manuel_title_map, norm_title
+        from .dictionnaire_site import manuel_roots_for
+
+        rel = build_manuel_title_map(manuel_roots_for(site_root)).get(norm_title(title))
+        if rel:
+            site_path = rel.removeprefix("../")
+            return f"{prefix}{site_path}", "manuel-link", title
+
+    if key_norm in index_keys:
+        from .dictionnaire_render import slugify as dict_slugify
+
+        slug = dict_slugify(title)
+        dict_index = site_root / "dictionnaire" / "index.html"
+        if dict_index.is_file():
+            blob = dict_index.read_text(encoding="utf-8")
+            if f'id="{slug}"' in blob:
+                return f"{prefix}dictionnaire/#{slug}", "dict-link", title
+
+    if key_norm in arret_keys:
+        from .arrets_render import slugify as arret_slugify
+
+        slug = arret_slugify(title)
+        if (site_root / "arrets" / slug / "index.html").is_file():
+            return f"{prefix}arrets/{slug}/", "arret-link", title
+
+    return None
+
+
 def render_relation_extras(
     props: dict[str, Any],
     registry: SiteLinkRegistry,
@@ -223,6 +290,7 @@ def render_relation_extras(
     prefix: str,
     resolve_title: Callable[[str], str] | None = None,
     section: bool = True,
+    site_root: Path | None = None,
 ) -> str:
     """Liens relationnels Notion → pages du site (pied de page ou lignes dict-extra)."""
     link_bits: list[str] = []
@@ -234,20 +302,19 @@ def render_relation_extras(
             continue
         row_links: list[str] = []
         for pid in ids:
-            target = registry.resolve(pid)
-            if not target:
+            resolved = _resolve_link_target(
+                pid,
+                registry,
+                prefix=prefix,
+                resolve_title=resolve_title,
+                site_root=site_root,
+                key=key,
+            )
+            if not resolved:
                 continue
-            href = registry.href(target, prefix=prefix)
-            title = target.title
-            if resolve_title:
-                try:
-                    resolved = (resolve_title(pid) or "").strip()
-                    if resolved:
-                        title = resolved
-                except Exception:
-                    pass
+            href, css_class, title = resolved
             row_links.append(
-                f'<a class="{target.css_class}" '
+                f'<a class="{css_class}" '
                 f'href="{html.escape(href, quote=True)}">{html.escape(title)}</a>'
             )
         if not row_links:

@@ -435,7 +435,7 @@ def build_html_document(
     demo_upsell_html = (
         '<p class="demo-upsell">'
         '<a class="demo-upsell-link" href="../checkout/">'
-        "Accès à tout le jeu de cartes et aux ressources du site…"
+        "Accès à toutes les ressources…"
         "</a></p>"
         if demo_upsell
         else ""

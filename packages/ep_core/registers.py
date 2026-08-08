@@ -10,7 +10,7 @@ from packages.ep_core.config import load_json
 REGISTRE_ORDER = ("manuel", "fiches", "methodo", "formule", "index", "arrets")
 
 REGISTRE_LABELS = {
-    "manuel": "Manuel",
+    "manuel": "Cours",
     "fiches": "Fiches",
     "methodo": "Méthode",
     "formule": "Formule",

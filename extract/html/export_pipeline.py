@@ -79,7 +79,7 @@ def export_manuel_html(req, units, fetcher, templates: Path) -> tuple[int, list[
     converter = PageConverter(fetcher)
     glossary_map = build_glossary_slug_map(fetcher)
     if glossary_map:
-        req.log(f"Glossaire : {len(set(glossary_map.values()))} entrée(s) pour les liens Manuel\n")
+        req.log(f"Glossaire : {len(set(glossary_map.values()))} entrée(s) pour les liens Cours\n")
     chapters: list[dict] = []
     aside: list[dict] = []
     skipped: list[str] = []
@@ -136,7 +136,7 @@ def export_dictionnaire_html(req, units, fetcher, templates: Path) -> tuple[int,
     manuel_roots = manuel_roots_for(site_root)
     if not build_manuel_title_map_safe(manuel_roots):
         req.log(
-            "Attention : aucune page Manuel trouvée — les liens « Manuel » seront limités.\n"
+            "Attention : aucune page Cours trouvée — les liens « Cours » seront limités.\n"
         )
 
     index_units = [u for u in units if u.kind == "index"]

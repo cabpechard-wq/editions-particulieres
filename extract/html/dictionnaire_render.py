@@ -9,7 +9,7 @@ from pathlib import Path
 
 TITLE_RE = re.compile(r'<h1[^>]*class="site-title"[^>]*>(.*?)</h1>', re.I | re.S)
 META_RE = re.compile(
-    r"^(Fiches?\b|Ressources complémentaires|Manuel\s*:|Méthode\s*:|Formule\s*:|Sommaire|glossaire)\s*",
+    r"^(Fiches?\b|Ressources complémentaires|(?:Manuel|Cours)\s*:|Méthode\s*:|Formule\s*:|Sommaire|glossaire)\s*",
     re.I,
 )
 SKIP_HEAD = {"glossaire", "sommaire"}
@@ -124,7 +124,7 @@ def parse_entries_from_html(raw: str, title_map: dict[str, str]) -> list[dict]:
             while i < len(texts) and texts[i] and META_RE.match(texts[i]):
                 line = texts[i]
                 raw_line = raws[i]
-                if line.lower().startswith("manuel"):
+                if line.lower().startswith(("manuel", "cours")):
                     cleaned = clean_manuel_para(raw_line, title_map)
                     if "<a href=" in cleaned:
                         extras.append(f'<p class="dict-extra">{cleaned}</p>')

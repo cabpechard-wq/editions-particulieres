@@ -301,7 +301,7 @@ def build_breadcrumb_html(chapter: dict[str, Any], by_digits: dict[str, dict[str
         '<span class="sep">›</span>',
         f'<a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>',
         '<span class="sep">›</span>',
-        f'<a href="{rel_between(chapter["segments"], [])}">Manuel</a>',
+        f'<a href="{rel_between(chapter["segments"], [])}">Cours</a>',
     ]
     for dig in chapter["ancestors"]:
         ch = by_digits.get(dig)
@@ -487,7 +487,7 @@ def main() -> int:
                     '    <span class="sep">›</span>\n'
                     f'    <a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>\n'
                     '    <span class="sep">›</span>\n'
-                    f'    <a href="../">Manuel</a>\n'
+                    f'    <a href="../">Cours</a>\n'
                     '    <span class="sep">›</span>\n'
                     f'    <strong>{ch["title_esc"]}</strong>',
                 )

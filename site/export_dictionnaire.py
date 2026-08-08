@@ -30,7 +30,7 @@ def build_from_html(src: Path, out_roots: list[Path], *, templates: Path = TEMPL
     for root in out_roots:
         title_map.update(build_manuel_title_map(manuel_roots_for(root)))
     if not title_map:
-        print("Attention : aucune page Manuel trouvée pour résoudre les liens.")
+        print("Attention : aucune page Cours trouvée pour résoudre les liens.")
 
     raw = src.read_text(encoding="utf-8")
     entries = parse_entries_from_html(raw, title_map)
@@ -38,7 +38,7 @@ def build_from_html(src: Path, out_roots: list[Path], *, templates: Path = TEMPL
         raise SystemExit("Aucune entrée parsée.")
 
     linked = sum(1 for e in entries if e["extras_html"])
-    print(f"Entrées avec lien(s) Manuel : {linked}/{len(entries)} (map titres={len(title_map)})")
+    print(f"Entrées avec lien(s) Cours : {linked}/{len(entries)} (map titres={len(title_map)})")
 
     for root in out_roots:
         if not root.exists():

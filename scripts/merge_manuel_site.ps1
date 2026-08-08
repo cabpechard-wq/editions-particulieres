@@ -14,7 +14,7 @@ try {
 
 $manuelSrc = Join-Path $exportSite "manuel"
 if (-not (Test-Path $manuelSrc)) {
-    Write-Host "Pas de manuel exporté : $manuelSrc (lancez l'export HTML Manuel dans la GUI)"
+    Write-Host "Pas de cours exporté : $manuelSrc (lancez l'export HTML Cours dans la GUI)"
     exit 0
 }
 
@@ -32,5 +32,5 @@ if (Test-Path $manuelDst) {
 robocopy $manuelSrc $manuelDst /E /NFL /NDL /NJH /NJS /NC /NS | Out-Null
 if ($LASTEXITCODE -ge 8) { exit $LASTEXITCODE }
 
-Write-Host "Manuel intégré : $manuelSrc -> $manuelDst"
+Write-Host "Cours intégré : $manuelSrc -> $manuelDst"
 Write-Host "URL : /editions-particulieres/manuel/"

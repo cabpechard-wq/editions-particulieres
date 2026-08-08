@@ -107,7 +107,7 @@ def build_manuel_site(
                     '    <span class="sep">›</span>\n'
                     f'    <a href="{prefix}bibliotheque/">Bibliothèque universitaire</a>\n'
                     '    <span class="sep">›</span>\n'
-                    f'    <a href="../">Manuel</a>\n'
+                    f'    <a href="../">Cours</a>\n'
                     '    <span class="sep">›</span>\n'
                     f'    <strong>{ch["title_esc"]}</strong>',
                 )

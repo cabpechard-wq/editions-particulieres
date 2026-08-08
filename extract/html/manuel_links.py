@@ -1,4 +1,4 @@
-"""Liens Manuel → glossaire local (/dictionnaire/#slug)."""
+"""Liens Cours → glossaire local (/dictionnaire/#slug)."""
 
 from __future__ import annotations
 

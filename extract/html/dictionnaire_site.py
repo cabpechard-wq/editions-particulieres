@@ -132,7 +132,7 @@ def entries_from_units(
                     )
             if links:
                 extras.append(
-                    f'<p class="dict-extra">Manuel : {" · ".join(links)}</p>'
+                    f'<p class="dict-extra">Cours : {" · ".join(links)}</p>'
                 )
 
         entries.append(
@@ -166,7 +166,7 @@ def build_dictionnaire_site(
         raise FileNotFoundError(f"Gabarit manquant : {tpl_path}")
 
     linked = sum(1 for e in entries if e["extras_html"])
-    _log(f"   {linked}/{len(entries)} entrée(s) avec lien Manuel\n")
+    _log(f"   {linked}/{len(entries)} entrée(s) avec lien Cours\n")
 
     tpl = tpl_path.read_text(encoding="utf-8")
     index_html, body_html = render_body(entries)

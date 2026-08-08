@@ -117,7 +117,7 @@ class NotionExportApp(tk.Tk):
         self.var_arrets = tk.BooleanVar(value=False)
         self._reg_checks: list[ttk.Checkbutton] = []
         for text, var in (
-            ("Manuel", self.var_manuel),
+            ("Cours", self.var_manuel),
             ("Fiches", self.var_fiches),
             ("Méthode", self.var_methodo),
             ("Formule", self.var_formule),
@@ -577,7 +577,7 @@ class NotionExportApp(tk.Tk):
 
         if html_mode:
             if has_manuel and not self.combine.get():
-                hint = "HTML : export manuel (sommaire + chapitres DP-XXX) vers export/site/manuel/."
+                hint = "HTML : export cours (sommaire + chapitres DP-XXX) vers export/site/manuel/."
                 if has_index:
                     hint += " Glossaire → export/site/dictionnaire/."
                 if has_arrets:
